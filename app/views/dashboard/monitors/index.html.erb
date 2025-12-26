@@ -1,0 +1,101 @@
+<% content_for(:title) { "Monitors" } %>
+
+<div class="space-y-6">
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Monitors</h2>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <%= link_to "Add Monitor", new_dashboard_monitor_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white shadow rounded-lg p-4">
+    <div class="flex flex-wrap gap-2">
+      <%= link_to "All", dashboard_monitors_path, class: "#{params[:status].nil? ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "Healthy", dashboard_monitors_path(status: "healthy"), class: "#{params[:status] == 'healthy' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "Degraded", dashboard_monitors_path(status: "degraded"), class: "#{params[:status] == 'degraded' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "Down", dashboard_monitors_path(status: "down"), class: "#{params[:status] == 'down' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "Paused", dashboard_monitors_path(status: "paused"), class: "#{params[:status] == 'paused' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+    </div>
+  </div>
+
+  <!-- Monitor List -->
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <% if @monitors.any? %>
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monitor</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Response</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Check</th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @monitors.each do |monitor| %>
+            <tr id="<%= dom_id(monitor) %>" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <span class="h-3 w-3 rounded-full mr-3 <%= status_dot_class(monitor.status) %>"></span>
+                  <div>
+                    <%= link_to monitor.name, dashboard_monitor_path(monitor), class: "text-sm font-medium text-gray-900 hover:text-emerald-600" %>
+                    <p class="text-sm text-gray-500 truncate max-w-xs"><%= monitor.url || monitor.host %></p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                  <%= monitor.check_type.upcase %>
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= status_badge_class(monitor.status) %>">
+                  <%= monitor.status.humanize %>
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <% if monitor.last_response_time %>
+                  <%= monitor.last_response_time %>ms
+                <% else %>
+                  -
+                <% end %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <% if monitor.last_check_at %>
+                  <%= time_ago_in_words(monitor.last_check_at) %> ago
+                <% else %>
+                  Never
+                <% end %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <div class="flex justify-end space-x-2">
+                  <% if monitor.paused? %>
+                    <%= button_to "Resume", resume_dashboard_monitor_path(monitor), method: :post, class: "text-emerald-600 hover:text-emerald-900" %>
+                  <% else %>
+                    <%= button_to "Pause", pause_dashboard_monitor_path(monitor), method: :post, class: "text-gray-600 hover:text-gray-900" %>
+                  <% end %>
+                  <%= link_to "Edit", edit_dashboard_monitor_path(monitor), class: "text-indigo-600 hover:text-indigo-900" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No monitors</h3>
+        <p class="mt-1 text-sm text-gray-500">Get started by creating a new monitor.</p>
+        <div class="mt-6">
+          <%= link_to "Add Monitor", new_dashboard_monitor_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

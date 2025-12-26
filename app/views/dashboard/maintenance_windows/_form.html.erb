@@ -1,0 +1,83 @@
+<%= form_with model: [:dashboard, maintenance_window], class: "space-y-6 bg-white shadow rounded-lg p-6" do |f| %>
+  <% if maintenance_window.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4">
+      <ul class="list-disc pl-5 text-sm text-red-700">
+        <% maintenance_window.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm", placeholder: "Database Migration" %>
+  </div>
+
+  <div>
+    <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_area :description, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm", placeholder: "Description of maintenance activities..." %>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :starts_at, "Start Time", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.datetime_local_field :starts_at, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+    </div>
+    <div>
+      <%= f.label :ends_at, "End Time", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.datetime_local_field :ends_at, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :timezone, class: "block text-sm font-medium text-gray-700" %>
+    <%= f.select :timezone, ActiveSupport::TimeZone.all.map { |tz| [tz.to_s, tz.name] },
+        {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+  </div>
+
+  <div class="border-t border-gray-200 pt-6">
+    <h4 class="text-sm font-medium text-gray-900 mb-4">Affected Monitors</h4>
+
+    <div class="space-y-3">
+      <div class="flex items-center">
+        <%= f.check_box :affects_all_monitors, class: "h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500", data: { action: "change->maintenance-form#toggleMonitors" } %>
+        <%= f.label :affects_all_monitors, "All monitors", class: "ml-2 block text-sm text-gray-700" %>
+      </div>
+
+      <div id="monitor-select" class="<%= 'hidden' if maintenance_window.affects_all_monitors %>">
+        <%= f.label :monitor_ids, "Select specific monitors", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <div class="max-h-48 overflow-y-auto border rounded-md p-2 space-y-2">
+          <% @available_monitors.each do |monitor| %>
+            <div class="flex items-center">
+              <%= check_box_tag "maintenance_window[monitor_ids][]", monitor.id, maintenance_window.monitor_ids.include?(monitor.id), class: "h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500", id: "monitor_#{monitor.id}" %>
+              <%= label_tag "monitor_#{monitor.id}", monitor.name, class: "ml-2 text-sm text-gray-700" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-200 pt-6">
+    <h4 class="text-sm font-medium text-gray-900 mb-4">Notifications</h4>
+
+    <div class="space-y-3">
+      <div class="flex items-center">
+        <%= f.check_box :notify_subscribers, class: "h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" %>
+        <%= f.label :notify_subscribers, "Notify status page subscribers", class: "ml-2 block text-sm text-gray-700" %>
+      </div>
+
+      <div>
+        <%= f.label :notify_before_minutes, "Send notification", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.select :notify_before_minutes, [["30 minutes before", 30], ["1 hour before", 60], ["2 hours before", 120], ["24 hours before", 1440]],
+            {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-end space-x-3 pt-4">
+    <%= link_to "Cancel", dashboard_maintenance_windows_path, class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    <%= f.submit maintenance_window.persisted? ? "Update" : "Schedule Maintenance", class: "rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 cursor-pointer" %>
+  </div>
+<% end %>

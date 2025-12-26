@@ -1,0 +1,70 @@
+<% content_for(:title) { "Incidents" } %>
+
+<div class="space-y-6">
+  <div class="md:flex md:items-center md:justify-between">
+    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Incidents</h2>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white shadow rounded-lg p-4">
+    <div class="flex flex-wrap gap-2">
+      <%= link_to "All", dashboard_incidents_path, class: "#{params[:status].nil? ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "Active", dashboard_incidents_path(status: "active"), class: "#{params[:status] == 'active' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "Resolved", dashboard_incidents_path(status: "resolved"), class: "#{params[:status] == 'resolved' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+    </div>
+  </div>
+
+  <!-- Incidents List -->
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <% if @incidents.any? %>
+      <ul class="divide-y divide-gray-200">
+        <% @incidents.each do |incident| %>
+          <li class="p-6 hover:bg-gray-50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <span class="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full <%= severity_color_class(incident.severity) %>">
+                  <span class="text-sm font-medium text-white"><%= incident.severity[0..1].upcase %></span>
+                </span>
+                <div>
+                  <%= link_to incident.title, dashboard_incident_path(incident), class: "text-lg font-medium text-gray-900 hover:text-emerald-600" %>
+                  <div class="flex items-center space-x-4 text-sm text-gray-500 mt-1">
+                    <span><%= incident.monitor.name %></span>
+                    <span>•</span>
+                    <span>Started <%= time_ago_in_words(incident.started_at) %> ago</span>
+                    <% if incident.resolved? %>
+                      <span>•</span>
+                      <span>Duration: <%= incident.duration_humanized %></span>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium <%= incident.resolved? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                  <%= incident.status %>
+                </span>
+                <% unless incident.resolved? %>
+                  <%= button_to "Resolve", resolve_dashboard_incident_path(incident), method: :post, class: "rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+                <% end %>
+              </div>
+            </div>
+            <% if incident.updates.any? %>
+              <div class="mt-4 pl-14">
+                <p class="text-sm text-gray-600">
+                  Latest: <%= incident.updates.last.message.truncate(100) %>
+                </p>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No incidents</h3>
+        <p class="mt-1 text-sm text-gray-500">All systems are running smoothly.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

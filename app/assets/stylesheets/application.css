@@ -1,0 +1,81 @@
+/*
+ * Beacon - Uptime Monitoring
+ * Custom styles beyond Tailwind
+ */
+
+/* Uptime bar visualization */
+.uptime-bar {
+  display: flex;
+  gap: 1px;
+  height: 32px;
+}
+
+.uptime-bar-day {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 2px;
+  transition: opacity 0.2s;
+}
+
+.uptime-bar-day:hover {
+  opacity: 0.8;
+}
+
+.uptime-bar-day.operational { background-color: #10B981; }
+.uptime-bar-day.degraded { background-color: #F59E0B; }
+.uptime-bar-day.partial-outage { background-color: #F97316; }
+.uptime-bar-day.major-outage { background-color: #EF4444; }
+.uptime-bar-day.no-data { background-color: #E5E7EB; }
+
+/* Status dot animation */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.up {
+  background-color: #10B981;
+  animation: pulse-green 2s infinite;
+}
+
+.status-dot.down {
+  background-color: #EF4444;
+  animation: pulse-red 1s infinite;
+}
+
+.status-dot.degraded {
+  background-color: #F59E0B;
+  animation: pulse-yellow 1.5s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+}
+
+@keyframes pulse-yellow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+}
+
+/* Response time chart */
+.response-time-chart {
+  height: 60px;
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+}
+
+.response-time-bar {
+  flex: 1;
+  min-width: 2px;
+  background-color: #3B82F6;
+  border-radius: 1px 1px 0 0;
+  transition: height 0.3s ease;
+}

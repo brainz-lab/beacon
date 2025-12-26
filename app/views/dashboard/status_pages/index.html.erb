@@ -1,0 +1,55 @@
+<% content_for(:title) { "Status Pages" } %>
+
+<div class="space-y-6">
+  <div class="md:flex md:items-center md:justify-between">
+    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Status Pages</h2>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <%= link_to "Create Status Page", new_dashboard_status_page_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <% @status_pages.each do |status_page| %>
+      <div class="overflow-hidden rounded-lg bg-white shadow hover:shadow-lg transition-shadow">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-medium text-gray-900"><%= status_page.name %></h3>
+            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= status_page.public? ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' %>">
+              <%= status_page.public? ? "Public" : "Private" %>
+            </span>
+          </div>
+
+          <div class="flex items-center mb-4">
+            <span class="h-3 w-3 rounded-full mr-2 <%= status_page.current_status == 'operational' ? 'bg-green-500' : status_page.current_status == 'degraded' ? 'bg-yellow-500' : 'bg-red-500' %>"></span>
+            <span class="text-sm text-gray-600"><%= status_page.current_status&.humanize || "Unknown" %></span>
+          </div>
+
+          <div class="text-sm text-gray-500 space-y-1">
+            <p><%= status_page.monitors.count %> monitors</p>
+            <p><%= status_page.confirmed_subscriptions.count %> subscribers</p>
+          </div>
+
+          <div class="mt-4 flex items-center justify-between">
+            <%= link_to "View", dashboard_status_page_path(status_page), class: "text-sm font-medium text-emerald-600 hover:text-emerald-500" %>
+            <% if status_page.public? %>
+              <%= link_to "Open Public Page", public_status_path(status_page.slug), target: "_blank", class: "text-sm font-medium text-gray-500 hover:text-gray-700" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @status_pages.empty? %>
+      <div class="col-span-full text-center py-12 bg-white rounded-lg shadow">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No status pages</h3>
+        <p class="mt-1 text-sm text-gray-500">Create a status page to share your system status with users.</p>
+        <div class="mt-6">
+          <%= link_to "Create Status Page", new_dashboard_status_page_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

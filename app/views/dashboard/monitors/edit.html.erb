@@ -1,0 +1,14 @@
+<% content_for(:title) { "Edit #{@monitor.name}" } %>
+
+<div class="max-w-2xl mx-auto">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">Edit Monitor</h2>
+
+  <%= render "form", monitor: @monitor %>
+
+  <div class="mt-6 pt-6 border-t border-gray-200">
+    <%= button_to "Delete Monitor", dashboard_monitor_path(@monitor),
+        method: :delete,
+        data: { turbo_confirm: "Are you sure? This will delete all check history." },
+        class: "text-red-600 hover:text-red-800 text-sm font-medium" %>
+  </div>
+</div>

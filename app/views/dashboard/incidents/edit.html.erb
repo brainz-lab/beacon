@@ -1,0 +1,35 @@
+<% content_for(:title) { "Edit Incident" } %>
+
+<div class="max-w-2xl mx-auto">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">Edit Incident</h2>
+
+  <div class="bg-white shadow rounded-lg p-6">
+    <%= form_with model: [:dashboard, @incident], class: "space-y-6" do |f| %>
+      <div>
+        <%= f.label :title, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+      </div>
+
+      <div>
+        <%= f.label :severity, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.select :severity, [["Critical", "critical"], ["Major", "major"], ["Minor", "minor"]],
+            {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+      </div>
+
+      <div>
+        <%= f.label :root_cause, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_area :root_cause, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+      </div>
+
+      <div>
+        <%= f.label :resolution_notes, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_area :resolution_notes, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-4">
+        <%= link_to "Cancel", dashboard_incident_path(@incident), class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+        <%= f.submit "Update Incident", class: "rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

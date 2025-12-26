@@ -1,0 +1,13 @@
+<% content_for(:title) { "Edit #{@status_page.name}" } %>
+
+<div class="max-w-2xl mx-auto">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">Edit Status Page</h2>
+  <%= render "form", status_page: @status_page %>
+
+  <div class="mt-6 pt-6 border-t border-gray-200">
+    <%= button_to "Delete Status Page", dashboard_status_page_path(@status_page),
+        method: :delete,
+        data: { turbo_confirm: "Are you sure? This cannot be undone." },
+        class: "text-red-600 hover:text-red-800 text-sm font-medium" %>
+  </div>
+</div>
