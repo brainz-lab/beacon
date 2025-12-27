@@ -1,58 +1,78 @@
-<% content_for(:title) { "Maintenance Windows" } %>
+<% content_for(:title) { "Maintenance" } %>
 
 <div class="space-y-6">
-  <div class="md:flex md:items-center md:justify-between">
-    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Maintenance Windows</h2>
-    <div class="mt-4 flex md:ml-4 md:mt-0">
-      <%= link_to "Schedule Maintenance", new_dashboard_maintenance_window_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">Maintenance Windows</h1>
+      <p class="mt-1 text-[13px]" style="color: #8B8780;">Schedule maintenance to notify subscribers in advance</p>
     </div>
+    <%= link_to new_dashboard_project_maintenance_window_path(@project), class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Schedule Maintenance
+    <% end %>
   </div>
 
   <!-- Filters -->
-  <div class="bg-white shadow rounded-lg p-4">
+  <div class="p-4 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
     <div class="flex flex-wrap gap-2">
-      <%= link_to "All", dashboard_maintenance_windows_path, class: "#{params[:status].nil? ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
-      <%= link_to "Upcoming", dashboard_maintenance_windows_path(status: "upcoming"), class: "#{params[:status] == 'upcoming' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
-      <%= link_to "Active", dashboard_maintenance_windows_path(status: "active"), class: "#{params[:status] == 'active' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
-      <%= link_to "Past", dashboard_maintenance_windows_path(status: "past"), class: "#{params[:status] == 'past' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "All", dashboard_project_maintenance_windows_path(@project),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status].nil? ? "background: #1A1A1A; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+      <%= link_to "Upcoming", dashboard_project_maintenance_windows_path(@project, status: "upcoming"),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status] == "upcoming" ? "background: #3B82F6; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+      <%= link_to "Active", dashboard_project_maintenance_windows_path(@project, status: "active"),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status] == "active" ? "background: #F59E0B; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+      <%= link_to "Past", dashboard_project_maintenance_windows_path(@project, status: "past"),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status] == "past" ? "background: #6B6760; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
     </div>
   </div>
 
-  <div class="bg-white shadow rounded-lg overflow-hidden">
+  <div class="rounded-xl overflow-hidden" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
     <% if @maintenance_windows.any? %>
-      <ul class="divide-y divide-gray-200">
+      <div class="divide-y" style="border-color: #E8E5E0;">
         <% @maintenance_windows.each do |window| %>
-          <li class="p-6 hover:bg-gray-50">
+          <div class="p-5 hover:bg-[#FAF9F7] transition-colors">
             <div class="flex items-center justify-between">
               <div>
-                <%= link_to window.title, dashboard_maintenance_window_path(window), class: "text-lg font-medium text-gray-900 hover:text-emerald-600" %>
-                <div class="flex items-center space-x-4 text-sm text-gray-500 mt-1">
+                <%= link_to window.title, dashboard_project_maintenance_window_path(@project, window), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1A1A1A;" %>
+                <div class="flex items-center gap-2 mt-1 text-[12px]" style="color: #8B8780;">
                   <span><%= window.starts_at.strftime("%b %d, %Y %H:%M") %> - <%= window.ends_at.strftime("%H:%M %Z") %></span>
-                  <span>•</span>
+                  <span>&middot;</span>
                   <span><%= window.duration_humanized %></span>
-                  <span>•</span>
+                  <span>&middot;</span>
                   <span><%= window.affects_all_monitors ? "All monitors" : pluralize(window.monitor_ids.count, "monitor") %></span>
                 </div>
               </div>
-              <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium <%= window_status_class(window.status) %>">
+              <span class="px-2 py-0.5 text-[11px] font-medium rounded-full" style="<%= window.status == 'upcoming' ? 'background: #DBEAFE; color: #1E40AF;' : (window.status == 'active' ? 'background: #FEF3C7; color: #92400E;' : 'background: #F5F4F2; color: #6B6760;') %>">
                 <%= window.status %>
               </span>
             </div>
             <% if window.description.present? %>
-              <p class="mt-2 text-sm text-gray-600"><%= truncate(window.description, length: 150) %></p>
+              <p class="mt-2 text-[13px]" style="color: #8B8780;"><%= truncate(window.description, length: 150) %></p>
             <% end %>
-          </li>
+          </div>
         <% end %>
-      </ul>
+      </div>
     <% else %>
       <div class="text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        <svg class="mx-auto w-12 h-12" style="color: #C4C1BC;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No maintenance windows</h3>
-        <p class="mt-1 text-sm text-gray-500">Schedule maintenance to notify subscribers in advance.</p>
+        <h3 class="mt-3 text-[14px] font-medium" style="color: #1A1A1A;">No maintenance windows</h3>
+        <p class="mt-1 text-[13px]" style="color: #8B8780;">Schedule maintenance to notify subscribers in advance.</p>
         <div class="mt-6">
-          <%= link_to "Schedule Maintenance", new_dashboard_maintenance_window_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+          <%= link_to new_dashboard_project_maintenance_window_path(@project), class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Schedule Maintenance
+          <% end %>
         </div>
       </div>
     <% end %>

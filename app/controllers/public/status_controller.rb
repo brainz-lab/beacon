@@ -55,7 +55,7 @@ module Public
         status: calculator.overall_status,
         status_info: calculator.status_info,
         overall_uptime: @status_page.overall_uptime,
-        components_count: @status_page.monitors.count,
+        components_count: @status_page.uptime_monitors.count,
         active_incidents_count: @status_page.active_incidents.count
       }
     end

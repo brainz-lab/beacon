@@ -1,6 +1,6 @@
 /*
  * Beacon - Uptime Monitoring
- * Custom styles beyond Tailwind
+ * Anthropic Claude Design System
  */
 
 /* Uptime bar visualization */
@@ -21,11 +21,12 @@
   opacity: 0.8;
 }
 
-.uptime-bar-day.operational { background-color: #10B981; }
-.uptime-bar-day.degraded { background-color: #F59E0B; }
-.uptime-bar-day.partial-outage { background-color: #F97316; }
-.uptime-bar-day.major-outage { background-color: #EF4444; }
-.uptime-bar-day.no-data { background-color: #E5E7EB; }
+/* Anthropic-inspired muted status colors */
+.uptime-bar-day.operational { background-color: #4A9B7F; }
+.uptime-bar-day.degraded { background-color: #C99A4A; }
+.uptime-bar-day.partial-outage { background-color: #C97B4A; }
+.uptime-bar-day.major-outage { background-color: #C94A4A; }
+.uptime-bar-day.no-data { background-color: #E8E5E0; }
 
 /* Status dot animation */
 .status-dot {
@@ -35,33 +36,33 @@
 }
 
 .status-dot.up {
-  background-color: #10B981;
-  animation: pulse-green 2s infinite;
+  background-color: #4A9B7F;
+  animation: pulse-success 2s infinite;
 }
 
 .status-dot.down {
-  background-color: #EF4444;
-  animation: pulse-red 1s infinite;
+  background-color: #C94A4A;
+  animation: pulse-error 1s infinite;
 }
 
 .status-dot.degraded {
-  background-color: #F59E0B;
-  animation: pulse-yellow 1.5s infinite;
+  background-color: #C99A4A;
+  animation: pulse-warn 1.5s infinite;
 }
 
-@keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-  50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+@keyframes pulse-success {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74, 155, 127, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(74, 155, 127, 0); }
 }
 
-@keyframes pulse-red {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-  50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+@keyframes pulse-error {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 74, 74, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(201, 74, 74, 0); }
 }
 
-@keyframes pulse-yellow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
-  50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+@keyframes pulse-warn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 154, 74, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(201, 154, 74, 0); }
 }
 
 /* Response time chart */
@@ -75,7 +76,28 @@
 .response-time-bar {
   flex: 1;
   min-width: 2px;
-  background-color: #3B82F6;
+  background-color: #5A9BD4;
   border-radius: 1px 1px 0 0;
   transition: height 0.3s ease;
 }
+
+/* Anthropic semantic status colors */
+.bg-success-500 { background-color: #4A9B7F; }
+.bg-success-100 { background-color: #E8F0EC; }
+.text-success-700 { color: #2D6A53; }
+.text-success-800 { color: #1E4A3A; }
+
+.bg-error-500 { background-color: #C94A4A; }
+.bg-error-100 { background-color: #FEE8E8; }
+.text-error-700 { color: #9A2F2F; }
+.text-error-800 { color: #7A2020; }
+
+.bg-warn-500 { background-color: #C99A4A; }
+.bg-warn-100 { background-color: #FDF6E3; }
+.text-warn-700 { color: #9A7B2C; }
+.text-warn-800 { color: #7A5F1A; }
+
+.bg-info-500 { background-color: #5A9BD4; }
+.bg-info-100 { background-color: #E8F0F5; }
+.text-info-700 { color: #3A7BB4; }
+.text-info-800 { color: #2A5B8A; }

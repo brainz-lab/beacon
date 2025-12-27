@@ -2,6 +2,20 @@ require_relative "boot"
 
 require "rails/all"
 
+# Rails 8.1.1 compatibility fix for Solid Queue
+# Add the `silence` method to Logger if it's missing
+unless Logger.method_defined?(:silence)
+  class Logger
+    def silence(severity = Logger::ERROR)
+      old_level = level
+      self.level = severity
+      yield
+    ensure
+      self.level = old_level
+    end
+  end
+end
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

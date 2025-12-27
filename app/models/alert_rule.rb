@@ -1,5 +1,5 @@
 class AlertRule < ApplicationRecord
-  belongs_to :monitor
+  belongs_to :uptime_monitor, foreign_key: :monitor_id
 
   validates :name, presence: true
   validates :condition_type, presence: true, inclusion: {
@@ -59,8 +59,8 @@ class AlertRule < ApplicationRecord
     expected_to = condition_config["to"] || "down"
 
     # Check if monitor transitioned to expected status
-    monitor.status == expected_to &&
-      (expected_from.nil? || monitor.status_before_last_save == expected_from)
+    uptime_monitor.status == expected_to &&
+      (expected_from.nil? || uptime_monitor.status_before_last_save == expected_from)
   end
 
   def check_response_time(check_result)
@@ -79,9 +79,9 @@ class AlertRule < ApplicationRecord
   end
 
   def check_ssl_expiry
-    return false unless monitor.ssl_expiry_at
+    return false unless uptime_monitor.ssl_expiry_at
 
     days_before = condition_config["days_before"] || 30
-    monitor.ssl_expiry_at < days_before.days.from_now
+    uptime_monitor.ssl_expiry_at < days_before.days.from_now
   end
 end

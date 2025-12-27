@@ -1,9 +1,10 @@
 module Dashboard
   class MaintenanceWindowsController < BaseController
+    before_action :require_project!
     before_action :set_maintenance_window, only: [:show, :edit, :update, :destroy]
 
     def index
-      @maintenance_windows = current_project.maintenance_windows.order(starts_at: :desc)
+      @maintenance_windows = @project.maintenance_windows.order(starts_at: :desc)
 
       case params[:status]
       when "upcoming"
@@ -20,40 +21,40 @@ module Dashboard
     end
 
     def new
-      @maintenance_window = current_project.maintenance_windows.build(
+      @maintenance_window = @project.maintenance_windows.build(
         starts_at: 1.day.from_now.beginning_of_hour,
         ends_at: 1.day.from_now.beginning_of_hour + 2.hours,
         timezone: "UTC",
         notify_subscribers: true,
         notify_before_minutes: 60
       )
-      @available_monitors = current_project.monitors.enabled.order(:name)
+      @available_monitors = @project.uptime_monitors.enabled.order(:name)
     end
 
     def create
-      @maintenance_window = current_project.maintenance_windows.build(maintenance_window_params)
+      @maintenance_window = @project.maintenance_windows.build(maintenance_window_params)
 
       if @maintenance_window.save
         schedule_maintenance_jobs
 
-        redirect_to dashboard_maintenance_window_path(@maintenance_window),
+        redirect_to dashboard_project_maintenance_window_path(@project, @maintenance_window),
                     notice: "Maintenance window scheduled"
       else
-        @available_monitors = current_project.monitors.enabled.order(:name)
+        @available_monitors = @project.uptime_monitors.enabled.order(:name)
         render :new, status: :unprocessable_entity
       end
     end
 
     def edit
-      @available_monitors = current_project.monitors.enabled.order(:name)
+      @available_monitors = @project.uptime_monitors.enabled.order(:name)
     end
 
     def update
       if @maintenance_window.update(maintenance_window_params)
-        redirect_to dashboard_maintenance_window_path(@maintenance_window),
+        redirect_to dashboard_project_maintenance_window_path(@project, @maintenance_window),
                     notice: "Maintenance window updated"
       else
-        @available_monitors = current_project.monitors.enabled.order(:name)
+        @available_monitors = @project.uptime_monitors.enabled.order(:name)
         render :edit, status: :unprocessable_entity
       end
     end
@@ -62,14 +63,14 @@ module Dashboard
       @maintenance_window.cancel! if @maintenance_window.upcoming?
       @maintenance_window.destroy!
 
-      redirect_to dashboard_maintenance_windows_path,
+      redirect_to dashboard_project_maintenance_windows_path(@project),
                   notice: "Maintenance window deleted"
     end
 
     private
 
     def set_maintenance_window
-      @maintenance_window = current_project.maintenance_windows.find(params[:id])
+      @maintenance_window = @project.maintenance_windows.find(params[:id])
     end
 
     def maintenance_window_params

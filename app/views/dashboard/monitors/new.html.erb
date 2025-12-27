@@ -1,7 +1,10 @@
 <% content_for(:title) { "New Monitor" } %>
 
-<div class="max-w-2xl mx-auto">
-  <h2 class="text-2xl font-bold text-gray-900 mb-6">New Monitor</h2>
+<div class="max-w-2xl mx-auto space-y-6">
+  <div>
+    <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">New Monitor</h1>
+    <p class="mt-1 text-[13px]" style="color: #8B8780;">Create a new uptime monitor for your endpoint</p>
+  </div>
 
   <%= render "form", monitor: @monitor %>
 </div>

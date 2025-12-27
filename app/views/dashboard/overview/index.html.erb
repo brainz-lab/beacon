@@ -1,109 +1,99 @@
-<% content_for(:title) { "Dashboard" } %>
+<% content_for(:title) { "Overview" } %>
 
-<div class="space-y-6" data-controller="dashboard" data-dashboard-project-value="<%= current_project.id %>">
+<div class="space-y-8">
   <!-- Header -->
-  <div class="md:flex md:items-center md:justify-between">
-    <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-        Dashboard
-      </h2>
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">Overview</h1>
+      <p class="mt-1 text-[13px]" style="color: #8B8780;">Monitor status and recent activity</p>
     </div>
-    <div class="mt-4 flex md:ml-4 md:mt-0">
-      <%= link_to "Add Monitor", new_dashboard_monitor_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
-    </div>
+    <a href="<%= new_dashboard_project_monitor_path(@project) %>" class="inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors" style="background: #1A1A1A; color: #FFFFFE;">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Add Monitor
+    </a>
   </div>
 
   <!-- Stats -->
-  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" id="stats">
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Total Monitors</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @stats[:total_monitors] %></dd>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="px-5 py-4 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+      <p class="text-[13px] font-medium" style="color: #8B8780;">Total Monitors</p>
+      <p class="mt-1 text-[28px] font-semibold" style="color: #1A1A1A;"><%= @stats[:total_monitors] %></p>
     </div>
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Healthy</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-emerald-600"><%= @stats[:healthy] %></dd>
+    <div class="px-5 py-4 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+      <p class="text-[13px] font-medium" style="color: #8B8780;">Healthy</p>
+      <p class="mt-1 text-[28px] font-semibold" style="color: #10B981;"><%= @stats[:healthy] %></p>
     </div>
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Active Incidents</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-red-600"><%= @stats[:active_incidents] %></dd>
+    <div class="px-5 py-4 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+      <p class="text-[13px] font-medium" style="color: #8B8780;">Active Incidents</p>
+      <p class="mt-1 text-[28px] font-semibold" style="color: <%= @stats[:active_incidents] > 0 ? '#EF4444' : '#1A1A1A' %>;"><%= @stats[:active_incidents] %></p>
     </div>
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Overall Uptime (30d)</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @stats[:overall_uptime] %>%</dd>
+    <div class="px-5 py-4 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+      <p class="text-[13px] font-medium" style="color: #8B8780;">Uptime (30d)</p>
+      <p class="mt-1 text-[28px] font-semibold" style="color: #1A1A1A;"><%= @stats[:overall_uptime] %>%</p>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Active Incidents -->
-    <div class="overflow-hidden rounded-lg bg-white shadow">
-      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Active Incidents</h3>
+    <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+      <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Active Incidents</h2>
       </div>
-      <div class="px-4 py-5 sm:p-6">
+      <div class="px-5 py-4">
         <% if @active_incidents.any? %>
-          <ul class="divide-y divide-gray-200">
+          <div class="space-y-3">
             <% @active_incidents.each do |incident| %>
-              <li class="py-4">
-                <div class="flex items-center space-x-4">
-                  <div class="flex-shrink-0">
-                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full <%= severity_color_class(incident.severity) %>">
-                      <span class="text-sm font-medium text-white"><%= incident.severity[0].upcase %></span>
-                    </span>
-                  </div>
-                  <div class="min-w-0 flex-1">
-                    <%= link_to incident.title, dashboard_incident_path(incident), class: "text-sm font-medium text-gray-900 hover:text-emerald-600" %>
-                    <p class="text-sm text-gray-500"><%= incident.monitor.name %> • Started <%= time_ago_in_words(incident.started_at) %> ago</p>
-                  </div>
+              <a href="<%= dashboard_project_incident_path(@project, incident) %>" class="block p-3 rounded-lg transition-colors hover:opacity-90" style="background: #FEE8E8;">
+                <div class="flex items-center justify-between">
                   <div>
-                    <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
-                      <%= incident.status %>
-                    </span>
+                    <p class="text-[14px] font-medium" style="color: #8B2D2D;"><%= incident.title %></p>
+                    <p class="text-[12px]" style="color: #B45555;"><%= incident.uptime_monitor.name %> &middot; <%= time_ago_in_words(incident.started_at) %> ago</p>
                   </div>
+                  <span class="px-2 py-0.5 text-[11px] font-medium rounded-full" style="background: #FECACA; color: #8B2D2D;"><%= incident.status %></span>
                 </div>
-              </li>
+              </a>
             <% end %>
-          </ul>
+          </div>
         <% else %>
-          <div class="text-center py-6">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div class="text-center py-8">
+            <svg class="mx-auto w-10 h-10" style="color: #C4C1BC;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">All systems operational</h3>
-            <p class="mt-1 text-sm text-gray-500">No active incidents at this time.</p>
+            <p class="mt-2 text-[13px]" style="color: #6B6760;">All systems operational</p>
           </div>
         <% end %>
       </div>
     </div>
 
-    <!-- Monitors Overview -->
-    <div class="overflow-hidden rounded-lg bg-white shadow">
-      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Monitors</h3>
+    <!-- Monitors -->
+    <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+      <div class="px-5 py-4 flex items-center justify-between" style="border-bottom: 1px solid #E8E5E0;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Monitors</h2>
+        <a href="<%= dashboard_project_monitors_path(@project) %>" class="text-[13px] font-medium" style="color: #8B8780;">View all</a>
       </div>
-      <div class="px-4 py-5 sm:p-6">
-        <ul class="divide-y divide-gray-200">
-          <% @monitors.limit(10).each do |monitor| %>
-            <li class="py-3" id="<%= dom_id(monitor) %>">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center min-w-0">
-                  <span class="h-3 w-3 rounded-full mr-3 <%= status_dot_class(monitor.status) %>"></span>
-                  <%= link_to monitor.name, dashboard_monitor_path(monitor), class: "text-sm font-medium text-gray-900 truncate hover:text-emerald-600" %>
-                </div>
-                <div class="flex items-center space-x-4">
-                  <% if monitor.last_response_time %>
-                    <span class="text-sm text-gray-500"><%= monitor.last_response_time %>ms</span>
-                  <% end %>
-                  <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium <%= status_badge_class(monitor.status) %>">
-                    <%= monitor.status %>
-                  </span>
-                </div>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-        <% if @monitors.count > 10 %>
-          <div class="mt-4 text-center">
-            <%= link_to "View all monitors", dashboard_monitors_path, class: "text-sm text-emerald-600 hover:text-emerald-500" %>
+      <div class="divide-y" style="border-color: #E8E5E0;">
+        <% @monitors.limit(8).each do |monitor| %>
+          <a href="<%= dashboard_project_monitor_path(@project, monitor) %>" class="flex items-center justify-between px-5 py-3 hover:bg-[#FAF9F7] transition-colors">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="h-2 w-2 rounded-full flex-shrink-0" style="background: <%= monitor.status == 'up' ? '#10B981' : (monitor.status == 'degraded' ? '#F59E0B' : '#EF4444') %>;"></span>
+              <span class="text-[14px] truncate" style="color: #1A1A1A;"><%= monitor.name %></span>
+            </div>
+            <div class="flex items-center gap-3">
+              <% if monitor.last_response_time %>
+                <span class="text-[13px]" style="color: #8B8780;"><%= monitor.last_response_time %>ms</span>
+              <% end %>
+              <span class="px-2 py-0.5 text-[11px] font-medium rounded-full" style="<%= monitor.status == 'up' ? 'background: #E8F5E8; color: #2D5A2D;' : (monitor.status == 'degraded' ? 'background: #FEF3C7; color: #92400E;' : 'background: #FEE8E8; color: #8B2D2D;') %>">
+                <%= monitor.status %>
+              </span>
+            </div>
+          </a>
+        <% end %>
+        <% if @monitors.empty? %>
+          <div class="text-center py-8">
+            <p class="text-[13px]" style="color: #8B8780;">No monitors yet</p>
+            <a href="<%= new_dashboard_project_monitor_path(@project) %>" class="text-[13px] font-medium" style="color: #10B981;">Add your first monitor</a>
           </div>
         <% end %>
       </div>
@@ -112,28 +102,20 @@
 
   <!-- Upcoming Maintenance -->
   <% if @maintenance_windows.any? %>
-    <div class="overflow-hidden rounded-lg bg-white shadow">
-      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Upcoming Maintenance</h3>
+    <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+      <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+        <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Upcoming Maintenance</h2>
       </div>
-      <div class="px-4 py-5 sm:p-6">
-        <ul class="divide-y divide-gray-200">
-          <% @maintenance_windows.each do |window| %>
-            <li class="py-4">
-              <div class="flex items-center justify-between">
-                <div>
-                  <%= link_to window.title, dashboard_maintenance_window_path(window), class: "text-sm font-medium text-gray-900 hover:text-emerald-600" %>
-                  <p class="text-sm text-gray-500">
-                    <%= window.starts_at.strftime("%b %d, %Y %H:%M") %> - <%= window.ends_at.strftime("%H:%M %Z") %>
-                  </p>
-                </div>
-                <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-                  Scheduled
-                </span>
-              </div>
-            </li>
-          <% end %>
-        </ul>
+      <div class="divide-y" style="border-color: #E8E5E0;">
+        <% @maintenance_windows.each do |window| %>
+          <a href="<%= dashboard_project_maintenance_window_path(@project, window) %>" class="flex items-center justify-between px-5 py-3 hover:bg-[#FAF9F7] transition-colors">
+            <div>
+              <p class="text-[14px]" style="color: #1A1A1A;"><%= window.title %></p>
+              <p class="text-[12px]" style="color: #8B8780;"><%= window.starts_at.strftime("%b %d, %Y %H:%M") %> - <%= window.ends_at.strftime("%H:%M %Z") %></p>
+            </div>
+            <span class="px-2 py-0.5 text-[11px] font-medium rounded-full" style="background: #DBEAFE; color: #1E40AF;">Scheduled</span>
+          </a>
+        <% end %>
       </div>
     </div>
   <% end %>

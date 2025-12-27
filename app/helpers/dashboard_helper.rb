@@ -2,86 +2,86 @@ module DashboardHelper
   def status_dot_class(status)
     case status.to_s
     when "healthy", "operational", "up"
-      "bg-green-500"
+      "bg-success-500"
     when "degraded"
-      "bg-yellow-500"
+      "bg-warn-500"
     when "down", "major_outage"
-      "bg-red-500"
+      "bg-error-500"
     when "paused"
-      "bg-gray-400"
+      "bg-ink-400"
     else
-      "bg-gray-300"
+      "bg-ink-300"
     end
   end
 
   def status_badge_class(status)
     case status.to_s
     when "healthy", "operational", "up"
-      "bg-green-100 text-green-800"
+      "bg-success-100 text-success-800"
     when "degraded", "partial_outage"
-      "bg-yellow-100 text-yellow-800"
+      "bg-warn-100 text-warn-800"
     when "down", "major_outage"
-      "bg-red-100 text-red-800"
+      "bg-error-100 text-error-800"
     when "paused"
-      "bg-gray-100 text-gray-800"
+      "bg-cream-200 text-ink-600"
     else
-      "bg-gray-100 text-gray-600"
+      "bg-cream-100 text-ink-500"
     end
   end
 
   def severity_color_class(severity)
     case severity.to_s
     when "critical"
-      "bg-red-500"
+      "bg-error-500"
     when "major"
-      "bg-orange-500"
+      "bg-warn-500"
     when "minor"
-      "bg-yellow-500"
+      "bg-info-500"
     else
-      "bg-gray-400"
+      "bg-ink-400"
     end
   end
 
   def severity_badge_class(severity)
     case severity.to_s
     when "critical"
-      "bg-red-100 text-red-800"
+      "bg-error-100 text-error-800"
     when "major"
-      "bg-orange-100 text-orange-800"
+      "bg-warn-100 text-warn-800"
     when "minor"
-      "bg-yellow-100 text-yellow-800"
+      "bg-info-100 text-info-800"
     else
-      "bg-gray-100 text-gray-600"
+      "bg-cream-100 text-ink-500"
     end
   end
 
   def update_status_color(status)
     case status.to_s
     when "investigating"
-      "bg-red-500"
+      "bg-error-500"
     when "identified"
-      "bg-orange-500"
+      "bg-warn-500"
     when "monitoring"
-      "bg-yellow-500"
+      "bg-info-500"
     when "resolved"
-      "bg-green-500"
+      "bg-success-500"
     else
-      "bg-gray-400"
+      "bg-ink-400"
     end
   end
 
   def window_status_class(status)
     case status.to_s
     when "scheduled", "upcoming"
-      "bg-blue-100 text-blue-800"
+      "bg-info-100 text-info-800"
     when "active", "in_progress"
-      "bg-yellow-100 text-yellow-800"
+      "bg-warn-100 text-warn-800"
     when "completed", "past"
-      "bg-gray-100 text-gray-800"
+      "bg-cream-200 text-ink-600"
     when "cancelled"
-      "bg-red-100 text-red-800"
+      "bg-error-100 text-error-800"
     else
-      "bg-gray-100 text-gray-600"
+      "bg-cream-100 text-ink-500"
     end
   end
 end

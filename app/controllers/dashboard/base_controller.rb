@@ -1,45 +1,40 @@
+# frozen_string_literal: true
+
 module Dashboard
   class BaseController < ApplicationController
-    layout "dashboard"
+    before_action :authenticate_via_sso!
+    before_action :set_project
 
-    before_action :authenticate_user!
-    before_action :set_current_project
+    layout "dashboard"
 
     helper_method :current_project
 
     private
 
-    def authenticate_user!
-      # For now, use session-based auth
-      # In production, integrate with Platform SSO
-      unless session[:user_id].present? || Rails.env.development?
-        redirect_to dashboard_setup_path and return
+    def authenticate_via_sso!
+      # In development, allow access
+      return if Rails.env.development?
+
+      unless session[:platform_user_id]
+        platform_url = ENV.fetch("BRAINZLAB_PLATFORM_URL", "http://platform:3000")
+        redirect_to "#{platform_url}/auth/sso?product=beacon&return_to=#{request.url}", allow_other_host: true
       end
     end
 
-    def set_current_project
-      @current_project = if session[:project_id].present?
-        Project.find_by(id: session[:project_id])
-      else
-        Project.first # Development fallback
-      end
+    def set_project
+      return unless params[:project_id].present?
 
-      unless @current_project
-        redirect_to dashboard_setup_path and return
-      end
+      @project = Project.find(params[:project_id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to dashboard_projects_path, alert: "Project not found"
     end
 
     def current_project
-      @current_project
+      @project
     end
 
-    def set_breadcrumbs
-      @breadcrumbs = []
-    end
-
-    def add_breadcrumb(title, path = nil)
-      @breadcrumbs ||= []
-      @breadcrumbs << { title: title, path: path }
+    def require_project!
+      redirect_to dashboard_projects_path, alert: "Please select a project" unless @project
     end
   end
 end

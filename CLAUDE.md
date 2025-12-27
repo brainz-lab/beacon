@@ -49,13 +49,15 @@ Uptime monitoring service that watches your endpoints, APIs, and services from m
 
 ## Key Models
 
-- **Monitor**: Endpoint to check (HTTP, SSL, DNS, TCP)
+- **UptimeMonitor**: Endpoint to check (HTTP, SSL, DNS, TCP) - renamed from `Monitor` to avoid conflict with Ruby's built-in Monitor class
 - **CheckResult**: Individual check result with timing
 - **Incident**: Downtime event with timeline
 - **IncidentUpdate**: Status updates during incident
 - **StatusPage**: Public status page configuration
 - **StatusPageMonitor**: Monitors displayed on status page
 - **MaintenanceWindow**: Scheduled maintenance periods
+- **AlertRule**: Alert conditions for monitors
+- **SslCertificate**: SSL certificate tracking
 
 ## Check Types
 

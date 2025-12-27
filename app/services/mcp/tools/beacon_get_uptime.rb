@@ -32,12 +32,12 @@ module Mcp
         period = parse_period(params[:period] || "30d")
 
         if params[:monitor_id].present?
-          monitor = project.monitors.find_by(id: params[:monitor_id])
+          monitor = project.uptime_monitors.find_by(id: params[:monitor_id])
           return error("Monitor not found") unless monitor
 
           success(uptime: calculate_uptime(monitor, period))
         else
-          monitors = project.monitors.enabled
+          monitors = project.uptime_monitors.enabled
 
           success(
             overall_uptime: calculate_overall_uptime(monitors, period),

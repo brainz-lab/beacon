@@ -1,75 +1,75 @@
 <% content_for(:title) { @maintenance_window.title } %>
 
 <div class="space-y-6">
-  <div class="md:flex md:items-center md:justify-between">
-    <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-gray-900"><%= @maintenance_window.title %></h2>
-      <p class="mt-1 text-sm text-gray-500">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;"><%= @maintenance_window.title %></h1>
+      <p class="mt-1 text-[13px]" style="color: #8B8780;">
         <%= @maintenance_window.starts_at.strftime("%b %d, %Y %H:%M") %> - <%= @maintenance_window.ends_at.strftime("%H:%M %Z") %>
       </p>
     </div>
-    <div class="mt-4 flex space-x-2 md:ml-4 md:mt-0">
+    <div class="flex items-center gap-2">
       <% if @maintenance_window.upcoming? %>
-        <%= link_to "Edit", edit_dashboard_maintenance_window_path(@maintenance_window), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
-        <%= button_to "Cancel", dashboard_maintenance_window_path(@maintenance_window), method: :delete, class: "inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500", data: { turbo_confirm: "Cancel this maintenance window?" } %>
+        <%= link_to "Edit", edit_dashboard_project_maintenance_window_path(@project, @maintenance_window), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        <%= button_to "Cancel", dashboard_project_maintenance_window_path(@project, @maintenance_window), method: :delete, class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #FEE8E8; color: #8B2D2D;", data: { turbo_confirm: "Cancel this maintenance window?" } %>
       <% end %>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main Content -->
     <div class="lg:col-span-2 space-y-6">
       <!-- Status -->
-      <div class="overflow-hidden rounded-lg bg-white shadow">
-        <div class="p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-lg font-medium text-gray-900">Status</h3>
-              <span class="mt-2 inline-flex items-center rounded-full px-3 py-1 text-sm font-medium <%= window_status_class(@maintenance_window.status) %>">
-                <%= @maintenance_window.status %>
-              </span>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-gray-500">Duration</p>
-              <p class="text-2xl font-semibold text-gray-900"><%= @maintenance_window.duration_humanized %></p>
-            </div>
+      <div class="px-5 py-5 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[13px] font-medium" style="color: #8B8780;">Status</p>
+            <span class="mt-1 inline-flex px-2 py-0.5 text-[12px] font-medium rounded-full" style="<%= @maintenance_window.status == 'upcoming' ? 'background: #DBEAFE; color: #1E40AF;' : (@maintenance_window.status == 'active' ? 'background: #FEF3C7; color: #92400E;' : 'background: #F5F4F2; color: #6B6760;') %>">
+              <%= @maintenance_window.status %>
+            </span>
+          </div>
+          <div class="text-right">
+            <p class="text-[13px] font-medium" style="color: #8B8780;">Duration</p>
+            <p class="mt-1 text-[24px] font-semibold" style="color: #1A1A1A;"><%= @maintenance_window.duration_humanized %></p>
           </div>
         </div>
       </div>
 
       <!-- Description -->
       <% if @maintenance_window.description.present? %>
-        <div class="overflow-hidden rounded-lg bg-white shadow">
-          <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-            <h3 class="text-lg font-medium leading-6 text-gray-900">Description</h3>
+        <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+          <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+            <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Description</h2>
           </div>
-          <div class="px-4 py-5 sm:p-6">
-            <p class="text-gray-700 whitespace-pre-wrap"><%= @maintenance_window.description %></p>
+          <div class="px-5 py-5">
+            <p class="text-[13px] whitespace-pre-wrap" style="color: #6B6760;"><%= @maintenance_window.description %></p>
           </div>
         </div>
       <% end %>
 
       <!-- Affected Monitors -->
-      <div class="overflow-hidden rounded-lg bg-white shadow">
-        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Affected Monitors</h3>
+      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Affected Monitors</h2>
         </div>
-        <div class="px-4 py-5 sm:p-6">
+        <div class="px-5 py-5">
           <% if @maintenance_window.affects_all_monitors %>
-            <p class="text-gray-600">All monitors will be affected during this maintenance window.</p>
+            <p class="text-[13px]" style="color: #6B6760;">All monitors will be affected during this maintenance window.</p>
           <% elsif @affected_monitors.any? %>
-            <ul class="divide-y divide-gray-200">
+            <div class="divide-y" style="border-color: #E8E5E0;">
               <% @affected_monitors.each do |monitor| %>
-                <li class="py-3 flex items-center justify-between">
-                  <div class="flex items-center">
-                    <span class="h-3 w-3 rounded-full mr-3 <%= status_dot_class(monitor.status) %>"></span>
-                    <%= link_to monitor.name, dashboard_monitor_path(monitor), class: "text-sm font-medium text-gray-900 hover:text-emerald-600" %>
+                <div class="py-3 flex items-center justify-between first:pt-0 last:pb-0">
+                  <div class="flex items-center gap-3">
+                    <span class="h-2 w-2 rounded-full" style="background: <%= monitor.status == 'up' ? '#10B981' : (monitor.status == 'degraded' ? '#F59E0B' : '#EF4444') %>;"></span>
+                    <%= link_to monitor.name, dashboard_project_monitor_path(@project, monitor), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1A1A1A;" %>
                   </div>
-                  <span class="text-sm text-gray-500"><%= monitor.check_type.upcase %></span>
-                </li>
+                  <span class="text-[13px]" style="color: #8B8780;"><%= monitor.check_type.upcase %></span>
+                </div>
               <% end %>
-            </ul>
+            </div>
           <% else %>
-            <p class="text-gray-500">No specific monitors selected.</p>
+            <p class="text-[13px]" style="color: #8B8780;">No specific monitors selected.</p>
           <% end %>
         </div>
       </div>
@@ -77,37 +77,37 @@
 
     <!-- Sidebar -->
     <div class="space-y-6">
-      <div class="overflow-hidden rounded-lg bg-white shadow">
-        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Details</h3>
+      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Details</h2>
         </div>
-        <dl class="divide-y divide-gray-200">
-          <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Start</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"><%= @maintenance_window.starts_at.strftime("%b %d, %H:%M") %></dd>
+        <div class="divide-y" style="border-color: #E8E5E0;">
+          <div class="px-5 py-3 flex justify-between">
+            <span class="text-[13px]" style="color: #8B8780;">Start</span>
+            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @maintenance_window.starts_at.strftime("%b %d, %H:%M") %></span>
           </div>
-          <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">End</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"><%= @maintenance_window.ends_at.strftime("%b %d, %H:%M") %></dd>
+          <div class="px-5 py-3 flex justify-between">
+            <span class="text-[13px]" style="color: #8B8780;">End</span>
+            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @maintenance_window.ends_at.strftime("%b %d, %H:%M") %></span>
           </div>
-          <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Timezone</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"><%= @maintenance_window.timezone %></dd>
+          <div class="px-5 py-3 flex justify-between">
+            <span class="text-[13px]" style="color: #8B8780;">Timezone</span>
+            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @maintenance_window.timezone %></span>
           </div>
-          <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Notifications</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+          <div class="px-5 py-3 flex justify-between">
+            <span class="text-[13px]" style="color: #8B8780;">Notifications</span>
+            <span class="text-[13px] font-medium" style="color: #1A1A1A;">
               <% if @maintenance_window.notify_subscribers %>
                 <%= @maintenance_window.notify_before_minutes %> min before
                 <% if @maintenance_window.notified %>
-                  <span class="text-green-600">(sent)</span>
+                  <span style="color: #10B981;">(sent)</span>
                 <% end %>
               <% else %>
                 Disabled
               <% end %>
-            </dd>
+            </span>
           </div>
-        </dl>
+        </div>
       </div>
     </div>
   </div>

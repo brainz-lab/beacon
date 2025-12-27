@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="h-full">
   <head>
     <title>Beacon - Uptime Monitoring</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,12 +7,19 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <style>
+      body { font-family: 'Inter', system-ui, sans-serif; }
+      .bg-cream-50 { background-color: #FFFFFE; }
+    </style>
   </head>
 
-  <body class="bg-gray-50 min-h-screen">
+  <body class="bg-cream-50 min-h-screen text-ink-900 antialiased">
     <%= yield %>
   </body>
 </html>

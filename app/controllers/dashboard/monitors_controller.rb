@@ -1,9 +1,10 @@
 module Dashboard
   class MonitorsController < BaseController
+    before_action :require_project!
     before_action :set_monitor, only: [:show, :edit, :update, :destroy, :pause, :resume, :check_now]
 
     def index
-      @monitors = current_project.monitors.includes(:check_results).order(:name)
+      @monitors = @project.uptime_monitors.includes(:check_results).order(:name)
 
       case params[:status]
       when "healthy" then @monitors = @monitors.healthy
@@ -30,7 +31,7 @@ module Dashboard
     end
 
     def new
-      @monitor = current_project.monitors.build(
+      @monitor = @project.uptime_monitors.build(
         check_type: "http",
         interval: 60,
         timeout: 30000,
@@ -40,13 +41,13 @@ module Dashboard
     end
 
     def create
-      @monitor = current_project.monitors.build(monitor_params)
+      @monitor = @project.uptime_monitors.build(monitor_params)
 
       if @monitor.save
         # Schedule first check
         ExecuteCheckJob.perform_later(@monitor.id)
 
-        redirect_to dashboard_monitor_path(@monitor),
+        redirect_to dashboard_project_monitor_path(@project, @monitor),
                     notice: "Monitor created successfully"
       else
         render :new, status: :unprocessable_entity
@@ -58,7 +59,7 @@ module Dashboard
 
     def update
       if @monitor.update(monitor_params)
-        redirect_to dashboard_monitor_path(@monitor),
+        redirect_to dashboard_project_monitor_path(@project, @monitor),
                     notice: "Monitor updated successfully"
       else
         render :edit, status: :unprocessable_entity
@@ -67,14 +68,14 @@ module Dashboard
 
     def destroy
       @monitor.destroy!
-      redirect_to dashboard_monitors_path,
+      redirect_to dashboard_project_monitors_path(@project),
                   notice: "Monitor deleted"
     end
 
     def pause
       @monitor.pause!
       respond_to do |format|
-        format.html { redirect_to dashboard_monitor_path(@monitor), notice: "Monitor paused" }
+        format.html { redirect_to dashboard_project_monitor_path(@project, @monitor), notice: "Monitor paused" }
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@monitor) }
       end
     end
@@ -84,7 +85,7 @@ module Dashboard
       ExecuteCheckJob.perform_later(@monitor.id)
 
       respond_to do |format|
-        format.html { redirect_to dashboard_monitor_path(@monitor), notice: "Monitor resumed" }
+        format.html { redirect_to dashboard_project_monitor_path(@project, @monitor), notice: "Monitor resumed" }
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@monitor) }
       end
     end
@@ -93,7 +94,7 @@ module Dashboard
       ExecuteCheckJob.perform_later(@monitor.id)
 
       respond_to do |format|
-        format.html { redirect_to dashboard_monitor_path(@monitor), notice: "Check queued" }
+        format.html { redirect_to dashboard_project_monitor_path(@project, @monitor), notice: "Check queued" }
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@monitor) }
       end
     end
@@ -101,7 +102,7 @@ module Dashboard
     private
 
     def set_monitor
-      @monitor = current_project.monitors.find(params[:id])
+      @monitor = @project.uptime_monitors.find(params[:id])
     end
 
     def monitor_params

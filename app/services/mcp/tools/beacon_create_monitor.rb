@@ -59,7 +59,7 @@ module Mcp
       end
 
       def execute(params)
-        monitor = project.monitors.new(
+        monitor = project.uptime_monitors.new(
           name: params[:name],
           url: params[:url],
           host: params[:host],

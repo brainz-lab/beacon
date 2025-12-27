@@ -2,7 +2,7 @@ class CheckResult < ApplicationRecord
   # Note: This is a TimescaleDB hypertable, so we use raw SQL for some operations
   self.primary_key = "id"
 
-  belongs_to :monitor
+  belongs_to :uptime_monitor, foreign_key: :monitor_id
 
   validates :checked_at, presence: true
   validates :region, presence: true

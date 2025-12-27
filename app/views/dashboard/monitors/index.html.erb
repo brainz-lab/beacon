@@ -1,84 +1,99 @@
 <% content_for(:title) { "Monitors" } %>
 
 <div class="space-y-6">
-  <div class="md:flex md:items-center md:justify-between">
-    <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Monitors</h2>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">Monitors</h1>
+      <p class="mt-1 text-[13px]" style="color: #8B8780;">Track uptime for your endpoints, APIs, and services</p>
     </div>
-    <div class="mt-4 flex md:ml-4 md:mt-0">
-      <%= link_to "Add Monitor", new_dashboard_monitor_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
-    </div>
+    <%= link_to new_dashboard_project_monitor_path(@project), class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Add Monitor
+    <% end %>
   </div>
 
   <!-- Filters -->
-  <div class="bg-white shadow rounded-lg p-4">
+  <div class="p-4 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
     <div class="flex flex-wrap gap-2">
-      <%= link_to "All", dashboard_monitors_path, class: "#{params[:status].nil? ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
-      <%= link_to "Healthy", dashboard_monitors_path(status: "healthy"), class: "#{params[:status] == 'healthy' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
-      <%= link_to "Degraded", dashboard_monitors_path(status: "degraded"), class: "#{params[:status] == 'degraded' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
-      <%= link_to "Down", dashboard_monitors_path(status: "down"), class: "#{params[:status] == 'down' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
-      <%= link_to "Paused", dashboard_monitors_path(status: "paused"), class: "#{params[:status] == 'paused' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-md px-3 py-2 text-sm font-medium" %>
+      <%= link_to "All", dashboard_project_monitors_path(@project),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status].nil? ? "background: #1A1A1A; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+      <%= link_to "Healthy", dashboard_project_monitors_path(@project, status: "healthy"),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status] == "healthy" ? "background: #10B981; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+      <%= link_to "Degraded", dashboard_project_monitors_path(@project, status: "degraded"),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status] == "degraded" ? "background: #F59E0B; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+      <%= link_to "Down", dashboard_project_monitors_path(@project, status: "down"),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status] == "down" ? "background: #EF4444; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+      <%= link_to "Paused", dashboard_project_monitors_path(@project, status: "paused"),
+          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
+          style: params[:status] == "paused" ? "background: #6B6760; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
     </div>
   </div>
 
   <!-- Monitor List -->
-  <div class="bg-white shadow rounded-lg overflow-hidden">
+  <div class="rounded-xl overflow-hidden" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
     <% if @monitors.any? %>
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+      <table class="min-w-full">
+        <thead style="background: #FAF9F7; border-bottom: 1px solid #E8E5E0;">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monitor</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Response</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Check</th>
-            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Monitor</th>
+            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Type</th>
+            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Status</th>
+            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Response</th>
+            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Last Check</th>
+            <th class="px-5 py-3 text-right text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Actions</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody>
           <% @monitors.each do |monitor| %>
-            <tr id="<%= dom_id(monitor) %>" class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <span class="h-3 w-3 rounded-full mr-3 <%= status_dot_class(monitor.status) %>"></span>
-                  <div>
-                    <%= link_to monitor.name, dashboard_monitor_path(monitor), class: "text-sm font-medium text-gray-900 hover:text-emerald-600" %>
-                    <p class="text-sm text-gray-500 truncate max-w-xs"><%= monitor.url || monitor.host %></p>
+            <tr id="<%= dom_id(monitor) %>" class="hover:bg-[#FAF9F7] transition-colors" style="border-bottom: 1px solid #E8E5E0;">
+              <td class="px-5 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <span class="h-2 w-2 rounded-full flex-shrink-0" style="background: <%= monitor.status == 'up' ? '#10B981' : (monitor.status == 'degraded' ? '#F59E0B' : (monitor.status == 'paused' ? '#6B6760' : '#EF4444')) %>;"></span>
+                  <div class="min-w-0">
+                    <%= link_to monitor.name, dashboard_project_monitor_path(@project, monitor), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1A1A1A;" %>
+                    <p class="text-[12px] truncate max-w-[200px]" style="color: #8B8780;"><%= monitor.url || monitor.host %></p>
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+              <td class="px-5 py-4 whitespace-nowrap">
+                <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #F5F4F2; color: #6B6760;">
                   <%= monitor.check_type.upcase %>
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= status_badge_class(monitor.status) %>">
+              <td class="px-5 py-4 whitespace-nowrap">
+                <span class="px-2 py-0.5 text-[11px] font-medium rounded-full" style="<%= monitor.status == 'up' ? 'background: #E8F5E8; color: #2D5A2D;' : (monitor.status == 'degraded' ? 'background: #FEF3C7; color: #92400E;' : (monitor.status == 'paused' ? 'background: #F5F4F2; color: #6B6760;' : 'background: #FEE8E8; color: #8B2D2D;')) %>">
                   <%= monitor.status.humanize %>
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td class="px-5 py-4 whitespace-nowrap text-[13px]" style="color: #6B6760;">
                 <% if monitor.last_response_time %>
                   <%= monitor.last_response_time %>ms
                 <% else %>
                   -
                 <% end %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td class="px-5 py-4 whitespace-nowrap text-[13px]" style="color: #6B6760;">
                 <% if monitor.last_check_at %>
                   <%= time_ago_in_words(monitor.last_check_at) %> ago
                 <% else %>
                   Never
                 <% end %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <div class="flex justify-end space-x-2">
+              <td class="px-5 py-4 whitespace-nowrap text-right">
+                <div class="flex justify-end items-center gap-3">
                   <% if monitor.paused? %>
-                    <%= button_to "Resume", resume_dashboard_monitor_path(monitor), method: :post, class: "text-emerald-600 hover:text-emerald-900" %>
+                    <%= button_to "Resume", resume_dashboard_project_monitor_path(@project, monitor), method: :post, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #10B981;" %>
                   <% else %>
-                    <%= button_to "Pause", pause_dashboard_monitor_path(monitor), method: :post, class: "text-gray-600 hover:text-gray-900" %>
+                    <%= button_to "Pause", pause_dashboard_project_monitor_path(@project, monitor), method: :post, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #6B6760;" %>
                   <% end %>
-                  <%= link_to "Edit", edit_dashboard_monitor_path(monitor), class: "text-indigo-600 hover:text-indigo-900" %>
+                  <%= link_to "Edit", edit_dashboard_project_monitor_path(@project, monitor), class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #1A1A1A;" %>
                 </div>
               </td>
             </tr>
@@ -87,13 +102,18 @@
       </table>
     <% else %>
       <div class="text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        <svg class="mx-auto w-12 h-12" style="color: #C4C1BC;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No monitors</h3>
-        <p class="mt-1 text-sm text-gray-500">Get started by creating a new monitor.</p>
+        <h3 class="mt-3 text-[14px] font-medium" style="color: #1A1A1A;">No monitors yet</h3>
+        <p class="mt-1 text-[13px]" style="color: #8B8780;">Get started by creating your first monitor.</p>
         <div class="mt-6">
-          <%= link_to "Add Monitor", new_dashboard_monitor_path, class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+          <%= link_to new_dashboard_project_monitor_path(@project), class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add Monitor
+          <% end %>
         </div>
       </div>
     <% end %>

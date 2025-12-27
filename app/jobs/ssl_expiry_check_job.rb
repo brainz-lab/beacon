@@ -5,7 +5,7 @@ class SslExpiryCheckJob < ApplicationJob
     Rails.logger.info "[SslExpiryCheckJob] Checking SSL certificate expiry..."
 
     # Find monitors with SSL expiry dates
-    monitors_with_ssl = Monitor
+    monitors_with_ssl = UptimeMonitor
       .where(monitor_type: %w[http ssl])
       .where.not(ssl_expiry_at: nil)
 

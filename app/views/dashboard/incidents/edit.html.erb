@@ -1,34 +1,37 @@
 <% content_for(:title) { "Edit Incident" } %>
 
-<div class="max-w-2xl mx-auto">
-  <h2 class="text-2xl font-bold text-gray-900 mb-6">Edit Incident</h2>
+<div class="max-w-2xl mx-auto space-y-6">
+  <div>
+    <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">Edit Incident</h1>
+    <p class="mt-1 text-[13px]" style="color: #8B8780;">Update incident details and resolution notes</p>
+  </div>
 
-  <div class="bg-white shadow rounded-lg p-6">
-    <%= form_with model: [:dashboard, @incident], class: "space-y-6" do |f| %>
+  <div class="p-6 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+    <%= form_with model: [@project, @incident], url: dashboard_project_incident_path(@project, @incident), class: "space-y-6" do |f| %>
       <div>
-        <%= f.label :title, class: "block text-sm font-medium text-gray-700" %>
-        <%= f.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+        <%= f.label :title, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
+        <%= f.text_field :title, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
       </div>
 
       <div>
-        <%= f.label :severity, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.label :severity, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
         <%= f.select :severity, [["Critical", "critical"], ["Major", "major"], ["Minor", "minor"]],
-            {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+            {}, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
       </div>
 
       <div>
-        <%= f.label :root_cause, class: "block text-sm font-medium text-gray-700" %>
-        <%= f.text_area :root_cause, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+        <%= f.label :root_cause, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
+        <%= f.text_area :root_cause, rows: 3, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "What caused this incident?" %>
       </div>
 
       <div>
-        <%= f.label :resolution_notes, class: "block text-sm font-medium text-gray-700" %>
-        <%= f.text_area :resolution_notes, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+        <%= f.label :resolution_notes, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
+        <%= f.text_area :resolution_notes, rows: 3, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "How was this resolved?" %>
       </div>
 
-      <div class="flex justify-end space-x-3 pt-4">
-        <%= link_to "Cancel", dashboard_incident_path(@incident), class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
-        <%= f.submit "Update Incident", class: "rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 cursor-pointer" %>
+      <div class="flex justify-end gap-3 pt-4">
+        <%= link_to "Cancel", dashboard_project_incident_path(@project, @incident), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        <%= f.submit "Update Incident", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
       </div>
     <% end %>
   </div>

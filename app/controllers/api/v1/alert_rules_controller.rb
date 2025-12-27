@@ -40,7 +40,7 @@ module Api
       private
 
       def set_monitor
-        @monitor = current_project.monitors.find(params[:monitor_id])
+        @monitor = current_project.uptime_monitors.find(params[:monitor_id])
       end
 
       def set_alert_rule

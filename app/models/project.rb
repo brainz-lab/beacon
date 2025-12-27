@@ -1,9 +1,10 @@
 class Project < ApplicationRecord
-  has_many :monitors, dependent: :destroy
+  has_many :uptime_monitors, dependent: :destroy
   has_many :status_pages, dependent: :destroy
   has_many :maintenance_windows, dependent: :destroy
 
-  validates :platform_project_id, presence: true, uniqueness: true
+  validates :name, presence: true
+  validates :platform_project_id, uniqueness: true, allow_blank: true
   validates :api_key, presence: true, uniqueness: true
 
   before_validation :generate_keys, on: :create

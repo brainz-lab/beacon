@@ -1,6 +1,10 @@
 <% content_for(:title) { "New Status Page" } %>
 
-<div class="max-w-2xl mx-auto">
-  <h2 class="text-2xl font-bold text-gray-900 mb-6">New Status Page</h2>
+<div class="max-w-2xl mx-auto space-y-6">
+  <div>
+    <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">New Status Page</h1>
+    <p class="mt-1 text-[13px]" style="color: #8B8780;">Create a public status page for your users</p>
+  </div>
+
   <%= render "form", status_page: @status_page %>
 </div>

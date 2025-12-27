@@ -1,6 +1,6 @@
 class MonitorChannel < ApplicationCable::Channel
   def subscribed
-    @monitor = Monitor.find(params[:id])
+    @monitor = UptimeMonitor.find(params[:id])
 
     # Verify monitor belongs to current project
     if @monitor.project_id == current_project_id

@@ -1,45 +1,61 @@
-<% content_for(:title) { "Setup Beacon" } %>
+<% content_for(:title) { "Setup" } %>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold text-emerald-600">⚡ Beacon</h1>
-      <h2 class="mt-6 text-2xl font-bold text-gray-900">Welcome to Beacon</h2>
-      <p class="mt-2 text-sm text-gray-600">Let's set up your uptime monitoring project</p>
-    </div>
+<div class="space-y-8">
+  <div class="flex items-center justify-between">
+    <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">Welcome to Beacon</h1>
+  </div>
 
-    <div class="bg-white shadow rounded-lg p-6">
-      <%= form_with model: @project, url: dashboard_setup_path, class: "space-y-6" do |f| %>
+  <div class="text-center py-16 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+    <div class="max-w-md mx-auto space-y-6">
+      <svg class="mx-auto" width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" stroke="#10B981" stroke-width="2"/>
+        <path d="M16 24L22 30L32 18" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
+      <div class="space-y-2">
+        <h3 class="text-[16px] font-medium" style="color: #1A1A1A;">Create your first project</h3>
+        <p class="text-[14px]" style="color: #8B8780;">Set up uptime monitoring for your endpoints and services.</p>
+      </div>
+
+      <%= form_with model: @project, url: dashboard_setup_path, class: "space-y-4 text-left" do |f| %>
         <% if @project.errors.any? %>
-          <div class="rounded-md bg-red-50 p-4">
-            <ul class="list-disc pl-5 text-sm text-red-700">
-              <% @project.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
+          <div class="px-4 py-3 rounded-lg text-[14px]" style="background: #FEE8E8; color: #8B2D2D;">
+            <% @project.errors.full_messages.each do |message| %>
+              <p><%= message %></p>
+            <% end %>
           </div>
         <% end %>
 
         <div>
-          <%= f.label :name, "Project Name", class: "block text-sm font-medium text-gray-700" %>
-          <%= f.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm", placeholder: "My Project", autofocus: true %>
+          <label class="block text-[13px] font-medium mb-1.5" style="color: #1A1A1A;">Project Name</label>
+          <%= f.text_field :name,
+              class: "w-full px-3 py-2 text-[14px] rounded-lg transition-colors",
+              style: "border: 1px solid #E8E5E0; background: #FFFFFE; outline: none;",
+              placeholder: "My Project",
+              autofocus: true %>
         </div>
 
         <div>
-          <%= f.label :platform_project_id, "Platform Project ID (optional)", class: "block text-sm font-medium text-gray-700" %>
-          <%= f.text_field :platform_project_id, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm", placeholder: "Connect to Brainz Lab Platform" %>
-          <p class="mt-1 text-xs text-gray-500">Leave blank if not using Platform integration</p>
-        </div>
-
-        <div>
-          <%= f.label :timezone, class: "block text-sm font-medium text-gray-700" %>
-          <%= f.select :timezone, ActiveSupport::TimeZone.all.map { |tz| [tz.to_s, tz.name] },
+          <label class="block text-[13px] font-medium mb-1.5" style="color: #1A1A1A;">Timezone</label>
+          <%= f.select :timezone,
+              ActiveSupport::TimeZone.all.map { |tz| [tz.to_s, tz.name] },
               { selected: "UTC" },
-              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+              class: "w-full px-3 py-2 text-[14px] rounded-lg transition-colors",
+              style: "border: 1px solid #E8E5E0; background: #FFFFFE; outline: none;" %>
         </div>
 
         <div>
-          <%= f.submit "Get Started", class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 cursor-pointer" %>
+          <label class="block text-[13px] font-medium mb-1.5" style="color: #6B6760;">Platform Project ID <span class="font-normal">(optional)</span></label>
+          <%= f.text_field :platform_project_id,
+              class: "w-full px-3 py-2 text-[14px] rounded-lg transition-colors",
+              style: "border: 1px solid #E8E5E0; background: #FFFFFE; outline: none;",
+              placeholder: "Leave blank if not using Platform" %>
+        </div>
+
+        <div class="pt-2">
+          <%= f.submit "Create Project",
+              class: "w-full px-4 py-2.5 text-[14px] font-medium rounded-lg transition-colors cursor-pointer",
+              style: "background: #1A1A1A; color: #FFFFFE;" %>
         </div>
       <% end %>
     </div>

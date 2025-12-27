@@ -6,7 +6,7 @@ class ScheduleChecksJob < ApplicationJob
 
     scheduled_count = 0
 
-    Monitor.enabled.find_each do |monitor|
+    UptimeMonitor.enabled.find_each do |monitor|
       # Skip if already has a pending job
       next if check_pending?(monitor)
 

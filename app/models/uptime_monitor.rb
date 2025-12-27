@@ -1,4 +1,4 @@
-class Monitor < ApplicationRecord
+class UptimeMonitor < ApplicationRecord
   belongs_to :project
 
   has_many :check_results, dependent: :destroy

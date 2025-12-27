@@ -58,35 +58,43 @@ Rails.application.routes.draw do
   get "status/:slug/unsubscribe/:token", to: "public/subscriptions#destroy", as: :unsubscribe
   delete "status/:slug/unsubscribe/:token", to: "public/subscriptions#destroy"
 
-  # Dashboard (Hotwire)
+  # Dashboard (web UI)
   namespace :dashboard do
-    root to: "overview#index"
+    root to: "projects#index"
 
-    resources :monitors do
+    resources :projects, only: [:index, :new, :create] do
       member do
-        post :pause
-        post :resume
-        post :check_now
+        get :settings
       end
-    end
 
-    resources :incidents do
-      resources :updates, only: [:create], controller: "incident_updates"
-      member do
-        post :resolve
+      # Nested under project
+      get "/", to: "overview#index", as: :overview
+      resources :monitors do
+        member do
+          post :pause
+          post :resume
+          post :check_now
+        end
       end
+      resources :incidents do
+        resources :updates, only: [:create], controller: "incident_updates"
+        member do
+          post :resolve
+        end
+      end
+      resources :status_pages do
+        resources :monitors, controller: "status_page_monitors", only: [:create, :update, :destroy]
+      end
+      resources :maintenance_windows
+      get "setup", to: "setup#index"
+      get "mcp", to: "mcp_setup#index"
     end
-
-    resources :status_pages do
-      resources :monitors, controller: "status_page_monitors", only: [:create, :update, :destroy]
-    end
-
-    resources :maintenance_windows
-
-    get "setup", to: "setup#show"
-    post "setup", to: "setup#create"
   end
 
-  # Root path
-  root "dashboard/overview#index"
+  # SSO callback
+  get "sso/callback", to: "sso#callback"
+  delete "sso/logout", to: "sso#logout"
+
+  # Root redirect to dashboard
+  root to: redirect("/dashboard")
 end

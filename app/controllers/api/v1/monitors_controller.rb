@@ -5,7 +5,7 @@ module Api
 
       # GET /api/v1/monitors
       def index
-        monitors = current_project.monitors
+        monitors = current_project.uptime_monitors
 
         monitors = monitors.by_status(params[:status]) if params[:status].present?
         monitors = monitors.where(monitor_type: params[:type]) if params[:type].present?
@@ -19,7 +19,7 @@ module Api
 
       # POST /api/v1/monitors
       def create
-        monitor = current_project.monitors.create!(monitor_params)
+        monitor = current_project.uptime_monitors.create!(monitor_params)
 
         # Start monitoring
         ExecuteCheckJob.perform_later(monitor.id)
@@ -94,7 +94,7 @@ module Api
       private
 
       def set_monitor
-        @monitor = current_project.monitors.find(params[:id])
+        @monitor = current_project.uptime_monitors.find(params[:id])
       end
 
       def monitor_params

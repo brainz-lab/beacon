@@ -55,7 +55,7 @@ module Public
           message: "Subscription confirmed"
         }
       else
-        redirect_to "/status/#{subscription.status_page.slug}?subscribed=true"
+        redirect_to public_status_path(slug: subscription.status_page.slug, subscribed: true)
       end
     end
 
@@ -72,7 +72,7 @@ module Public
           message: "Unsubscribed successfully"
         }
       else
-        redirect_to "/status/#{subscription.status_page.slug}?unsubscribed=true"
+        redirect_to public_status_path(slug: subscription.status_page.slug, unsubscribed: true)
       end
     end
 

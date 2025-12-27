@@ -1,85 +1,68 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-50">
+<html lang="en" class="h-full">
 <head>
   <title>Beacon - <%= content_for(:title) || "Uptime Monitoring" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="turbo-cache-control" content="no-cache">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= action_cable_meta_tag %>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
-
-<body class="h-full">
+<body class="h-full antialiased" style="font-family: 'Inter', system-ui, sans-serif; background: #FAF9F7;">
   <div class="min-h-full">
-    <!-- Navigation -->
-    <nav class="bg-gray-900">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <header class="border-b" style="border-color: #E8E5E0; background: #FFFFFE;">
+      <div class="mx-auto max-w-5xl px-6">
         <div class="flex h-16 items-center justify-between">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <span class="text-2xl font-bold text-emerald-400">⚡ Beacon</span>
-            </div>
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline space-x-4">
-                <%= link_to "Overview", dashboard_root_path,
-                    class: "#{request.path == dashboard_root_path ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} rounded-md px-3 py-2 text-sm font-medium" %>
-                <%= link_to "Monitors", dashboard_monitors_path,
-                    class: "#{request.path.start_with?('/dashboard/monitors') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} rounded-md px-3 py-2 text-sm font-medium" %>
-                <%= link_to "Incidents", dashboard_incidents_path,
-                    class: "#{request.path.start_with?('/dashboard/incidents') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} rounded-md px-3 py-2 text-sm font-medium" %>
-                <%= link_to "Status Pages", dashboard_status_pages_path,
-                    class: "#{request.path.start_with?('/dashboard/status_pages') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} rounded-md px-3 py-2 text-sm font-medium" %>
-                <%= link_to "Maintenance", dashboard_maintenance_windows_path,
-                    class: "#{request.path.start_with?('/dashboard/maintenance') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} rounded-md px-3 py-2 text-sm font-medium" %>
+          <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8" fill="#10B981"/>
+              <path d="M7 10L9 12L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-[15px] font-semibold tracking-tight" style="color: #1A1A1A;">Beacon</span>
+          <% end %>
+
+          <% if @project&.persisted? %>
+            <div class="flex items-center gap-6">
+              <div class="flex items-center gap-3">
+                <span style="color: #C4C0B8;">/</span>
+                <%= link_to @project.name || "Project", dashboard_project_overview_path(@project), class: "text-[14px] hover:underline", style: "color: #6B6760;" %>
               </div>
+              <nav class="flex items-center gap-4 text-[13px]">
+                <%= link_to "Overview", dashboard_project_overview_path(@project), class: "font-medium transition-colors", style: "color: #{controller_name == 'overview' ? '#1A1A1A' : '#8B8780'};" %>
+                <%= link_to "Monitors", dashboard_project_monitors_path(@project), class: "font-medium transition-colors", style: "color: #{controller_name == 'monitors' ? '#1A1A1A' : '#8B8780'};" %>
+                <%= link_to "Incidents", dashboard_project_incidents_path(@project), class: "font-medium transition-colors", style: "color: #{controller_name == 'incidents' ? '#1A1A1A' : '#8B8780'};" %>
+                <%= link_to "Status Pages", dashboard_project_status_pages_path(@project), class: "font-medium transition-colors", style: "color: #{controller_name == 'status_pages' ? '#1A1A1A' : '#8B8780'};" %>
+                <%= link_to "Maintenance", dashboard_project_maintenance_windows_path(@project), class: "font-medium transition-colors", style: "color: #{controller_name == 'maintenance_windows' ? '#1A1A1A' : '#8B8780'};" %>
+                <%= link_to "Setup", dashboard_project_setup_path(@project), class: "font-medium transition-colors", style: "color: #{controller_name == 'setup' ? '#1A1A1A' : '#8B8780'};" %>
+              </nav>
+              <%= link_to dashboard_projects_path, class: "text-[13px] font-medium px-3 py-1.5 rounded-lg transition-colors hover:opacity-80", style: "background: #F0EFED; color: #6B6760;" do %>
+                Projects
+              <% end %>
             </div>
-          </div>
-          <div class="flex items-center">
-            <span class="text-gray-400 text-sm mr-4"><%= current_project&.name %></span>
-          </div>
+          <% end %>
         </div>
       </div>
-    </nav>
+    </header>
 
-    <!-- Flash messages -->
-    <% if notice %>
-      <div class="bg-green-50 border-l-4 border-green-400 p-4" data-controller="flash" data-flash-duration-value="5000">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm text-green-700"><%= notice %></p>
-          </div>
+    <!-- Main -->
+    <main class="mx-auto max-w-5xl px-6 py-10">
+      <% if notice %>
+        <div class="mb-6 px-4 py-3 rounded-lg text-[14px]" style="background: #E8F5E8; color: #2D5A2D;">
+          <%= notice %>
         </div>
-      </div>
-    <% end %>
-
-    <% if alert %>
-      <div class="bg-red-50 border-l-4 border-red-400 p-4" data-controller="flash">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm text-red-700"><%= alert %></p>
-          </div>
+      <% end %>
+      <% if alert %>
+        <div class="mb-6 px-4 py-3 rounded-lg text-[14px]" style="background: #FEE8E8; color: #8B2D2D;">
+          <%= alert %>
         </div>
-      </div>
-    <% end %>
-
-    <!-- Main content -->
-    <main>
-      <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-        <%= yield %>
-      </div>
+      <% end %>
+      <%= yield %>
     </main>
   </div>
 </body>

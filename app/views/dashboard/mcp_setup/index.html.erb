@@ -1,0 +1,84 @@
+<% content_for(:title) { "MCP Integration" } %>
+
+<div class="space-y-8">
+  <div>
+    <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">MCP Integration</h1>
+    <p class="mt-1 text-[13px]" style="color: #8B8780;">Connect Beacon to Claude Desktop or other MCP clients</p>
+  </div>
+
+  <!-- Claude Desktop Config -->
+  <div class="p-6 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+    <h2 class="text-[15px] font-medium mb-4" style="color: #1A1A1A;">Claude Desktop Configuration</h2>
+    <p class="text-[13px] mb-4" style="color: #8B8780;">
+      Add this to your Claude Desktop config file at <code class="px-1.5 py-0.5 rounded" style="background: #F5F4F2; color: #1A1A1A;">~/.claude/claude_desktop_config.json</code>
+    </p>
+
+    <pre class="p-4 text-[12px] font-mono rounded-lg overflow-x-auto" style="background: #1A1A1A; color: #E8E5E0;">{
+  "mcpServers": {
+    "beacon": {
+      "command": "curl",
+      "args": [
+        "-s",
+        "-H", "Authorization: Bearer <%= @api_key %>",
+        "https://beacon.brainzlab.ai/mcp/rpc"
+      ]
+    }
+  }
+}</pre>
+  </div>
+
+  <!-- Available Tools -->
+  <div class="p-6 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+    <h2 class="text-[15px] font-medium mb-4" style="color: #1A1A1A;">Available MCP Tools</h2>
+
+    <div class="space-y-4">
+      <div class="p-4 rounded-lg" style="background: #F5F4F2;">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #10B981; color: white;">beacon_list_monitors</span>
+        </div>
+        <p class="text-[13px]" style="color: #6B6760;">List all uptime monitors with their current status, response times, and uptime percentages</p>
+      </div>
+
+      <div class="p-4 rounded-lg" style="background: #F5F4F2;">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #10B981; color: white;">beacon_check_status</span>
+        </div>
+        <p class="text-[13px]" style="color: #6B6760;">Get detailed status of a specific monitor including recent checks and incidents</p>
+      </div>
+
+      <div class="p-4 rounded-lg" style="background: #F5F4F2;">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #10B981; color: white;">beacon_get_uptime</span>
+        </div>
+        <p class="text-[13px]" style="color: #6B6760;">Get uptime statistics and response time data for monitors</p>
+      </div>
+
+      <div class="p-4 rounded-lg" style="background: #F5F4F2;">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #3B82F6; color: white;">beacon_create_monitor</span>
+        </div>
+        <p class="text-[13px]" style="color: #6B6760;">Create a new uptime monitor to track an endpoint, API, or service</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example Usage -->
+  <div class="p-6 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+    <h2 class="text-[15px] font-medium mb-4" style="color: #1A1A1A;">Example Claude Prompts</h2>
+
+    <div class="space-y-3 text-[13px]">
+      <div class="p-3 rounded-lg" style="background: #F5F4F2;">
+        <code style="color: #1A1A1A;">"Show me the status of all my monitors"</code>
+      </div>
+      <div class="p-3 rounded-lg" style="background: #F5F4F2;">
+        <code style="color: #1A1A1A;">"What's the uptime for my API endpoint over the last 7 days?"</code>
+      </div>
+      <div class="p-3 rounded-lg" style="background: #F5F4F2;">
+        <code style="color: #1A1A1A;">"Create a monitor for https://api.example.com/health"</code>
+      </div>
+      <div class="p-3 rounded-lg" style="background: #F5F4F2;">
+        <code style="color: #1A1A1A;">"Are there any monitors currently down?"</code>
+      </div>
+    </div>
+  </div>
+</div>

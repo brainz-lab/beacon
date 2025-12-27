@@ -1,5 +1,5 @@
 class Incident < ApplicationRecord
-  belongs_to :monitor
+  belongs_to :uptime_monitor, foreign_key: :monitor_id
 
   has_many :updates, class_name: "IncidentUpdate", dependent: :destroy
 
@@ -83,7 +83,7 @@ class Incident < ApplicationRecord
   def create_initial_update
     updates.create!(
       status: "investigating",
-      message: "We are investigating issues with #{monitor.name}.",
+      message: "We are investigating issues with #{uptime_monitor.name}.",
       created_by: "system"
     )
   end
@@ -97,7 +97,7 @@ class Incident < ApplicationRecord
   end
 
   def broadcast_update
-    monitor.status_pages.each do |status_page|
+    uptime_monitor.status_pages.each do |status_page|
       ActionCable.server.broadcast(
         "status_page_#{status_page.id}",
         {

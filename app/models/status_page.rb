@@ -2,7 +2,7 @@ class StatusPage < ApplicationRecord
   belongs_to :project
 
   has_many :status_page_monitors, dependent: :destroy
-  has_many :monitors, through: :status_page_monitors
+  has_many :uptime_monitors, through: :status_page_monitors
   has_many :subscriptions, class_name: "StatusSubscription", dependent: :destroy
 
   validates :name, presence: true
@@ -19,7 +19,7 @@ class StatusPage < ApplicationRecord
 
   # Calculate overall status from monitors
   def calculate_status
-    statuses = monitors.pluck(:status)
+    statuses = uptime_monitors.pluck(:status)
 
     return "operational" if statuses.empty?
 
@@ -45,7 +45,7 @@ class StatusPage < ApplicationRecord
   # Get monitors grouped by category
   def monitors_by_group
     status_page_monitors
-      .includes(:monitor)
+      .includes(:uptime_monitor)
       .where(visible: true)
       .order(:position)
       .group_by(&:group_name)
@@ -54,23 +54,23 @@ class StatusPage < ApplicationRecord
   # Get active incidents for all monitors on this page
   def active_incidents
     Incident.active
-            .joins(:monitor)
-            .where(monitors: { id: monitor_ids })
+            .joins(:uptime_monitor)
+            .where(uptime_monitors: { id: uptime_monitor_ids })
             .order(started_at: :desc)
   end
 
   # Get recent resolved incidents
   def recent_incidents(limit: 10)
     Incident.resolved
-            .joins(:monitor)
-            .where(monitors: { id: monitor_ids })
+            .joins(:uptime_monitor)
+            .where(uptime_monitors: { id: uptime_monitor_ids })
             .order(started_at: :desc)
             .limit(limit)
   end
 
   # Calculate overall uptime across all monitors
   def overall_uptime(days: 90)
-    uptimes = monitors.map { |m| m.uptime(period: days.days) }
+    uptimes = uptime_monitors.map { |m| m.uptime(period: days.days) }
     return 100.0 if uptimes.empty?
 
     (uptimes.sum / uptimes.size).round(2)

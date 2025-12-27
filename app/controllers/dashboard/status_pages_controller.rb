@@ -1,9 +1,10 @@
 module Dashboard
   class StatusPagesController < BaseController
+    before_action :require_project!
     before_action :set_status_page, only: [:show, :edit, :update, :destroy]
 
     def index
-      @status_pages = current_project.status_pages.order(:name)
+      @status_pages = @project.status_pages.order(:name)
     end
 
     def show
@@ -14,7 +15,7 @@ module Dashboard
     end
 
     def new
-      @status_page = current_project.status_pages.build(
+      @status_page = @project.status_pages.build(
         public: true,
         show_uptime: true,
         show_response_time: true,
@@ -26,10 +27,10 @@ module Dashboard
     end
 
     def create
-      @status_page = current_project.status_pages.build(status_page_params)
+      @status_page = @project.status_pages.build(status_page_params)
 
       if @status_page.save
-        redirect_to dashboard_status_page_path(@status_page),
+        redirect_to dashboard_project_status_page_path(@project, @status_page),
                     notice: "Status page created"
       else
         render :new, status: :unprocessable_entity
@@ -37,12 +38,12 @@ module Dashboard
     end
 
     def edit
-      @available_monitors = current_project.monitors.order(:name)
+      @available_monitors = @project.uptime_monitors.order(:name)
     end
 
     def update
       if @status_page.update(status_page_params)
-        redirect_to dashboard_status_page_path(@status_page),
+        redirect_to dashboard_project_status_page_path(@project, @status_page),
                     notice: "Status page updated"
       else
         render :edit, status: :unprocessable_entity
@@ -51,14 +52,14 @@ module Dashboard
 
     def destroy
       @status_page.destroy!
-      redirect_to dashboard_status_pages_path,
+      redirect_to dashboard_project_status_pages_path(@project),
                   notice: "Status page deleted"
     end
 
     private
 
     def set_status_page
-      @status_page = current_project.status_pages.find(params[:id])
+      @status_page = @project.status_pages.find(params[:id])
     end
 
     def status_page_params

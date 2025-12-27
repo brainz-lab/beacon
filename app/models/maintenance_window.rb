@@ -17,9 +17,9 @@ class MaintenanceWindow < ApplicationRecord
   # Get affected monitors
   def affected_monitors
     if affects_all_monitors
-      project.monitors
+      project.uptime_monitors
     else
-      project.monitors.where(id: monitor_ids)
+      project.uptime_monitors.where(id: monitor_ids)
     end
   end
 

@@ -30,7 +30,7 @@ module Mcp
       end
 
       def execute(params)
-        monitors = project.monitors.includes(:check_results)
+        monitors = project.uptime_monitors.includes(:check_results)
 
         case params[:status]
         when "healthy" then monitors = monitors.healthy
@@ -60,10 +60,10 @@ module Mcp
 
         summary = {
           total: monitors.count,
-          healthy: project.monitors.healthy.count,
-          degraded: project.monitors.degraded.count,
-          down: project.monitors.down.count,
-          paused: project.monitors.paused.count
+          healthy: project.uptime_monitors.healthy.count,
+          degraded: project.uptime_monitors.degraded.count,
+          down: project.uptime_monitors.down.count,
+          paused: project.uptime_monitors.paused.count
         }
 
         success(monitors: monitors_data, summary: summary)

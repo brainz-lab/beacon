@@ -1,87 +1,87 @@
 <% content_for(:title) { @status_page.name } %>
 
 <div class="space-y-6">
-  <div class="md:flex md:items-center md:justify-between">
-    <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-gray-900"><%= @status_page.name %></h2>
-      <p class="mt-1 text-sm text-gray-500">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;"><%= @status_page.name %></h1>
+      <p class="mt-1 text-[13px]" style="color: #8B8780;">
         <% if @status_page.public? %>
-          <%= link_to public_status_url(@status_page.slug), public_status_path(@status_page.slug), target: "_blank", class: "text-emerald-600 hover:text-emerald-500" %>
+          <%= link_to public_status_url(@status_page.slug), public_status_path(@status_page.slug), target: "_blank", class: "hover:opacity-70 transition-opacity", style: "color: #10B981;" %>
         <% else %>
           Private status page
         <% end %>
       </p>
     </div>
-    <div class="mt-4 flex space-x-2 md:ml-4 md:mt-0">
-      <%= link_to "Edit", edit_dashboard_status_page_path(@status_page), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    <div class="flex items-center gap-2">
+      <%= link_to "Edit", edit_dashboard_project_status_page_path(@project, @status_page), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
     </div>
   </div>
 
   <!-- Current Status -->
-  <div class="overflow-hidden rounded-lg bg-white shadow">
-    <div class="p-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
-          <span class="h-4 w-4 rounded-full mr-3 <%= @calculator.overall_status == 'operational' ? 'bg-green-500' : @calculator.overall_status == 'degraded' ? 'bg-yellow-500' : 'bg-red-500' %>"></span>
-          <span class="text-xl font-semibold text-gray-900"><%= @calculator.status_info[:label] %></span>
-        </div>
-        <div class="text-right">
-          <p class="text-sm text-gray-500">Overall Uptime (30d)</p>
-          <p class="text-2xl font-semibold text-gray-900"><%= @status_page.overall_uptime %>%</p>
-        </div>
+  <div class="px-5 py-5 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="h-3 w-3 rounded-full" style="background: <%= @calculator.overall_status == 'operational' ? '#10B981' : (@calculator.overall_status == 'degraded' ? '#F59E0B' : '#EF4444') %>;"></span>
+        <span class="text-[18px] font-semibold" style="color: #1A1A1A;"><%= @calculator.status_info[:label] %></span>
+      </div>
+      <div class="text-right">
+        <p class="text-[13px]" style="color: #8B8780;">Overall Uptime (30d)</p>
+        <p class="text-[28px] font-semibold" style="color: #1A1A1A;"><%= @status_page.overall_uptime %>%</p>
       </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main Content -->
     <div class="lg:col-span-2 space-y-6">
       <!-- Monitors by Group -->
       <% @monitors_by_group.each do |group_name, monitors| %>
-        <div class="overflow-hidden rounded-lg bg-white shadow">
-          <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-            <h3 class="text-lg font-medium leading-6 text-gray-900"><%= group_name || "Monitors" %></h3>
+        <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+          <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+            <h2 class="text-[15px] font-medium" style="color: #1A1A1A;"><%= group_name || "Monitors" %></h2>
           </div>
-          <ul class="divide-y divide-gray-200">
+          <div class="divide-y" style="border-color: #E8E5E0;">
             <% monitors.each do |spm| %>
-              <li class="px-4 py-4 flex items-center justify-between" id="<%= dom_id(spm) %>">
-                <div class="flex items-center">
-                  <span class="h-3 w-3 rounded-full mr-3 <%= status_dot_class(spm.monitor.status) %>"></span>
-                  <span class="text-sm font-medium text-gray-900"><%= spm.display_name || spm.monitor.name %></span>
+              <div class="px-5 py-4 flex items-center justify-between" id="<%= dom_id(spm) %>">
+                <div class="flex items-center gap-3">
+                  <span class="h-2 w-2 rounded-full" style="background: <%= spm.uptime_monitor.status == 'up' ? '#10B981' : (spm.uptime_monitor.status == 'degraded' ? '#F59E0B' : '#EF4444') %>;"></span>
+                  <span class="text-[14px] font-medium" style="color: #1A1A1A;"><%= spm.display_name || spm.uptime_monitor.name %></span>
                 </div>
-                <div class="flex items-center space-x-4">
-                  <span class="text-sm text-gray-500"><%= spm.monitor.status.humanize %></span>
-                  <%= button_to "Remove", dashboard_status_page_monitor_path(@status_page, spm), method: :delete, class: "text-red-600 hover:text-red-800 text-sm", data: { turbo_confirm: "Remove this monitor?" } %>
+                <div class="flex items-center gap-4">
+                  <span class="text-[13px]" style="color: #8B8780;"><%= spm.uptime_monitor.status.humanize %></span>
+                  <%= button_to "Remove", dashboard_project_status_page_monitor_path(@project, @status_page, spm), method: :delete, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #EF4444;", data: { turbo_confirm: "Remove this monitor?" } %>
                 </div>
-              </li>
+              </div>
             <% end %>
-          </ul>
+          </div>
         </div>
       <% end %>
 
       <% if @monitors_by_group.empty? %>
-        <div class="overflow-hidden rounded-lg bg-white shadow p-6 text-center">
-          <p class="text-gray-500">No monitors added to this status page yet.</p>
+        <div class="p-6 rounded-xl text-center" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+          <p class="text-[13px]" style="color: #8B8780;">No monitors added to this status page yet.</p>
         </div>
       <% end %>
 
       <!-- Add Monitor -->
-      <div class="overflow-hidden rounded-lg bg-white shadow" id="add_monitor_form">
-        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Add Monitor</h3>
+      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;" id="add_monitor_form">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Add Monitor</h2>
         </div>
-        <div class="p-4">
-          <%= form_with url: dashboard_status_page_monitors_path(@status_page), class: "flex items-end space-x-4" do |f| %>
-            <div class="flex-1">
-              <%= f.label :monitor_id, "Monitor", class: "block text-sm font-medium text-gray-700" %>
-              <%= f.select :monitor_id, current_project.monitors.order(:name).map { |m| [m.name, m.id] },
+        <div class="px-5 py-5">
+          <%= form_with url: dashboard_project_status_page_monitors_path(@project, @status_page), class: "flex flex-wrap items-end gap-4" do |f| %>
+            <div class="flex-1 min-w-[200px]">
+              <%= f.label :monitor_id, "Monitor", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
+              <%= f.select :monitor_id, @project.uptime_monitors.order(:name).map { |m| [m.name, m.id] },
                   { prompt: "Select a monitor" },
-                  class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" %>
+                  class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
             </div>
-            <div class="flex-1">
-              <%= f.label :group_name, "Group (optional)", class: "block text-sm font-medium text-gray-700" %>
-              <%= f.text_field :group_name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm", placeholder: "e.g., API, Web" %>
+            <div class="flex-1 min-w-[200px]">
+              <%= f.label :group_name, "Group (optional)", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
+              <%= f.text_field :group_name, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "e.g., API, Web" %>
             </div>
-            <%= f.submit "Add", class: "rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 cursor-pointer" %>
+            <%= f.submit "Add", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
           <% end %>
         </div>
       </div>
@@ -90,51 +90,51 @@
     <!-- Sidebar -->
     <div class="space-y-6">
       <!-- Stats -->
-      <div class="overflow-hidden rounded-lg bg-white shadow">
-        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Statistics</h3>
+      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Statistics</h2>
         </div>
-        <dl class="divide-y divide-gray-200">
-          <div class="px-4 py-3 flex justify-between">
-            <dt class="text-sm font-medium text-gray-500">Monitors</dt>
-            <dd class="text-sm text-gray-900"><%= @status_page.monitors.count %></dd>
+        <div class="divide-y" style="border-color: #E8E5E0;">
+          <div class="px-5 py-3 flex justify-between">
+            <span class="text-[13px]" style="color: #8B8780;">Monitors</span>
+            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @status_page.uptime_monitors.count %></span>
           </div>
-          <div class="px-4 py-3 flex justify-between">
-            <dt class="text-sm font-medium text-gray-500">Subscribers</dt>
-            <dd class="text-sm text-gray-900"><%= @subscriber_count %></dd>
+          <div class="px-5 py-3 flex justify-between">
+            <span class="text-[13px]" style="color: #8B8780;">Subscribers</span>
+            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @subscriber_count %></span>
           </div>
-          <div class="px-4 py-3 flex justify-between">
-            <dt class="text-sm font-medium text-gray-500">Active Incidents</dt>
-            <dd class="text-sm text-gray-900"><%= @active_incidents.count %></dd>
+          <div class="px-5 py-3 flex justify-between">
+            <span class="text-[13px]" style="color: #8B8780;">Active Incidents</span>
+            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @active_incidents.count %></span>
           </div>
-        </dl>
+        </div>
       </div>
 
       <!-- Active Incidents -->
       <% if @active_incidents.any? %>
-        <div class="overflow-hidden rounded-lg bg-white shadow">
-          <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-            <h3 class="text-lg font-medium leading-6 text-gray-900">Active Incidents</h3>
+        <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+          <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+            <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Active Incidents</h2>
           </div>
-          <ul class="divide-y divide-gray-200">
+          <div class="divide-y" style="border-color: #E8E5E0;">
             <% @active_incidents.each do |incident| %>
-              <li class="px-4 py-3">
-                <%= link_to incident.title, dashboard_incident_path(incident), class: "text-sm font-medium text-gray-900 hover:text-emerald-600" %>
-                <p class="text-xs text-gray-500"><%= time_ago_in_words(incident.started_at) %> ago</p>
-              </li>
+              <div class="px-5 py-3">
+                <%= link_to incident.title, dashboard_project_incident_path(@project, incident), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1A1A1A;" %>
+                <p class="text-[12px]" style="color: #8B8780;"><%= time_ago_in_words(incident.started_at) %> ago</p>
+              </div>
             <% end %>
-          </ul>
+          </div>
         </div>
       <% end %>
 
       <!-- Embed Code -->
-      <div class="overflow-hidden rounded-lg bg-white shadow">
-        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Embed Badge</h3>
+      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
+          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Embed Badge</h2>
         </div>
-        <div class="p-4">
-          <img src="<%= status_badge_path(@status_page.slug) %>" alt="Status Badge" class="mb-2">
-          <textarea readonly class="w-full text-xs bg-gray-50 rounded border p-2" rows="2"><img src="<%= status_badge_url(@status_page.slug) %>" alt="Status"></textarea>
+        <div class="px-5 py-4">
+          <img src="<%= status_badge_path(@status_page.slug) %>" alt="Status Badge" class="mb-3">
+          <textarea readonly class="w-full text-[11px] font-mono p-2 rounded-lg focus:outline-none" style="background: #F5F4F2; border: 1px solid #E8E5E0; color: #6B6760;" rows="2"><img src="<%= status_badge_url(@status_page.slug) %>" alt="Status"></textarea>
         </div>
       </div>
     </div>

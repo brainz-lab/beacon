@@ -19,15 +19,15 @@ class StatusCalculator
   end
 
   def component_statuses
-    @status_page.status_page_monitors.includes(:monitor).map do |spm|
+    @status_page.status_page_monitors.includes(:uptime_monitor).map do |spm|
       {
-        id: spm.monitor.id,
+        id: spm.uptime_monitor.id,
         name: spm.name,
         group: spm.group_name,
-        status: spm.monitor.status,
-        uptime: spm.monitor.uptime(period: 90.days),
-        response_time: spm.monitor.average_response_time,
-        last_check: spm.monitor.last_check_at
+        status: spm.uptime_monitor.status,
+        uptime: spm.uptime_monitor.uptime(period: 90.days),
+        response_time: spm.uptime_monitor.average_response_time,
+        last_check: spm.uptime_monitor.last_check_at
       }
     end
   end
@@ -37,11 +37,11 @@ class StatusCalculator
       {
         monitors: monitors.map do |spm|
           {
-            id: spm.monitor.id,
+            id: spm.uptime_monitor.id,
             name: spm.name,
-            status: spm.monitor.status,
-            uptime: spm.monitor.uptime(period: 90.days),
-            response_time: spm.monitor.average_response_time
+            status: spm.uptime_monitor.status,
+            uptime: spm.uptime_monitor.uptime(period: 90.days),
+            response_time: spm.uptime_monitor.average_response_time
           }
         end,
         status: calculate_group_status(monitors)
@@ -50,7 +50,7 @@ class StatusCalculator
   end
 
   def uptime_summary(days: 90)
-    monitors = @status_page.monitors
+    monitors = @status_page.uptime_monitors
 
     {
       overall: @status_page.overall_uptime(days: days),
@@ -67,7 +67,7 @@ class StatusCalculator
   private
 
   def calculate_group_status(monitors)
-    statuses = monitors.map { |spm| spm.monitor.status }
+    statuses = monitors.map { |spm| spm.uptime_monitor.status }
 
     if statuses.all? { |s| s == "up" }
       "operational"

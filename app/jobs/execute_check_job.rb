@@ -2,7 +2,7 @@ class ExecuteCheckJob < ApplicationJob
   queue_as :checks
 
   def perform(monitor_id, region: nil)
-    monitor = Monitor.find_by(id: monitor_id)
+    monitor = UptimeMonitor.find_by(id: monitor_id)
     return unless monitor
     return unless monitor.enabled? && !monitor.paused?
 

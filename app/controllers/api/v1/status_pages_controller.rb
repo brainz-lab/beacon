@@ -83,7 +83,7 @@ module Api
             subscription_channels: status_page.subscription_channels,
             status_info: calculator.status_info,
             overall_uptime: status_page.overall_uptime,
-            monitors_count: status_page.monitors.count,
+            monitors_count: status_page.uptime_monitors.count,
             subscribers_count: status_page.confirmed_subscriptions.count,
             active_incidents_count: status_page.active_incidents.count
           )

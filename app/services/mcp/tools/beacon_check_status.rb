@@ -92,9 +92,9 @@ module Mcp
 
       def find_monitor(params)
         if params[:monitor_id].present?
-          project.monitors.find_by(id: params[:monitor_id])
+          project.uptime_monitors.find_by(id: params[:monitor_id])
         elsif params[:monitor_name].present?
-          project.monitors.find_by("name ILIKE ?", "%#{params[:monitor_name]}%")
+          project.uptime_monitors.find_by("name ILIKE ?", "%#{params[:monitor_name]}%")
         end
       end
     end
