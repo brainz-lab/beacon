@@ -1771,3 +1771,6 @@ SolidQueue-1.2.4 Register Worker (127.1ms)  pid: 23, hostname: "36f1c9e44caf", p
 SolidQueue-1.2.4 Started Worker (131.0ms)  pid: 23, hostname: "36f1c9e44caf", process_id: 338, name: "worker-d240817a339ed802a455", polling_interval: 0.1, queues: "*", thread_pool_size: 3
 SolidQueue-1.2.4 Unblock jobs (4.4ms)  limit: 500, size: 0
 SolidQueue-1.2.4 Prune dead processes (38.3ms)  size: 0
+SolidQueue-1.2.4 Prune dead processes (35.6ms)  size: 0
+SolidQueue-1.2.4 Unblock jobs (3.3ms)  limit: 500, size: 0
+SolidQueue-1.2.4 Prune dead processes (11.2ms)  size: 0
