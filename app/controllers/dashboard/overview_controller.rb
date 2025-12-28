@@ -3,7 +3,7 @@ module Dashboard
     before_action :require_project!
 
     def index
-      @monitors = @project.uptime_monitors.includes(:check_results).order(:name)
+      @monitors = @project.uptime_monitors.includes(:check_results).order(:name).load
       @active_incidents = Incident.joins(:uptime_monitor)
                                   .where(uptime_monitors: { project_id: @project.id })
                                   .active
@@ -12,14 +12,16 @@ module Dashboard
 
       @maintenance_windows = @project.maintenance_windows.upcoming.limit(5)
 
-      # Calculate summary stats
+      # Calculate summary stats using in-memory counting to avoid N+1 queries
+      # Group by status once and count each status
+      status_counts = @monitors.group_by(&:status).transform_values(&:size)
       @stats = {
-        total_monitors: @monitors.count,
-        healthy: @monitors.up.count,
-        degraded: @monitors.degraded.count,
-        down: @monitors.down.count,
-        paused: @monitors.paused.count,
-        active_incidents: @active_incidents.count,
+        total_monitors: @monitors.size,
+        healthy: status_counts["up"] || 0,
+        degraded: status_counts["degraded"] || 0,
+        down: status_counts["down"] || 0,
+        paused: @monitors.count(&:paused?),
+        active_incidents: @active_incidents.size,
         overall_uptime: calculate_overall_uptime
       }
 

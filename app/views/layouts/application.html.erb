@@ -14,12 +14,17 @@
     <%= javascript_importmap_tags %>
 
     <style>
+      :root {
+        --color-cream-50: #F5F5F0;
+        --color-cream-100: #EFEDE8;
+        --color-beacon: #D97706;
+        --color-beacon-dark: #B45309;
+      }
       body { font-family: 'Inter', system-ui, sans-serif; }
-      .bg-cream-50 { background-color: #FFFFFE; }
     </style>
   </head>
 
-  <body class="bg-cream-50 min-h-screen text-ink-900 antialiased">
+  <body class="min-h-screen antialiased" style="background: #F5F5F0; color: #1C1917;">
     <%= yield %>
   </body>
 </html>

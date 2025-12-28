@@ -1,58 +1,58 @@
-<%= form_with model: [@project, monitor], url: monitor.persisted? ? dashboard_project_monitor_path(@project, monitor) : dashboard_project_monitors_path(@project), class: "space-y-6 p-6 rounded-xl", style: "background: #FFFFFE; border: 1px solid #E8E5E0;" do |f| %>
+<%= form_with model: [@project, monitor], url: monitor.persisted? ? dashboard_project_monitor_path(@project, monitor) : dashboard_project_monitors_path(@project), class: "space-y-6 p-6 rounded-xl", style: "background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);" do |f| %>
   <% if monitor.errors.any? %>
-    <div class="p-4 rounded-lg" style="background: #FEE8E8;">
-      <h3 class="text-[13px] font-medium" style="color: #8B2D2D;"><%= pluralize(monitor.errors.count, "error") %> prohibited this monitor from being saved:</h3>
+    <div class="p-4 rounded-xl" style="background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.15);">
+      <h3 class="text-[13px] font-medium" style="color: #991B1B;"><%= pluralize(monitor.errors.count, "error") %> prohibited this monitor from being saved:</h3>
       <ul class="mt-2 list-disc pl-5 space-y-1">
         <% monitor.errors.full_messages.each do |message| %>
-          <li class="text-[13px]" style="color: #B45555;"><%= message %></li>
+          <li class="text-[13px]" style="color: #B91C1C;"><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
   <div>
-    <%= f.label :name, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-    <%= f.text_field :name, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-0", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "My API Monitor" %>
+    <%= f.label :name, class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+    <%= f.text_field :name, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "My API Monitor" %>
   </div>
 
   <div>
-    <%= f.label :check_type, "Monitor Type", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
+    <%= f.label :check_type, "Monitor Type", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
     <%= f.select :check_type, [["HTTP/HTTPS", "http"], ["SSL Certificate", "ssl"], ["DNS", "dns"], ["TCP Port", "tcp"], ["Ping (ICMP)", "ping"]],
-        {}, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;",
+        {}, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;",
         data: { action: "change->monitor-form#toggleFields" } %>
   </div>
 
   <!-- HTTP Fields -->
   <div id="http-fields" class="space-y-4" data-monitor-form-target="httpFields">
     <div>
-      <%= f.label :url, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-      <%= f.url_field :url, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "https://api.example.com/health" %>
+      <%= f.label :url, class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+      <%= f.url_field :url, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "https://api.example.com/health" %>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <%= f.label :http_method, "Method", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.select :http_method, ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"], {}, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        <%= f.label :http_method, "Method", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.select :http_method, ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"], {}, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;" %>
       </div>
       <div>
-        <%= f.label :expected_status, "Expected Status", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.number_field :expected_status, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "200" %>
+        <%= f.label :expected_status, "Expected Status", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.number_field :expected_status, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "200" %>
       </div>
     </div>
 
     <div>
-      <%= f.label :expected_body, "Expected Body (optional)", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-      <%= f.text_field :expected_body, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "Text that must appear in response" %>
+      <%= f.label :expected_body, "Expected Body (optional)", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+      <%= f.text_field :expected_body, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "Text that must appear in response" %>
     </div>
 
     <div class="flex items-center gap-6">
-      <div class="flex items-center gap-2">
-        <%= f.check_box :follow_redirects, class: "h-4 w-4 rounded", style: "border: 1px solid #E8E5E0;" %>
-        <%= f.label :follow_redirects, "Follow redirects", class: "text-[13px]", style: "color: #6B6760;" %>
+      <div class="flex items-center gap-2.5">
+        <%= f.check_box :follow_redirects, class: "h-4 w-4 rounded accent-orange-600", style: "border: 1px solid #E5E2DC;" %>
+        <%= f.label :follow_redirects, "Follow redirects", class: "text-[13px]", style: "color: #57534E;" %>
       </div>
-      <div class="flex items-center gap-2">
-        <%= f.check_box :verify_ssl, class: "h-4 w-4 rounded", style: "border: 1px solid #E8E5E0;" %>
-        <%= f.label :verify_ssl, "Verify SSL", class: "text-[13px]", style: "color: #6B6760;" %>
+      <div class="flex items-center gap-2.5">
+        <%= f.check_box :verify_ssl, class: "h-4 w-4 rounded accent-orange-600", style: "border: 1px solid #E5E2DC;" %>
+        <%= f.label :verify_ssl, "Verify SSL", class: "text-[13px]", style: "color: #57534E;" %>
       </div>
     </div>
   </div>
@@ -61,12 +61,12 @@
   <div id="host-fields" class="space-y-4 hidden" data-monitor-form-target="hostFields">
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <%= f.label :host, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.text_field :host, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "example.com" %>
+        <%= f.label :host, class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.text_field :host, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "example.com" %>
       </div>
       <div id="port-field">
-        <%= f.label :port, class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.number_field :port, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "443" %>
+        <%= f.label :port, class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.number_field :port, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "443" %>
       </div>
     </div>
   </div>
@@ -75,28 +75,28 @@
   <div id="dns-fields" class="space-y-4 hidden" data-monitor-form-target="dnsFields">
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <%= f.label :dns_record_type, "Record Type", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.select :dns_record_type, ["A", "AAAA", "CNAME", "MX", "TXT", "NS"], {}, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        <%= f.label :dns_record_type, "Record Type", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.select :dns_record_type, ["A", "AAAA", "CNAME", "MX", "TXT", "NS"], {}, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;" %>
       </div>
       <div>
-        <%= f.label :expected_dns_result, "Expected Result", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.text_field :expected_dns_result, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "1.2.3.4" %>
+        <%= f.label :expected_dns_result, "Expected Result", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.text_field :expected_dns_result, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "1.2.3.4" %>
       </div>
     </div>
   </div>
 
   <!-- Common Settings -->
-  <div class="pt-6" style="border-top: 1px solid #E8E5E0;">
-    <h4 class="text-[14px] font-medium mb-4" style="color: #1A1A1A;">Check Settings</h4>
+  <div class="pt-6" style="border-top: 1px solid #E5E2DC;">
+    <h4 class="text-[14px] font-semibold mb-4" style="color: #1C1917;">Check Settings</h4>
 
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <%= f.label :interval, "Check Interval (seconds)", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.select :interval, [[30, 30], [60, 60], [120, 120], [300, 300], [600, 600]], {}, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+        <%= f.label :interval, "Check Interval (seconds)", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.select :interval, [[30, 30], [60, 60], [120, 120], [300, 300], [600, 600]], {}, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;" %>
       </div>
       <div>
-        <%= f.label :timeout, "Timeout (ms)", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-        <%= f.number_field :timeout, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "30000" %>
+        <%= f.label :timeout, "Timeout (ms)", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+        <%= f.number_field :timeout, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", placeholder: "30000" %>
       </div>
     </div>
   </div>
@@ -104,22 +104,22 @@
   <!-- Thresholds -->
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <%= f.label :failure_threshold, "Failures before down", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-      <%= f.number_field :failure_threshold, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", min: 1, max: 10 %>
+      <%= f.label :failure_threshold, "Failures before down", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+      <%= f.number_field :failure_threshold, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", min: 1, max: 10 %>
     </div>
     <div>
-      <%= f.label :success_threshold, "Successes before up", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-      <%= f.number_field :success_threshold, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", min: 1, max: 10 %>
+      <%= f.label :success_threshold, "Successes before up", class: "block text-[13px] font-medium mb-1.5", style: "color: #1C1917;" %>
+      <%= f.number_field :success_threshold, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;", min: 1, max: 10 %>
     </div>
   </div>
 
-  <div class="flex items-center gap-2">
-    <%= f.check_box :enabled, class: "h-4 w-4 rounded", style: "border: 1px solid #E8E5E0;" %>
-    <%= f.label :enabled, "Start monitoring immediately", class: "text-[13px]", style: "color: #6B6760;" %>
+  <div class="flex items-center gap-2.5">
+    <%= f.check_box :enabled, class: "h-4 w-4 rounded accent-orange-600", style: "border: 1px solid #E5E2DC;" %>
+    <%= f.label :enabled, "Start monitoring immediately", class: "text-[13px]", style: "color: #57534E;" %>
   </div>
 
   <div class="flex justify-end gap-3 pt-4">
-    <%= link_to "Cancel", dashboard_project_monitors_path(@project), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
-    <%= f.submit monitor.persisted? ? "Update Monitor" : "Create Monitor", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+    <%= link_to "Cancel", dashboard_project_monitors_path(@project), class: "px-5 py-2.5 text-[13px] font-medium rounded-xl transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;" %>
+    <%= f.submit monitor.persisted? ? "Update Monitor" : "Create Monitor", class: "btn-primary px-5 py-2.5 text-[13px] font-medium rounded-xl cursor-pointer transition-all text-white" %>
   </div>
 <% end %>

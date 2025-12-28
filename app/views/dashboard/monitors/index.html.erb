@@ -4,10 +4,10 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">Monitors</h1>
-      <p class="mt-1 text-[13px]" style="color: #8B8780;">Track uptime for your endpoints, APIs, and services</p>
+      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1C1917;">Monitors</h1>
+      <p class="mt-1 text-[13px]" style="color: #78716C;">Track uptime for your endpoints, APIs, and services</p>
     </div>
-    <%= link_to new_dashboard_project_monitor_path(@project), class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+    <%= link_to new_dashboard_project_monitor_path(@project), class: "btn-primary inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white" do %>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
       </svg>
@@ -16,70 +16,70 @@
   </div>
 
   <!-- Filters -->
-  <div class="p-4 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+  <div class="p-4 rounded-xl" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
     <div class="flex flex-wrap gap-2">
       <%= link_to "All", dashboard_project_monitors_path(@project),
-          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
-          style: params[:status].nil? ? "background: #1A1A1A; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+          class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
+          style: params[:status].nil? ? "background: linear-gradient(135deg, #D97706 0%, #B45309 100%); color: #FFFFFE; box-shadow: 0 1px 2px rgba(180, 83, 9, 0.2);" : "background: #EFEDE8; color: #57534E;" %>
       <%= link_to "Healthy", dashboard_project_monitors_path(@project, status: "healthy"),
-          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
-          style: params[:status] == "healthy" ? "background: #10B981; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+          class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
+          style: params[:status] == "healthy" ? "background: #16A34A; color: #FFFFFE;" : "background: #EFEDE8; color: #57534E;" %>
       <%= link_to "Degraded", dashboard_project_monitors_path(@project, status: "degraded"),
-          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
-          style: params[:status] == "degraded" ? "background: #F59E0B; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+          class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
+          style: params[:status] == "degraded" ? "background: #D97706; color: #FFFFFE;" : "background: #EFEDE8; color: #57534E;" %>
       <%= link_to "Down", dashboard_project_monitors_path(@project, status: "down"),
-          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
-          style: params[:status] == "down" ? "background: #EF4444; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+          class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
+          style: params[:status] == "down" ? "background: #DC2626; color: #FFFFFE;" : "background: #EFEDE8; color: #57534E;" %>
       <%= link_to "Paused", dashboard_project_monitors_path(@project, status: "paused"),
-          class: "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors",
-          style: params[:status] == "paused" ? "background: #6B6760; color: #FFFFFE;" : "background: #F5F4F2; color: #6B6760;" %>
+          class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
+          style: params[:status] == "paused" ? "background: #57534E; color: #FFFFFE;" : "background: #EFEDE8; color: #57534E;" %>
     </div>
   </div>
 
   <!-- Monitor List -->
-  <div class="rounded-xl overflow-hidden" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+  <div class="rounded-xl overflow-hidden" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
     <% if @monitors.any? %>
       <table class="min-w-full">
-        <thead style="background: #FAF9F7; border-bottom: 1px solid #E8E5E0;">
+        <thead style="background: #EFEDE8; border-bottom: 1px solid #E5E2DC;">
           <tr>
-            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Monitor</th>
-            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Type</th>
-            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Status</th>
-            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Response</th>
-            <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Last Check</th>
-            <th class="px-5 py-3 text-right text-[11px] font-medium uppercase tracking-wider" style="color: #8B8780;">Actions</th>
+            <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider" style="color: #78716C;">Monitor</th>
+            <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider" style="color: #78716C;">Type</th>
+            <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider" style="color: #78716C;">Status</th>
+            <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider" style="color: #78716C;">Response</th>
+            <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider" style="color: #78716C;">Last Check</th>
+            <th class="px-5 py-3.5 text-right text-[11px] font-semibold uppercase tracking-wider" style="color: #78716C;">Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @monitors.each do |monitor| %>
-            <tr id="<%= dom_id(monitor) %>" class="hover:bg-[#FAF9F7] transition-colors" style="border-bottom: 1px solid #E8E5E0;">
+            <tr id="<%= dom_id(monitor) %>" class="hover:bg-[#F5F5F0] transition-all" style="border-bottom: 1px solid #E5E2DC;">
               <td class="px-5 py-4 whitespace-nowrap">
                 <div class="flex items-center gap-3">
-                  <span class="h-2 w-2 rounded-full flex-shrink-0" style="background: <%= monitor.status == 'up' ? '#10B981' : (monitor.status == 'degraded' ? '#F59E0B' : (monitor.status == 'paused' ? '#6B6760' : '#EF4444')) %>;"></span>
+                  <span class="h-2.5 w-2.5 rounded-full flex-shrink-0" style="background: <%= monitor.status == 'up' ? '#16A34A' : (monitor.status == 'degraded' ? '#D97706' : (monitor.status == 'paused' ? '#78716C' : '#DC2626')) %>;"></span>
                   <div class="min-w-0">
-                    <%= link_to monitor.name, dashboard_project_monitor_path(@project, monitor), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1A1A1A;" %>
-                    <p class="text-[12px] truncate max-w-[200px]" style="color: #8B8780;"><%= monitor.url || monitor.host %></p>
+                    <%= link_to monitor.name, dashboard_project_monitor_path(@project, monitor), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1C1917;" %>
+                    <p class="text-[12px] truncate max-w-[200px]" style="color: #78716C;"><%= monitor.url || monitor.host %></p>
                   </div>
                 </div>
               </td>
               <td class="px-5 py-4 whitespace-nowrap">
-                <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #F5F4F2; color: #6B6760;">
+                <span class="px-2.5 py-1 text-[11px] font-medium rounded-lg" style="background: #EFEDE8; color: #57534E;">
                   <%= monitor.check_type.upcase %>
                 </span>
               </td>
               <td class="px-5 py-4 whitespace-nowrap">
-                <span class="px-2 py-0.5 text-[11px] font-medium rounded-full" style="<%= monitor.status == 'up' ? 'background: #E8F5E8; color: #2D5A2D;' : (monitor.status == 'degraded' ? 'background: #FEF3C7; color: #92400E;' : (monitor.status == 'paused' ? 'background: #F5F4F2; color: #6B6760;' : 'background: #FEE8E8; color: #8B2D2D;')) %>">
+                <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="<%= monitor.status == 'up' ? 'background: rgba(22, 163, 74, 0.1); color: #166534;' : (monitor.status == 'degraded' ? 'background: rgba(217, 119, 6, 0.1); color: #92400E;' : (monitor.status == 'paused' ? 'background: #EFEDE8; color: #57534E;' : 'background: rgba(220, 38, 38, 0.1); color: #991B1B;')) %>">
                   <%= monitor.status.humanize %>
                 </span>
               </td>
-              <td class="px-5 py-4 whitespace-nowrap text-[13px]" style="color: #6B6760;">
+              <td class="px-5 py-4 whitespace-nowrap text-[13px]" style="color: #57534E;">
                 <% if monitor.last_response_time %>
                   <%= monitor.last_response_time %>ms
                 <% else %>
                   -
                 <% end %>
               </td>
-              <td class="px-5 py-4 whitespace-nowrap text-[13px]" style="color: #6B6760;">
+              <td class="px-5 py-4 whitespace-nowrap text-[13px]" style="color: #57534E;">
                 <% if monitor.last_check_at %>
                   <%= time_ago_in_words(monitor.last_check_at) %> ago
                 <% else %>
@@ -89,11 +89,11 @@
               <td class="px-5 py-4 whitespace-nowrap text-right">
                 <div class="flex justify-end items-center gap-3">
                   <% if monitor.paused? %>
-                    <%= button_to "Resume", resume_dashboard_project_monitor_path(@project, monitor), method: :post, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #10B981;" %>
+                    <%= button_to "Resume", resume_dashboard_project_monitor_path(@project, monitor), method: :post, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #16A34A;" %>
                   <% else %>
-                    <%= button_to "Pause", pause_dashboard_project_monitor_path(@project, monitor), method: :post, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #6B6760;" %>
+                    <%= button_to "Pause", pause_dashboard_project_monitor_path(@project, monitor), method: :post, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #78716C;" %>
                   <% end %>
-                  <%= link_to "Edit", edit_dashboard_project_monitor_path(@project, monitor), class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #1A1A1A;" %>
+                  <%= link_to "Edit", edit_dashboard_project_monitor_path(@project, monitor), class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #D97706;" %>
                 </div>
               </td>
             </tr>
@@ -101,14 +101,16 @@
         </tbody>
       </table>
     <% else %>
-      <div class="text-center py-12">
-        <svg class="mx-auto w-12 h-12" style="color: #C4C1BC;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-        </svg>
-        <h3 class="mt-3 text-[14px] font-medium" style="color: #1A1A1A;">No monitors yet</h3>
-        <p class="mt-1 text-[13px]" style="color: #8B8780;">Get started by creating your first monitor.</p>
+      <div class="text-center py-16">
+        <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center" style="background: rgba(217, 119, 6, 0.1);">
+          <svg class="w-8 h-8" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+        </div>
+        <h3 class="mt-4 text-[15px] font-medium" style="color: #1C1917;">No monitors yet</h3>
+        <p class="mt-1 text-[13px]" style="color: #78716C;">Get started by creating your first monitor.</p>
         <div class="mt-6">
-          <%= link_to new_dashboard_project_monitor_path(@project), class: "inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" do %>
+          <%= link_to new_dashboard_project_monitor_path(@project), class: "btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white" do %>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
