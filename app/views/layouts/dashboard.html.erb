@@ -9,7 +9,7 @@
   <%# Fonts %>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 
   <%# BrainzLab UI Design System %>
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
@@ -22,34 +22,33 @@
       --color-beacon-light: #F59E0B;
       --color-beacon-bg: #FEF3C7;
       --color-beacon-bg-subtle: #FFFBEB;
-      --color-beacon-glow: rgba(217, 119, 6, 0.15);
     }
   </style>
 </head>
 <body class="h-full antialiased" style="background: var(--color-cream-50);">
   <div class="flex h-full">
     <!-- Sidebar -->
-    <aside class="w-64 border-r flex flex-col" style="border-color: var(--color-cream-200); background: #FAFAF8;">
-      <div class="p-5 border-b" style="border-color: var(--color-cream-200);">
-        <%= link_to dashboard_root_path, class: "flex items-center gap-2.5 group" do %>
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all" style="background: linear-gradient(135deg, #D97706 0%, #B45309 100%); box-shadow: 0 2px 4px rgba(217, 119, 6, 0.25);">
+    <aside class="w-64 flex flex-col bg-white" style="border-right: 1px solid var(--color-cream-200);">
+      <div class="p-5" style="border-bottom: 1px solid var(--color-cream-200);">
+        <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--color-beacon);">
             <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="8"/>
               <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <span class="font-semibold tracking-tight" style="color: var(--color-ink-900);">Beacon</span>
+          <span class="font-semibold" style="color: var(--color-ink-950);">Beacon</span>
         <% end %>
       </div>
 
       <% if @project&.persisted? %>
         <!-- Project Selector -->
-        <div class="px-4 py-3 border-b" style="border-color: var(--color-cream-100);">
-          <%= link_to dashboard_projects_path, class: "flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-[var(--color-cream-100)] transition" do %>
-            <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-semibold" style="background: var(--color-cream-200); color: var(--color-ink-600);">
+        <div class="px-4 py-3" style="border-bottom: 1px solid var(--color-cream-200);">
+          <%= link_to dashboard_projects_path, class: "flex items-center gap-2 px-2 py-1.5 rounded-lg transition", style: "color: var(--color-ink-700);" do %>
+            <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-semibold" style="background: rgba(217, 119, 6, 0.15); color: var(--color-beacon);">
               <%= @project.name.first.upcase %>
             </div>
-            <span class="flex-1 text-sm font-medium truncate" style="color: var(--color-ink-700);"><%= @project.name %></span>
+            <span class="flex-1 text-sm font-medium truncate"><%= @project.name %></span>
             <svg class="w-4 h-4" style="color: var(--color-ink-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
             </svg>
@@ -58,64 +57,33 @@
 
         <!-- Navigation -->
         <nav class="p-4 space-y-1 flex-1">
-          <% overview_active = controller_name == 'overview' %>
-          <%= link_to dashboard_project_overview_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-              style: "#{overview_active ? 'background: var(--color-beacon-glow); color: #B45309; border-left: 3px solid #D97706;' : 'color: var(--color-ink-600); border-left: 3px solid transparent;'}" do %>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-            </svg>
+          <%= link_to dashboard_project_overview_path(@project), class: nav_link_class(:overview) do %>
+            <%= icon(:overview) %>
             Overview
           <% end %>
 
-          <% monitors_active = controller_name == 'monitors' %>
-          <%= link_to dashboard_project_monitors_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-              style: "#{monitors_active ? 'background: var(--color-beacon-glow); color: #B45309; border-left: 3px solid #D97706;' : 'color: var(--color-ink-600); border-left: 3px solid transparent;'}" do %>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
+          <%= link_to dashboard_project_monitors_path(@project), class: nav_link_class(:monitors) do %>
+            <%= icon(:monitors) %>
             Monitors
           <% end %>
 
-          <% incidents_active = controller_name == 'incidents' %>
-          <%= link_to dashboard_project_incidents_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-              style: "#{incidents_active ? 'background: var(--color-beacon-glow); color: #B45309; border-left: 3px solid #D97706;' : 'color: var(--color-ink-600); border-left: 3px solid transparent;'}" do %>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-            </svg>
+          <%= link_to dashboard_project_incidents_path(@project), class: nav_link_class(:incidents) do %>
+            <%= icon(:incidents) %>
             Incidents
           <% end %>
 
-          <% status_pages_active = controller_name == 'status_pages' %>
-          <%= link_to dashboard_project_status_pages_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-              style: "#{status_pages_active ? 'background: var(--color-beacon-glow); color: #B45309; border-left: 3px solid #D97706;' : 'color: var(--color-ink-600); border-left: 3px solid transparent;'}" do %>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
+          <%= link_to dashboard_project_status_pages_path(@project), class: nav_link_class(:status_pages) do %>
+            <%= icon(:status_pages) %>
             Status Pages
           <% end %>
 
-          <% maintenance_active = controller_name == 'maintenance_windows' %>
-          <%= link_to dashboard_project_maintenance_windows_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-              style: "#{maintenance_active ? 'background: var(--color-beacon-glow); color: #B45309; border-left: 3px solid #D97706;' : 'color: var(--color-ink-600); border-left: 3px solid transparent;'}" do %>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
+          <%= link_to dashboard_project_maintenance_windows_path(@project), class: nav_link_class(:maintenance_windows) do %>
+            <%= icon(:maintenance) %>
             Maintenance
           <% end %>
 
-          <% setup_active = controller_name == 'setup' %>
-          <%= link_to dashboard_project_setup_path(@project),
-              class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-              style: "#{setup_active ? 'background: var(--color-beacon-glow); color: #B45309; border-left: 3px solid #D97706;' : 'color: var(--color-ink-600); border-left: 3px solid transparent;'}" do %>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
+          <%= link_to dashboard_project_setup_path(@project), class: nav_link_class(:setup) do %>
+            <%= icon(:setup) %>
             Setup
           <% end %>
         </nav>
@@ -127,9 +95,9 @@
 
       <!-- User Menu -->
       <% if defined?(current_user) && current_user %>
-        <div class="p-4 border-t" style="border-color: var(--color-cream-200);">
+        <div class="p-4" style="border-top: 1px solid var(--color-cream-200);">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold" style="background: var(--color-beacon-glow); color: #B45309;">
+            <div class="avatar avatar-md avatar-primary">
               <%= current_user.name&.first&.upcase || current_user.email.first.upcase %>
             </div>
             <div class="flex-1 min-w-0">
@@ -144,13 +112,19 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
       <% if notice %>
-        <div class="m-8 mb-0 px-4 py-3 rounded-xl text-sm font-medium" style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); color: #166534;">
-          <%= notice %>
+        <div class="m-8 mb-0 alert alert-success">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span><%= notice %></span>
         </div>
       <% end %>
       <% if alert %>
-        <div class="m-8 mb-0 px-4 py-3 rounded-xl text-sm font-medium" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #991B1B;">
-          <%= alert %>
+        <div class="m-8 mb-0 alert alert-error">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+          </svg>
+          <span><%= alert %></span>
         </div>
       <% end %>
 
