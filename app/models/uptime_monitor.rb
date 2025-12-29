@@ -1,12 +1,12 @@
 class UptimeMonitor < ApplicationRecord
   belongs_to :project
 
-  has_many :check_results, dependent: :destroy
-  has_many :incidents, dependent: :destroy
-  has_many :status_page_monitors, dependent: :destroy
+  has_many :check_results, foreign_key: :monitor_id, dependent: :destroy
+  has_many :incidents, foreign_key: :monitor_id, dependent: :destroy
+  has_many :status_page_monitors, foreign_key: :monitor_id, dependent: :destroy
   has_many :status_pages, through: :status_page_monitors
-  has_many :alert_rules, dependent: :destroy
-  has_one :ssl_certificate, dependent: :destroy
+  has_many :alert_rules, foreign_key: :monitor_id, dependent: :destroy
+  has_one :ssl_certificate, foreign_key: :monitor_id, dependent: :destroy
 
   validates :name, presence: true
   validates :monitor_type, presence: true, inclusion: { in: %w[http tcp dns ssl ping] }
@@ -49,6 +49,11 @@ class UptimeMonitor < ApplicationRecord
       .where(status: "up")
       .average(:response_time_ms)
       &.round || 0
+  end
+
+  # Last response time from the most recent check
+  def last_response_time
+    check_results.order(checked_at: :desc).limit(1).pick(:response_time_ms)
   end
 
   # Response time series for charts

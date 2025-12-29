@@ -1,4 +1,4 @@
-class SslCertificate < ApplicationRecord
+class SSLCertificate < ApplicationRecord
   belongs_to :uptime_monitor, foreign_key: :monitor_id
 
   validates :domain, presence: true
