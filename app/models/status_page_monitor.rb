@@ -2,7 +2,7 @@ class StatusPageMonitor < ApplicationRecord
   belongs_to :status_page
   belongs_to :uptime_monitor, foreign_key: :monitor_id
 
-  validates :status_page_id, uniqueness: { scope: :uptime_monitor_id }
+  validates :status_page_id, uniqueness: { scope: :monitor_id }
 
   scope :visible, -> { where(visible: true) }
   scope :ordered, -> { order(:position) }

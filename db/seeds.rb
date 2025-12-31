@@ -305,8 +305,8 @@ active_monitors.each do |monitor|
   check_count = 0
   monitor_regions = monitor.regions & regions
 
-  # Generate checks for the past 7 days
-  (7.days.ago.to_i..Time.current.to_i).step(monitor.interval_seconds) do |timestamp|
+  # Generate checks for the past 2 days (faster seeding)
+  (2.days.ago.to_i..Time.current.to_i).step(monitor.interval_seconds) do |timestamp|
     time = Time.at(timestamp)
 
     monitor_regions.each do |region|
@@ -624,7 +624,7 @@ puts "  Created status page: #{status_page.name}"
 # Add monitors to status page
 StatusPageMonitor.create!(
   status_page: status_page,
-  monitor: api_monitor,
+  monitor_id: api_monitor.id,
   display_name: "API",
   group_name: "Core Services",
   position: 1,
@@ -633,7 +633,7 @@ StatusPageMonitor.create!(
 
 StatusPageMonitor.create!(
   status_page: status_page,
-  monitor: website_monitor,
+  monitor_id: website_monitor.id,
   display_name: "Website",
   group_name: "Core Services",
   position: 2,
@@ -642,7 +642,7 @@ StatusPageMonitor.create!(
 
 StatusPageMonitor.create!(
   status_page: status_page,
-  monitor: dashboard_monitor,
+  monitor_id: dashboard_monitor.id,
   display_name: "Dashboard",
   group_name: "Core Services",
   position: 3,
@@ -651,7 +651,7 @@ StatusPageMonitor.create!(
 
 StatusPageMonitor.create!(
   status_page: status_page,
-  monitor: payments_monitor,
+  monitor_id: payments_monitor.id,
   display_name: "Payments",
   group_name: "Core Services",
   position: 4,
@@ -660,7 +660,7 @@ StatusPageMonitor.create!(
 
 StatusPageMonitor.create!(
   status_page: status_page,
-  monitor: search_monitor,
+  monitor_id: search_monitor.id,
   display_name: "Search",
   group_name: "Features",
   position: 5,
@@ -669,7 +669,7 @@ StatusPageMonitor.create!(
 
 StatusPageMonitor.create!(
   status_page: status_page,
-  monitor: database_monitor,
+  monitor_id: database_monitor.id,
   display_name: "Database",
   group_name: "Infrastructure",
   position: 6,
@@ -678,7 +678,7 @@ StatusPageMonitor.create!(
 
 StatusPageMonitor.create!(
   status_page: status_page,
-  monitor: redis_monitor,
+  monitor_id: redis_monitor.id,
   display_name: "Cache",
   group_name: "Infrastructure",
   position: 7,
@@ -809,10 +809,10 @@ puts "  Created major maintenance: Infrastructure Migration"
 puts "Creating alert rules..."
 
 # Status change alerts for critical monitors
-[api_monitor, payments_monitor, database_monitor].each do |monitor|
+[api_monitor, payments_monitor, database_monitor].each do |m|
   AlertRule.create!(
-    monitor: monitor,
-    name: "#{monitor.name} Down Alert",
+    monitor_id: m.id,
+    name: "#{m.name} Down Alert",
     enabled: true,
     condition_type: "status_change",
     condition_config: { "from" => "up", "to" => "down" }
@@ -822,7 +822,7 @@ puts "  Created 3 status change alerts"
 
 # Response time alerts
 AlertRule.create!(
-  monitor: api_monitor,
+  monitor_id: api_monitor.id,
   name: "API Slow Response Alert",
   enabled: true,
   condition_type: "response_time",
@@ -830,7 +830,7 @@ AlertRule.create!(
 )
 
 AlertRule.create!(
-  monitor: search_monitor,
+  monitor_id: search_monitor.id,
   name: "Search Performance Alert",
   enabled: true,
   condition_type: "response_time",
@@ -840,7 +840,7 @@ puts "  Created 2 response time alerts"
 
 # SSL expiry alerts
 AlertRule.create!(
-  monitor: ssl_monitor,
+  monitor_id: ssl_monitor.id,
   name: "SSL Expiry Warning (30 days)",
   enabled: true,
   condition_type: "ssl_expiry",
@@ -848,7 +848,7 @@ AlertRule.create!(
 )
 
 AlertRule.create!(
-  monitor: ssl_monitor,
+  monitor_id: ssl_monitor.id,
   name: "SSL Expiry Critical (7 days)",
   enabled: true,
   condition_type: "ssl_expiry",
@@ -856,7 +856,7 @@ AlertRule.create!(
 )
 
 AlertRule.create!(
-  monitor: ssl_expiring_monitor,
+  monitor_id: ssl_expiring_monitor.id,
   name: "Legacy SSL Expiry Warning",
   enabled: true,
   condition_type: "ssl_expiry",
@@ -866,7 +866,7 @@ puts "  Created 3 SSL expiry alerts"
 
 # Consecutive failures alert
 AlertRule.create!(
-  monitor: payments_monitor,
+  monitor_id: payments_monitor.id,
   name: "Payment Gateway Repeated Failures",
   enabled: true,
   condition_type: "consecutive_failures",
