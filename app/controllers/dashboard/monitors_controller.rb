@@ -1,7 +1,7 @@
 module Dashboard
   class MonitorsController < BaseController
     before_action :require_project!
-    before_action :set_monitor, only: [:show, :edit, :update, :destroy, :pause, :resume, :check_now]
+    before_action :set_monitor, only: [ :show, :edit, :update, :destroy, :pause, :resume, :check_now ]
 
     def index
       @monitors = @project.uptime_monitors.includes(:check_results).order(:name)
@@ -35,7 +35,7 @@ module Dashboard
         check_type: "http",
         interval: 60,
         timeout: 30000,
-        regions: ["nyc"],
+        regions: [ "nyc" ],
         enabled: true
       )
     end

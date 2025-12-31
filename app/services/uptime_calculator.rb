@@ -22,11 +22,11 @@ class UptimeCalculator
   end
 
   def successful_checks(period = @period)
-    checks_in_period(period).where(status: ["up", "success"]).count
+    checks_in_period(period).where(status: [ "up", "success" ]).count
   end
 
   def failed_checks(period = @period)
-    checks_in_period(period).where(status: ["down", "failure"]).count
+    checks_in_period(period).where(status: [ "down", "failure" ]).count
   end
 
   def average_response_time(period = @period)
@@ -46,7 +46,7 @@ class UptimeCalculator
     return 0 if times.empty?
 
     index = (percentile.to_f / 100 * times.length).ceil - 1
-    times[[index, 0].max]
+    times[[ index, 0 ].max]
   end
 
   def downtime_minutes(period = @period)

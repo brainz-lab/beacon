@@ -13,7 +13,7 @@ module Mcp
         def parameters
           {
             type: "object",
-            required: ["name"],
+            required: [ "name" ],
             properties: {
               name: {
                 type: "string",
@@ -33,7 +33,7 @@ module Mcp
               },
               check_type: {
                 type: "string",
-                enum: ["http", "ssl", "dns", "tcp", "ping"],
+                enum: [ "http", "ssl", "dns", "tcp", "ping" ],
                 description: "Type of check to perform (default: http)"
               },
               interval: {
@@ -69,7 +69,7 @@ module Mcp
           timeout: 30000,
           expected_status: params[:expected_status] || 200,
           expected_body: params[:expected_body],
-          regions: params[:regions] || ["nyc"],
+          regions: params[:regions] || [ "nyc" ],
           enabled: true
         )
 

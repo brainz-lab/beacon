@@ -294,7 +294,7 @@ def generate_timing(base_response_time, variance: 50)
     connect_time_ms: connect_time,
     tls_time_ms: tls_time,
     ttfb_ms: ttfb,
-    response_time_ms: [total, 50].max
+    response_time_ms: [ total, 50 ].max
   }
 end
 
@@ -312,19 +312,19 @@ active_monitors.each do |monitor|
     monitor_regions.each do |region|
       # 98% uptime for most monitors, lower for degraded/down
       success_rate = case monitor.status
-                     when "up" then 0.995
-                     when "degraded" then 0.85
-                     when "down" then 0.3
-                     else 0.95
-                     end
+      when "up" then 0.995
+      when "degraded" then 0.85
+      when "down" then 0.3
+      else 0.95
+      end
 
       is_success = rand < success_rate
 
       if is_success
         base_response = case monitor.status
-                        when "degraded" then rand(800..2000)
-                        else rand(100..300)
-                        end
+        when "degraded" then rand(800..2000)
+        else rand(100..300)
+        end
         timing = generate_timing(base_response)
 
         CheckResult.create!(
@@ -760,7 +760,7 @@ MaintenanceWindow.create!(
   starts_at: 3.days.from_now.change(hour: 4, min: 0),
   ends_at: 3.days.from_now.change(hour: 5, min: 0),
   timezone: "America/New_York",
-  monitor_ids: [database_monitor.id],
+  monitor_ids: [ database_monitor.id ],
   affects_all_monitors: false,
   status: "scheduled",
   notify_subscribers: true,
@@ -777,7 +777,7 @@ MaintenanceWindow.create!(
   starts_at: 5.days.ago.change(hour: 3, min: 0),
   ends_at: 5.days.ago.change(hour: 4, min: 0),
   timezone: "America/New_York",
-  monitor_ids: [ssl_monitor.id, ssl_expiring_monitor.id],
+  monitor_ids: [ ssl_monitor.id, ssl_expiring_monitor.id ],
   affects_all_monitors: false,
   status: "completed",
   notify_subscribers: true,
@@ -809,7 +809,7 @@ puts "  Created major maintenance: Infrastructure Migration"
 puts "Creating alert rules..."
 
 # Status change alerts for critical monitors
-[api_monitor, payments_monitor, database_monitor].each do |m|
+[ api_monitor, payments_monitor, database_monitor ].each do |m|
   AlertRule.create!(
     monitor_id: m.id,
     name: "#{m.name} Down Alert",

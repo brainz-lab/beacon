@@ -41,15 +41,15 @@ class SslExpiryCheckJob < ApplicationJob
   def notify_ssl_expiry(monitor, days_left, severity:)
     title = if days_left <= 0
               "SSL certificate EXPIRED: #{monitor.name}"
-            else
+    else
               "SSL certificate expiring soon: #{monitor.name}"
-            end
+    end
 
     message = if days_left <= 0
                 "Certificate expired on #{monitor.ssl_expiry_at.strftime('%Y-%m-%d')}"
-              else
+    else
                 "Certificate expires in #{days_left} days (#{monitor.ssl_expiry_at.strftime('%Y-%m-%d')})"
-              end
+    end
 
     SignalClient.trigger_alert(
       source: "beacon",

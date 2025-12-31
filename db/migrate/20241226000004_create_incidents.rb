@@ -27,8 +27,8 @@ class CreateIncidents < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:monitor_id, :started_at]
-      t.index [:monitor_id, :status]
+      t.index [ :monitor_id, :started_at ]
+      t.index [ :monitor_id, :status ]
       t.index :status
       t.index :started_at
     end

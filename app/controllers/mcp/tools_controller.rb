@@ -54,7 +54,7 @@ module Mcp
         render json: {
           jsonrpc: "2.0",
           id: request_data["id"],
-          result: { content: [{ type: "text", text: result.to_json }] }
+          result: { content: [ { type: "text", text: result.to_json } ] }
         }
       else
         render json: {

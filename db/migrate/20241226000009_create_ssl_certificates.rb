@@ -22,7 +22,7 @@ class CreateSSLCertificates < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:monitor_id, :expires_at]
+      t.index [ :monitor_id, :expires_at ]
       t.index :expires_at
       t.index :domain
     end

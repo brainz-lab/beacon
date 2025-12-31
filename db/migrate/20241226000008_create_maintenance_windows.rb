@@ -25,7 +25,7 @@ class CreateMaintenanceWindows < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:project_id, :starts_at]
+      t.index [ :project_id, :starts_at ]
       t.index :status
       t.index :starts_at
     end

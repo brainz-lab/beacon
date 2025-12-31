@@ -15,12 +15,12 @@ class CreateStatusSubscriptions < ActiveRecord::Migration[8.0]
       # Preferences
       t.boolean :notify_incidents, default: true
       t.boolean :notify_maintenance, default: true
-      t.string :severity_filter, array: true, default: ["minor", "major", "critical"]
+      t.string :severity_filter, array: true, default: [ "minor", "major", "critical" ]
 
       t.timestamps
 
-      t.index [:status_page_id, :email]
-      t.index [:status_page_id, :channel]
+      t.index [ :status_page_id, :email ]
+      t.index [ :status_page_id, :channel ]
       t.index :confirmation_token, unique: true
     end
   end

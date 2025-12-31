@@ -2,7 +2,7 @@ module Api
   module V1
     class StatusSubscriptionsController < BaseController
       before_action :set_status_page
-      before_action :set_subscription, only: [:show, :destroy]
+      before_action :set_subscription, only: [ :show, :destroy ]
 
       # GET /api/v1/status_pages/:status_page_id/subscriptions
       def index

@@ -16,12 +16,12 @@ module Mcp
             properties: {
               status: {
                 type: "string",
-                enum: ["active", "resolved", "all"],
+                enum: [ "active", "resolved", "all" ],
                 description: "Filter by incident status (default: all)"
               },
               severity: {
                 type: "string",
-                enum: ["critical", "major", "minor"],
+                enum: [ "critical", "major", "minor" ],
                 description: "Filter by severity"
               },
               monitor_id: {
@@ -52,7 +52,7 @@ module Mcp
         incidents = incidents.where(severity: params[:severity]) if params[:severity].present?
         incidents = incidents.where(monitor_id: params[:monitor_id]) if params[:monitor_id].present?
 
-        limit = [params[:limit] || 20, 100].min
+        limit = [ params[:limit] || 20, 100 ].min
         incidents = incidents.recent.limit(limit)
 
         success(

@@ -2,7 +2,7 @@ module Dashboard
   class StatusPageMonitorsController < BaseController
     before_action :require_project!
     before_action :set_status_page
-    before_action :set_status_page_monitor, only: [:update, :destroy]
+    before_action :set_status_page_monitor, only: [ :update, :destroy ]
 
     def create
       @spm = @status_page.status_page_monitors.build(spm_params)

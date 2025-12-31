@@ -58,7 +58,7 @@ module Checkers
       start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       result = yield
       elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start
-      [(elapsed * 1000).to_i, result]
+      [ (elapsed * 1000).to_i, result ]
     end
   end
 end

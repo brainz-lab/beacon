@@ -11,9 +11,9 @@ module Checkers
       # Platform-specific ping command
       command = if RUBY_PLATFORM =~ /darwin/
                   "ping -c 1 -W #{timeout * 1000} #{host}"
-                else
+      else
                   "ping -c 1 -W #{timeout} #{host}"
-                end
+      end
 
       # Execute ping
       output = `#{command} 2>&1`

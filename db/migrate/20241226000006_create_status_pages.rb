@@ -24,7 +24,7 @@ class CreateStatusPages < ActiveRecord::Migration[8.0]
 
       # Subscription settings
       t.boolean :allow_subscriptions, default: true
-      t.string :subscription_channels, array: true, default: ["email"]
+      t.string :subscription_channels, array: true, default: [ "email" ]
 
       # Current status (cached)
       t.string :current_status, default: "operational"

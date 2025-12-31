@@ -16,12 +16,12 @@ module Mcp
             properties: {
               status: {
                 type: "string",
-                enum: ["all", "healthy", "degraded", "down", "paused"],
+                enum: [ "all", "healthy", "degraded", "down", "paused" ],
                 description: "Filter monitors by status"
               },
               check_type: {
                 type: "string",
-                enum: ["http", "ssl", "dns", "tcp", "ping"],
+                enum: [ "http", "ssl", "dns", "tcp", "ping" ],
                 description: "Filter by check type"
               }
             }

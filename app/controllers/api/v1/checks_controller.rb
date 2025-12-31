@@ -22,7 +22,7 @@ module Api
         end
 
         # Pagination
-        limit = [params.fetch(:limit, 100).to_i, 1000].min
+        limit = [ params.fetch(:limit, 100).to_i, 1000 ].min
         offset = params.fetch(:offset, 0).to_i
 
         total = checks.count

@@ -21,7 +21,7 @@ class CreateAlertRules < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:monitor_id, :enabled]
+      t.index [ :monitor_id, :enabled ]
       t.index :condition_type
     end
   end

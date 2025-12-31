@@ -2,7 +2,7 @@ module Api
   module V1
     class AlertRulesController < BaseController
       before_action :set_monitor
-      before_action :set_alert_rule, only: [:show, :update, :destroy]
+      before_action :set_alert_rule, only: [ :show, :update, :destroy ]
 
       # GET /api/v1/monitors/:monitor_id/alert_rules
       def index

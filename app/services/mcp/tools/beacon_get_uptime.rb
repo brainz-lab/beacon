@@ -20,7 +20,7 @@ module Mcp
               },
               period: {
                 type: "string",
-                enum: ["1h", "24h", "7d", "30d", "90d"],
+                enum: [ "1h", "24h", "7d", "30d", "90d" ],
                 description: "Time period for statistics (default: 30d)"
               }
             }

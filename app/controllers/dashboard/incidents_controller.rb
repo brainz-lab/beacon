@@ -1,7 +1,7 @@
 module Dashboard
   class IncidentsController < BaseController
     before_action :require_project!
-    before_action :set_incident, only: [:show, :edit, :update, :destroy, :resolve]
+    before_action :set_incident, only: [ :show, :edit, :update, :destroy, :resolve ]
 
     def index
       @incidents = Incident.joins(:uptime_monitor)

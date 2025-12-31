@@ -18,22 +18,22 @@ Rails.application.routes.draw do
           get :response_times
         end
 
-        resources :checks, only: [:index]
-        resources :incidents, only: [:index]
-        resources :alert_rules, only: [:index, :create, :show, :update, :destroy]
+        resources :checks, only: [ :index ]
+        resources :incidents, only: [ :index ]
+        resources :alert_rules, only: [ :index, :create, :show, :update, :destroy ]
       end
 
-      resources :incidents, only: [:index, :show, :update] do
-        resources :updates, only: [:index, :create], controller: "incident_updates"
+      resources :incidents, only: [ :index, :show, :update ] do
+        resources :updates, only: [ :index, :create ], controller: "incident_updates"
       end
 
       resources :status_pages do
-        resources :monitors, controller: "status_page_monitors", only: [:index, :create, :update, :destroy] do
+        resources :monitors, controller: "status_page_monitors", only: [ :index, :create, :update, :destroy ] do
           collection do
             post :reorder
           end
         end
-        resources :subscriptions, controller: "status_subscriptions", only: [:index, :show, :destroy]
+        resources :subscriptions, controller: "status_subscriptions", only: [ :index, :show, :destroy ]
       end
 
       resources :maintenance_windows
@@ -62,7 +62,7 @@ Rails.application.routes.draw do
   namespace :dashboard do
     root to: "projects#index"
 
-    resources :projects, only: [:index, :new, :create] do
+    resources :projects, only: [ :index, :new, :create ] do
       member do
         get :settings
       end
@@ -77,13 +77,13 @@ Rails.application.routes.draw do
         end
       end
       resources :incidents do
-        resources :updates, only: [:create], controller: "incident_updates"
+        resources :updates, only: [ :create ], controller: "incident_updates"
         member do
           post :resolve
         end
       end
       resources :status_pages do
-        resources :monitors, controller: "status_page_monitors", only: [:create, :update, :destroy]
+        resources :monitors, controller: "status_page_monitors", only: [ :create, :update, :destroy ]
       end
       resources :maintenance_windows
       get "setup", to: "setup#index"

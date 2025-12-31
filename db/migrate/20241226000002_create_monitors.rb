@@ -17,7 +17,7 @@ class CreateMonitors < ActiveRecord::Migration[8.0]
       # Check configuration
       t.integer :interval_seconds, default: 60
       t.integer :timeout_seconds, default: 30
-      t.string :regions, array: true, default: ["nyc"]
+      t.string :regions, array: true, default: [ "nyc" ]
 
       # HTTP-specific
       t.string :http_method, default: "GET"
@@ -50,9 +50,9 @@ class CreateMonitors < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:project_id, :enabled]
+      t.index [ :project_id, :enabled ]
       t.index :status
-      t.index [:project_id, :status]
+      t.index [ :project_id, :status ]
     end
   end
 end

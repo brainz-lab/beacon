@@ -1,7 +1,7 @@
 module Dashboard
   class StatusPagesController < BaseController
     before_action :require_project!
-    before_action :set_status_page, only: [:show, :edit, :update, :destroy]
+    before_action :set_status_page, only: [ :show, :edit, :update, :destroy ]
 
     def index
       @status_pages = @project.status_pages.order(:name)
@@ -22,7 +22,7 @@ module Dashboard
         show_incidents: true,
         uptime_days_shown: 90,
         allow_subscriptions: true,
-        subscription_channels: ["email"]
+        subscription_channels: [ "email" ]
       )
     end
 

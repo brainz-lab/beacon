@@ -57,7 +57,7 @@ module Checkers
     def build_connection
       Faraday.new(url: monitor.url) do |f|
         f.options.timeout = monitor.timeout_seconds
-        f.options.open_timeout = [10, monitor.timeout_seconds].min
+        f.options.open_timeout = [ 10, monitor.timeout_seconds ].min
         f.ssl.verify = monitor.verify_ssl
 
         # Add authentication

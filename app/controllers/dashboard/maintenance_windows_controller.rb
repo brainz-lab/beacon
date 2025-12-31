@@ -1,7 +1,7 @@
 module Dashboard
   class MaintenanceWindowsController < BaseController
     before_action :require_project!
-    before_action :set_maintenance_window, only: [:show, :edit, :update, :destroy]
+    before_action :set_maintenance_window, only: [ :show, :edit, :update, :destroy ]
 
     def index
       @maintenance_windows = @project.maintenance_windows.order(starts_at: :desc)

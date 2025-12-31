@@ -1,7 +1,7 @@
 module Api
   module V1
     class StatusPagesController < BaseController
-      before_action :set_status_page, only: [:show, :update, :destroy]
+      before_action :set_status_page, only: [ :show, :update, :destroy ]
 
       # GET /api/v1/status_pages
       def index

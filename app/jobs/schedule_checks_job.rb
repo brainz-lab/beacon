@@ -13,7 +13,7 @@ class ScheduleChecksJob < ApplicationJob
       # Skip if recently checked
       if monitor.last_check_at.present?
         next_check_at = monitor.last_check_at + monitor.interval_seconds.seconds
-        wait_time = [next_check_at - Time.current, 0].max
+        wait_time = [ next_check_at - Time.current, 0 ].max
 
         if wait_time > 0
           ExecuteCheckJob.set(wait: wait_time).perform_later(monitor.id)

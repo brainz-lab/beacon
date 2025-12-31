@@ -9,7 +9,7 @@ class CreateIncidentUpdates < ActiveRecord::Migration[8.0]
 
       t.datetime :created_at, null: false
 
-      t.index [:incident_id, :created_at]
+      t.index [ :incident_id, :created_at ]
     end
   end
 end

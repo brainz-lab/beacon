@@ -1,7 +1,7 @@
 module Api
   module V1
     class MaintenanceWindowsController < BaseController
-      before_action :set_maintenance_window, only: [:show, :update, :destroy]
+      before_action :set_maintenance_window, only: [ :show, :update, :destroy ]
 
       # GET /api/v1/maintenance_windows
       def index

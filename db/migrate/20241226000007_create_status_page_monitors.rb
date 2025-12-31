@@ -11,9 +11,9 @@ class CreateStatusPageMonitors < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index [:status_page_id, :position]
-      t.index [:status_page_id, :group_name]
-      t.index [:status_page_id, :monitor_id], unique: true
+      t.index [ :status_page_id, :position ]
+      t.index [ :status_page_id, :group_name ]
+      t.index [ :status_page_id, :monitor_id ], unique: true
     end
   end
 end
