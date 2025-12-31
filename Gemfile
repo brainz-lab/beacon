@@ -93,11 +93,13 @@ group :development, :test do
 end
 
 group :development do
+  gem "lefthook", require: false
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
 
 group :test do
+  gem "simplecov", require: false
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
