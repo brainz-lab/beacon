@@ -498,3 +498,401 @@ html.no-transitions * {
     display: none;
   }
 }
+
+/* ============================================
+   BEACON-SPECIFIC SEMANTIC CLASSES
+   ============================================
+   These classes automatically adapt to dark mode
+   and should be used instead of inline styles.
+*/
+
+/* ----------------------------------------
+   PAGE LAYOUT BACKGROUNDS
+   ---------------------------------------- */
+.bg-primary {
+  background-color: var(--dm-bg);
+}
+
+.bg-surface {
+  background-color: var(--dm-surface);
+}
+
+.bg-surface-alt {
+  background-color: var(--dm-surface-alt);
+}
+
+.bg-muted {
+  background-color: var(--dm-surface-alt);
+}
+
+/* ----------------------------------------
+   TEXT COLORS (Override for dark mode)
+   ---------------------------------------- */
+.text-primary {
+  color: var(--dm-text);
+}
+
+.text-secondary {
+  color: var(--dm-text-secondary);
+}
+
+.text-muted {
+  color: var(--dm-text-muted);
+}
+
+/* ----------------------------------------
+   SIDEBAR COMPONENT
+   ---------------------------------------- */
+.sidebar {
+  background-color: var(--dm-surface);
+  border-right: 1px solid var(--dm-border);
+}
+
+.sidebar-section-border {
+  border-color: var(--dm-border);
+}
+
+/* ----------------------------------------
+   FORM INPUTS
+   ---------------------------------------- */
+.form-input {
+  background-color: var(--dm-input-bg);
+  border: 1px solid var(--dm-input-border);
+  color: var(--dm-text);
+}
+
+.form-input:focus {
+  border-color: var(--dm-beacon);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--dm-text-placeholder);
+}
+
+.form-select {
+  background-color: var(--dm-input-bg);
+  border: 1px solid var(--dm-input-border);
+  color: var(--dm-text);
+}
+
+.form-select:focus {
+  border-color: var(--dm-beacon);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+  outline: none;
+}
+
+.form-textarea {
+  background-color: var(--dm-input-bg);
+  border: 1px solid var(--dm-input-border);
+  color: var(--dm-text);
+}
+
+.form-textarea:focus {
+  border-color: var(--dm-beacon);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+  outline: none;
+}
+
+/* ----------------------------------------
+   CODE BLOCKS
+   ---------------------------------------- */
+.code-block {
+  background-color: var(--dm-code-bg);
+  color: var(--dm-code-text);
+}
+
+.inline-code {
+  background-color: var(--dm-surface-alt);
+  color: var(--dm-text);
+}
+
+/* ----------------------------------------
+   ACTION LINKS
+   ---------------------------------------- */
+.action-link {
+  color: var(--dm-beacon);
+}
+
+.action-link:hover {
+  color: var(--dm-beacon-dark);
+}
+
+/* ----------------------------------------
+   DIVIDERS
+   ---------------------------------------- */
+.divider {
+  border-color: var(--dm-border);
+}
+
+/* ----------------------------------------
+   STATUS INDICATORS
+   ---------------------------------------- */
+:root {
+  --status-success: #10B981;
+  --status-warning: #F59E0B;
+  --status-error: #EF4444;
+  --status-info: #3B82F6;
+  --status-neutral: var(--dm-surface-alt);
+
+  --status-success-dark: #059669;
+  --status-warning-dark: #D97706;
+  --status-error-dark: #DC2626;
+  --status-info-dark: #2563EB;
+}
+
+html.dark,
+.dark,
+[data-theme="dark"] {
+  --status-success: #22C55E;
+  --status-warning: #FBBF24;
+  --status-error: #F87171;
+  --status-info: #60A5FA;
+  --status-neutral: var(--dm-surface-alt);
+
+  --status-success-dark: #16A34A;
+  --status-warning-dark: #F59E0B;
+  --status-error-dark: #EF4444;
+  --status-info-dark: #3B82F6;
+}
+
+.status-success {
+  color: var(--status-success);
+}
+
+.status-warning {
+  color: var(--status-warning);
+}
+
+.status-error {
+  color: var(--status-error);
+}
+
+.status-info {
+  color: var(--status-info);
+}
+
+/* ----------------------------------------
+   BUTTON VARIANTS
+   ---------------------------------------- */
+.btn-success {
+  background-color: var(--status-success);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: var(--status-success-dark);
+}
+
+/* ----------------------------------------
+   ACCENT COLORS (Beacon brand)
+   ---------------------------------------- */
+:root {
+  --accent-primary: var(--dm-beacon);
+  --accent-primary-bg: rgba(217, 119, 6, 0.1);
+}
+
+html.dark,
+.dark,
+[data-theme="dark"] {
+  --accent-primary: var(--dm-beacon-light);
+  --accent-primary-bg: rgba(251, 191, 36, 0.15);
+}
+
+/* ----------------------------------------
+   INLINE STYLE OVERRIDES FOR DARK MODE
+   ----------------------------------------
+   These override common hardcoded inline styles
+   found in Beacon view templates.
+*/
+
+/* Override hardcoded #1A1A1A text color */
+html.dark [style*="color: #1A1A1A"],
+html.dark [style*="color: #1a1a1a"],
+html.dark [style*="color:#1A1A1A"],
+html.dark [style*="color:#1a1a1a"] {
+  color: var(--dm-text) !important;
+}
+
+/* Override hardcoded #8B8780 text color (muted) */
+html.dark [style*="color: #8B8780"],
+html.dark [style*="color:#8B8780"] {
+  color: var(--dm-text-muted) !important;
+}
+
+/* Override hardcoded #6B6760 text color (secondary) */
+html.dark [style*="color: #6B6760"],
+html.dark [style*="color:#6B6760"] {
+  color: var(--dm-text-secondary) !important;
+}
+
+/* Override hardcoded white/cream backgrounds */
+html.dark [style*="background: #FFFFFE"],
+html.dark [style*="background:#FFFFFE"],
+html.dark [style*="background: #FFFFFF"],
+html.dark [style*="background:#FFFFFF"] {
+  background-color: var(--dm-surface) !important;
+}
+
+html.dark [style*="background: #F5F4F2"],
+html.dark [style*="background:#F5F4F2"] {
+  background-color: var(--dm-surface-alt) !important;
+}
+
+/* Override hardcoded border colors */
+html.dark [style*="border: 1px solid #E8E5E0"],
+html.dark [style*="border:1px solid #E8E5E0"] {
+  border-color: var(--dm-border) !important;
+}
+
+html.dark [style*="border-bottom: 1px solid #E8E5E0"],
+html.dark [style*="border-bottom:1px solid #E8E5E0"] {
+  border-bottom-color: var(--dm-border) !important;
+}
+
+html.dark [style*="border-top: 1px solid #E8E5E0"],
+html.dark [style*="border-top:1px solid #E8E5E0"] {
+  border-top-color: var(--dm-border) !important;
+}
+
+html.dark [style*="border-color: #E8E5E0"],
+html.dark [style*="border-color:#E8E5E0"] {
+  border-color: var(--dm-border) !important;
+}
+
+/* Override danger/error text and backgrounds */
+html.dark [style*="color: #8B2D2D"],
+html.dark [style*="color:#8B2D2D"] {
+  color: var(--dm-error-text) !important;
+}
+
+html.dark [style*="background: #FEE8E8"],
+html.dark [style*="background:#FEE8E8"] {
+  background-color: var(--dm-error-bg) !important;
+}
+
+html.dark [style*="color: #B45555"],
+html.dark [style*="color:#B45555"] {
+  color: var(--dm-error-text) !important;
+}
+
+/* Override info badge backgrounds (upcoming status) */
+html.dark [style*="background: #DBEAFE"],
+html.dark [style*="background:#DBEAFE"] {
+  background-color: var(--dm-info-bg) !important;
+}
+
+html.dark [style*="color: #1E40AF"],
+html.dark [style*="color:#1E40AF"] {
+  color: var(--dm-info-text) !important;
+}
+
+/* Override warning badge backgrounds (active status) */
+html.dark [style*="background: #FEF3C7"],
+html.dark [style*="background:#FEF3C7"] {
+  background-color: var(--dm-warning-bg) !important;
+}
+
+html.dark [style*="color: #92400E"],
+html.dark [style*="color:#92400E"] {
+  color: var(--dm-warning-text) !important;
+}
+
+/* Override code/pre blocks */
+html.dark pre[style*="background: #1A1A1A"],
+html.dark pre[style*="background:#1A1A1A"] {
+  background-color: var(--dm-code-bg) !important;
+  border: 1px solid var(--dm-border);
+}
+
+/* Override inline code backgrounds */
+html.dark code[style*="background: #F5F4F2"],
+html.dark code[style*="background:#F5F4F2"] {
+  background-color: var(--dm-surface-alt) !important;
+  color: var(--dm-text) !important;
+}
+
+/* ----------------------------------------
+   SYSTEM PREFERENCE DARK MODE OVERRIDES
+   ---------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  html:not(.light):not([data-theme="light"]) [style*="color: #1A1A1A"],
+  html:not(.light):not([data-theme="light"]) [style*="color: #1a1a1a"],
+  html:not(.light):not([data-theme="light"]) [style*="color:#1A1A1A"],
+  html:not(.light):not([data-theme="light"]) [style*="color:#1a1a1a"] {
+    color: var(--dm-text) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="color: #8B8780"],
+  html:not(.light):not([data-theme="light"]) [style*="color:#8B8780"] {
+    color: var(--dm-text-muted) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="color: #6B6760"],
+  html:not(.light):not([data-theme="light"]) [style*="color:#6B6760"] {
+    color: var(--dm-text-secondary) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="background: #FFFFFE"],
+  html:not(.light):not([data-theme="light"]) [style*="background:#FFFFFE"],
+  html:not(.light):not([data-theme="light"]) [style*="background: #FFFFFF"],
+  html:not(.light):not([data-theme="light"]) [style*="background:#FFFFFF"] {
+    background-color: var(--dm-surface) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="background: #F5F4F2"],
+  html:not(.light):not([data-theme="light"]) [style*="background:#F5F4F2"] {
+    background-color: var(--dm-surface-alt) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="border: 1px solid #E8E5E0"],
+  html:not(.light):not([data-theme="light"]) [style*="border:1px solid #E8E5E0"] {
+    border-color: var(--dm-border) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="border-bottom: 1px solid #E8E5E0"],
+  html:not(.light):not([data-theme="light"]) [style*="border-bottom:1px solid #E8E5E0"] {
+    border-bottom-color: var(--dm-border) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="border-top: 1px solid #E8E5E0"],
+  html:not(.light):not([data-theme="light"]) [style*="border-top:1px solid #E8E5E0"] {
+    border-top-color: var(--dm-border) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="border-color: #E8E5E0"],
+  html:not(.light):not([data-theme="light"]) [style*="border-color:#E8E5E0"] {
+    border-color: var(--dm-border) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="color: #8B2D2D"],
+  html:not(.light):not([data-theme="light"]) [style*="color:#8B2D2D"] {
+    color: var(--dm-error-text) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="background: #FEE8E8"],
+  html:not(.light):not([data-theme="light"]) [style*="background:#FEE8E8"] {
+    background-color: var(--dm-error-bg) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="background: #DBEAFE"],
+  html:not(.light):not([data-theme="light"]) [style*="background:#DBEAFE"] {
+    background-color: var(--dm-info-bg) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="color: #1E40AF"],
+  html:not(.light):not([data-theme="light"]) [style*="color:#1E40AF"] {
+    color: var(--dm-info-text) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="background: #FEF3C7"],
+  html:not(.light):not([data-theme="light"]) [style*="background:#FEF3C7"] {
+    background-color: var(--dm-warning-bg) !important;
+  }
+
+  html:not(.light):not([data-theme="light"]) [style*="color: #92400E"],
+  html:not(.light):not([data-theme="light"]) [style*="color:#92400E"] {
+    color: var(--dm-warning-text) !important;
+  }
+}

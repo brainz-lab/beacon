@@ -104,3 +104,108 @@
 .bg-info-100 { background-color: #E8F0F5; }
 .text-info-700 { color: #3A7BB4; }
 .text-info-800 { color: #2A5B8A; }
+
+/* ============================================
+   DARK MODE OVERRIDES FOR BEACON COMPONENTS
+   ============================================ */
+
+/* Dark mode uptime bar - adjust no-data color */
+html.dark .uptime-bar-day.no-data,
+[data-theme="dark"] .uptime-bar-day.no-data {
+  background-color: var(--dm-surface-alt);
+}
+
+/* Dark mode success colors */
+html.dark .bg-success-100,
+[data-theme="dark"] .bg-success-100 {
+  background-color: rgba(74, 155, 127, 0.15);
+}
+
+html.dark .text-success-700,
+html.dark .text-success-800,
+[data-theme="dark"] .text-success-700,
+[data-theme="dark"] .text-success-800 {
+  color: #6EE7B7;
+}
+
+/* Dark mode error colors */
+html.dark .bg-error-100,
+[data-theme="dark"] .bg-error-100 {
+  background-color: rgba(201, 74, 74, 0.15);
+}
+
+html.dark .text-error-700,
+html.dark .text-error-800,
+[data-theme="dark"] .text-error-700,
+[data-theme="dark"] .text-error-800 {
+  color: #FCA5A5;
+}
+
+/* Dark mode warning colors */
+html.dark .bg-warn-100,
+[data-theme="dark"] .bg-warn-100 {
+  background-color: rgba(201, 154, 74, 0.15);
+}
+
+html.dark .text-warn-700,
+html.dark .text-warn-800,
+[data-theme="dark"] .text-warn-700,
+[data-theme="dark"] .text-warn-800 {
+  color: #FCD34D;
+}
+
+/* Dark mode info colors */
+html.dark .bg-info-100,
+[data-theme="dark"] .bg-info-100 {
+  background-color: rgba(90, 155, 212, 0.15);
+}
+
+html.dark .text-info-700,
+html.dark .text-info-800,
+[data-theme="dark"] .text-info-700,
+[data-theme="dark"] .text-info-800 {
+  color: #93C5FD;
+}
+
+/* System preference support */
+@media (prefers-color-scheme: dark) {
+  html:not(.light):not([data-theme="light"]) .uptime-bar-day.no-data {
+    background-color: var(--dm-surface-alt);
+  }
+
+  html:not(.light):not([data-theme="light"]) .bg-success-100 {
+    background-color: rgba(74, 155, 127, 0.15);
+  }
+
+  html:not(.light):not([data-theme="light"]) .text-success-700,
+  html:not(.light):not([data-theme="light"]) .text-success-800 {
+    color: #6EE7B7;
+  }
+
+  html:not(.light):not([data-theme="light"]) .bg-error-100 {
+    background-color: rgba(201, 74, 74, 0.15);
+  }
+
+  html:not(.light):not([data-theme="light"]) .text-error-700,
+  html:not(.light):not([data-theme="light"]) .text-error-800 {
+    color: #FCA5A5;
+  }
+
+  html:not(.light):not([data-theme="light"]) .bg-warn-100 {
+    background-color: rgba(201, 154, 74, 0.15);
+  }
+
+  html:not(.light):not([data-theme="light"]) .text-warn-700,
+  html:not(.light):not([data-theme="light"]) .text-warn-800 {
+    color: #FCD34D;
+  }
+
+  html:not(.light):not([data-theme="light"]) .bg-info-100 {
+    background-color: rgba(90, 155, 212, 0.15);
+  }
+
+  html:not(.light):not([data-theme="light"]) .text-info-700,
+  html:not(.light):not([data-theme="light"]) .text-info-800 {
+    color: #93C5FD;
+  }
+}
