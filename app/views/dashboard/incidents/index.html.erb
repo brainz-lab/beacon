@@ -4,40 +4,39 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1C1917;">Incidents</h1>
-      <p class="mt-1 text-[13px]" style="color: #78716C;">Track and manage downtime events</p>
+      <h1 class="text-[22px] font-semibold tracking-tight text-primary">Incidents</h1>
+      <p class="mt-1 text-[13px] text-muted">Track and manage downtime events</p>
     </div>
   </div>
 
   <!-- Filters -->
-  <div class="p-4 rounded-xl" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
+  <div class="p-4 rounded-xl card">
     <div class="flex flex-wrap gap-2">
       <%= link_to "All", dashboard_project_incidents_path(@project),
-          class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
-          style: params[:status].nil? ? "background: linear-gradient(135deg, #D97706 0%, #B45309 100%); color: #FFFFFE; box-shadow: 0 1px 2px rgba(180, 83, 9, 0.2);" : "background: #EFEDE8; color: #57534E;" %>
+          class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all #{params[:status].nil? ? 'filter-pill active' : 'filter-pill'}" %>
       <%= link_to "Active", dashboard_project_incidents_path(@project, status: "active"),
           class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
-          style: params[:status] == "active" ? "background: #DC2626; color: #FFFFFE;" : "background: #EFEDE8; color: #57534E;" %>
+          style: params[:status] == "active" ? "background: var(--status-error); color: white;" : "background: var(--bg-muted); color: var(--text-secondary);" %>
       <%= link_to "Resolved", dashboard_project_incidents_path(@project, status: "resolved"),
           class: "px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all",
-          style: params[:status] == "resolved" ? "background: #16A34A; color: #FFFFFE;" : "background: #EFEDE8; color: #57534E;" %>
+          style: params[:status] == "resolved" ? "background: var(--status-success); color: white;" : "background: var(--bg-muted); color: var(--text-secondary);" %>
     </div>
   </div>
 
   <!-- Incidents List -->
-  <div class="rounded-xl overflow-hidden" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
+  <div class="rounded-xl overflow-hidden card">
     <% if @incidents.any? %>
-      <div class="divide-y" style="border-color: #E5E2DC;">
+      <div class="divide-y divider">
         <% @incidents.each do |incident| %>
-          <div class="p-5 hover:bg-[#F5F5F0] transition-all">
+          <div class="p-5 table-row transition-all">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-4">
-                <span class="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-xl" style="background: <%= incident.severity == 'critical' ? '#DC2626' : (incident.severity == 'major' ? '#D97706' : '#78716C') %>;">
+                <span class="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-xl" style="background: <%= incident.severity == 'critical' ? 'var(--status-error)' : (incident.severity == 'major' ? 'var(--status-warning)' : 'var(--status-neutral)') %>;">
                   <span class="text-[12px] font-semibold text-white"><%= incident.severity[0..1].upcase %></span>
                 </span>
                 <div>
-                  <%= link_to incident.title, dashboard_project_incident_path(@project, incident), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1C1917;" %>
-                  <div class="flex items-center gap-2 mt-1 text-[12px]" style="color: #78716C;">
+                  <%= link_to incident.title, dashboard_project_incident_path(@project, incident), class: "text-[14px] font-medium hover:opacity-70 transition-opacity text-primary" %>
+                  <div class="flex items-center gap-2 mt-1 text-[12px] text-muted">
                     <span><%= incident.uptime_monitor.name %></span>
                     <span>&middot;</span>
                     <span>Started <%= time_ago_in_words(incident.started_at) %> ago</span>
@@ -49,17 +48,17 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="<%= incident.resolved? ? 'background: rgba(22, 163, 74, 0.1); color: #166534;' : 'background: rgba(220, 38, 38, 0.1); color: #991B1B;' %>">
+                <span class="badge <%= incident.resolved? ? 'badge-success' : 'badge-error' %>">
                   <%= incident.status %>
                 </span>
                 <% unless incident.resolved? %>
-                  <%= button_to "Resolve", resolve_dashboard_project_incident_path(@project, incident), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-xl transition-all", style: "background: #16A34A; color: #FFFFFE;" %>
+                  <%= button_to "Resolve", resolve_dashboard_project_incident_path(@project, incident), method: :post, class: "px-4 py-2 text-[13px] font-medium rounded-xl transition-all btn-success" %>
                 <% end %>
               </div>
             </div>
             <% if incident.updates.any? %>
               <div class="mt-3 pl-14">
-                <p class="text-[13px]" style="color: #78716C;">
+                <p class="text-[13px] text-muted">
                   Latest: <%= incident.updates.last.message.truncate(100) %>
                 </p>
               </div>
@@ -69,13 +68,13 @@
       </div>
     <% else %>
       <div class="text-center py-16">
-        <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center" style="background: rgba(22, 163, 74, 0.1);">
-          <svg class="w-8 h-8" style="color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center empty-state-icon-success">
+          <svg class="w-8 h-8" style="color: var(--status-success);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
-        <h3 class="mt-4 text-[15px] font-medium" style="color: #1C1917;">No incidents</h3>
-        <p class="mt-1 text-[13px]" style="color: #78716C;">All systems are running smoothly.</p>
+        <h3 class="mt-4 text-[15px] font-medium text-primary">No incidents</h3>
+        <p class="mt-1 text-[13px] text-muted">All systems are running smoothly.</p>
       </div>
     <% end %>
   </div>

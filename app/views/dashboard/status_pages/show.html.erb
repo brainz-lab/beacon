@@ -4,30 +4,30 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;"><%= @status_page.name %></h1>
-      <p class="mt-1 text-[13px]" style="color: #8B8780;">
+      <h1 class="text-[22px] font-semibold tracking-tight text-primary"><%= @status_page.name %></h1>
+      <p class="mt-1 text-[13px] text-muted">
         <% if @status_page.public? %>
-          <%= link_to public_status_url(@status_page.slug), public_status_path(@status_page.slug), target: "_blank", class: "hover:opacity-70 transition-opacity", style: "color: #10B981;" %>
+          <%= link_to public_status_url(@status_page.slug), public_status_path(@status_page.slug), target: "_blank", class: "hover:opacity-70 transition-opacity action-link-success" %>
         <% else %>
           Private status page
         <% end %>
       </p>
     </div>
     <div class="flex items-center gap-2">
-      <%= link_to "Edit", edit_dashboard_project_status_page_path(@project, @status_page), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+      <%= link_to "Edit", edit_dashboard_project_status_page_path(@project, @status_page), class: "px-4 py-2 text-[13px] font-medium rounded-lg transition-colors btn-secondary" %>
     </div>
   </div>
 
   <!-- Current Status -->
-  <div class="px-5 py-5 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
+  <div class="px-5 py-5 rounded-xl card">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <span class="h-3 w-3 rounded-full" style="background: <%= @calculator.overall_status == 'operational' ? '#10B981' : (@calculator.overall_status == 'degraded' ? '#F59E0B' : '#EF4444') %>;"></span>
-        <span class="text-[18px] font-semibold" style="color: #1A1A1A;"><%= @calculator.status_info[:label] %></span>
+        <span class="h-3 w-3 rounded-full status-indicator <%= @calculator.overall_status == 'operational' ? 'status-indicator-success' : (@calculator.overall_status == 'degraded' ? 'status-indicator-warning' : 'status-indicator-error') %>"></span>
+        <span class="text-[18px] font-semibold text-primary"><%= @calculator.status_info[:label] %></span>
       </div>
       <div class="text-right">
-        <p class="text-[13px]" style="color: #8B8780;">Overall Uptime (30d)</p>
-        <p class="text-[28px] font-semibold" style="color: #1A1A1A;"><%= @status_page.overall_uptime %>%</p>
+        <p class="text-[13px] text-muted">Overall Uptime (30d)</p>
+        <p class="text-[28px] font-semibold text-primary"><%= @status_page.overall_uptime %>%</p>
       </div>
     </div>
   </div>
@@ -37,20 +37,20 @@
     <div class="lg:col-span-2 space-y-6">
       <!-- Monitors by Group -->
       <% @monitors_by_group.each do |group_name, monitors| %>
-        <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-          <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
-            <h2 class="text-[15px] font-medium" style="color: #1A1A1A;"><%= group_name || "Monitors" %></h2>
+        <div class="rounded-xl card">
+          <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+            <h2 class="text-[15px] font-medium text-primary"><%= group_name || "Monitors" %></h2>
           </div>
-          <div class="divide-y" style="border-color: #E8E5E0;">
+          <div class="divide-y divider">
             <% monitors.each do |spm| %>
               <div class="px-5 py-4 flex items-center justify-between" id="<%= dom_id(spm) %>">
                 <div class="flex items-center gap-3">
-                  <span class="h-2 w-2 rounded-full" style="background: <%= spm.uptime_monitor.status == 'up' ? '#10B981' : (spm.uptime_monitor.status == 'degraded' ? '#F59E0B' : '#EF4444') %>;"></span>
-                  <span class="text-[14px] font-medium" style="color: #1A1A1A;"><%= spm.display_name || spm.uptime_monitor.name %></span>
+                  <span class="status-indicator <%= spm.uptime_monitor.status == 'up' ? 'status-indicator-success' : (spm.uptime_monitor.status == 'degraded' ? 'status-indicator-warning' : 'status-indicator-error') %>"></span>
+                  <span class="text-[14px] font-medium text-primary"><%= spm.display_name || spm.uptime_monitor.name %></span>
                 </div>
                 <div class="flex items-center gap-4">
-                  <span class="text-[13px]" style="color: #8B8780;"><%= spm.uptime_monitor.status.humanize %></span>
-                  <%= button_to "Remove", dashboard_project_status_page_monitor_path(@project, @status_page, spm), method: :delete, class: "text-[13px] font-medium transition-opacity hover:opacity-70", style: "color: #EF4444;", data: { turbo_confirm: "Remove this monitor?" } %>
+                  <span class="text-[13px] text-muted"><%= spm.uptime_monitor.status.humanize %></span>
+                  <%= button_to "Remove", dashboard_project_status_page_monitor_path(@project, @status_page, spm), method: :delete, class: "text-[13px] font-medium transition-opacity hover:opacity-70 action-link-error", data: { turbo_confirm: "Remove this monitor?" } %>
                 </div>
               </div>
             <% end %>
@@ -59,29 +59,29 @@
       <% end %>
 
       <% if @monitors_by_group.empty? %>
-        <div class="p-6 rounded-xl text-center" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-          <p class="text-[13px]" style="color: #8B8780;">No monitors added to this status page yet.</p>
+        <div class="p-6 rounded-xl text-center card">
+          <p class="text-[13px] text-muted">No monitors added to this status page yet.</p>
         </div>
       <% end %>
 
       <!-- Add Monitor -->
-      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;" id="add_monitor_form">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
-          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Add Monitor</h2>
+      <div class="rounded-xl card" id="add_monitor_form">
+        <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <h2 class="text-[15px] font-medium text-primary">Add Monitor</h2>
         </div>
         <div class="px-5 py-5">
           <%= form_with url: dashboard_project_status_page_monitors_path(@project, @status_page), class: "flex flex-wrap items-end gap-4" do |f| %>
             <div class="flex-1 min-w-[200px]">
-              <%= f.label :monitor_id, "Monitor", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
+              <%= f.label :monitor_id, "Monitor", class: "block text-[13px] font-medium form-label" %>
               <%= f.select :monitor_id, @project.uptime_monitors.order(:name).map { |m| [m.name, m.id] },
                   { prompt: "Select a monitor" },
-                  class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;" %>
+                  class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2 form-input" %>
             </div>
             <div class="flex-1 min-w-[200px]">
-              <%= f.label :group_name, "Group (optional)", class: "block text-[13px] font-medium", style: "color: #1A1A1A;" %>
-              <%= f.text_field :group_name, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2", style: "background: #FFFFFE; border: 1px solid #E8E5E0; color: #1A1A1A;", placeholder: "e.g., API, Web" %>
+              <%= f.label :group_name, "Group (optional)", class: "block text-[13px] font-medium form-label" %>
+              <%= f.text_field :group_name, class: "mt-1 block w-full px-3 py-2 text-[13px] rounded-lg focus:outline-none focus:ring-2 form-input", placeholder: "e.g., API, Web" %>
             </div>
-            <%= f.submit "Add", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors", style: "background: #1A1A1A; color: #FFFFFE;" %>
+            <%= f.submit "Add", class: "px-4 py-2 text-[13px] font-medium rounded-lg cursor-pointer transition-colors btn-primary text-white" %>
           <% end %>
         </div>
       </div>
@@ -90,37 +90,37 @@
     <!-- Sidebar -->
     <div class="space-y-6">
       <!-- Stats -->
-      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
-          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Statistics</h2>
+      <div class="rounded-xl card">
+        <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <h2 class="text-[15px] font-medium text-primary">Statistics</h2>
         </div>
-        <div class="divide-y" style="border-color: #E8E5E0;">
+        <div class="divide-y divider">
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-[13px]" style="color: #8B8780;">Monitors</span>
-            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @status_page.uptime_monitors.count %></span>
+            <span class="text-[13px] text-muted">Monitors</span>
+            <span class="text-[13px] font-medium text-primary"><%= @status_page.uptime_monitors.count %></span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-[13px]" style="color: #8B8780;">Subscribers</span>
-            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @subscriber_count %></span>
+            <span class="text-[13px] text-muted">Subscribers</span>
+            <span class="text-[13px] font-medium text-primary"><%= @subscriber_count %></span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-[13px]" style="color: #8B8780;">Active Incidents</span>
-            <span class="text-[13px] font-medium" style="color: #1A1A1A;"><%= @active_incidents.count %></span>
+            <span class="text-[13px] text-muted">Active Incidents</span>
+            <span class="text-[13px] font-medium text-primary"><%= @active_incidents.count %></span>
           </div>
         </div>
       </div>
 
       <!-- Active Incidents -->
       <% if @active_incidents.any? %>
-        <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-          <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
-            <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Active Incidents</h2>
+        <div class="rounded-xl card">
+          <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+            <h2 class="text-[15px] font-medium text-primary">Active Incidents</h2>
           </div>
-          <div class="divide-y" style="border-color: #E8E5E0;">
+          <div class="divide-y divider">
             <% @active_incidents.each do |incident| %>
               <div class="px-5 py-3">
-                <%= link_to incident.title, dashboard_project_incident_path(@project, incident), class: "text-[14px] font-medium hover:opacity-70 transition-opacity", style: "color: #1A1A1A;" %>
-                <p class="text-[12px]" style="color: #8B8780;"><%= time_ago_in_words(incident.started_at) %> ago</p>
+                <%= link_to incident.title, dashboard_project_incident_path(@project, incident), class: "text-[14px] font-medium hover:opacity-70 transition-opacity text-primary" %>
+                <p class="text-[12px] text-muted"><%= time_ago_in_words(incident.started_at) %> ago</p>
               </div>
             <% end %>
           </div>
@@ -128,13 +128,13 @@
       <% end %>
 
       <!-- Embed Code -->
-      <div class="rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #E8E5E0;">
-          <h2 class="text-[15px] font-medium" style="color: #1A1A1A;">Embed Badge</h2>
+      <div class="rounded-xl card">
+        <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <h2 class="text-[15px] font-medium text-primary">Embed Badge</h2>
         </div>
         <div class="px-5 py-4">
           <img src="<%= status_badge_path(@status_page.slug) %>" alt="Status Badge" class="mb-3">
-          <textarea readonly class="w-full text-[11px] font-mono p-2 rounded-lg focus:outline-none" style="background: #F5F4F2; border: 1px solid #E8E5E0; color: #6B6760;" rows="2"><img src="<%= status_badge_url(@status_page.slug) %>" alt="Status"></textarea>
+          <textarea readonly class="w-full text-[11px] font-mono p-2 rounded-lg focus:outline-none form-input" rows="2"><img src="<%= status_badge_url(@status_page.slug) %>" alt="Status"></textarea>
         </div>
       </div>
     </div>

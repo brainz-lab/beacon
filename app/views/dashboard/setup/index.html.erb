@@ -2,53 +2,53 @@
 
 <div class="space-y-8">
   <div>
-    <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1A1A1A;">Setup</h1>
-    <p class="mt-1 text-[13px]" style="color: #8B8780;">Configure your Beacon project and get your API keys</p>
+    <h1 class="text-[22px] font-semibold tracking-tight text-primary">Setup</h1>
+    <p class="mt-1 text-[13px] text-muted">Configure your Beacon project and get your API keys</p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- API Keys -->
-    <div class="p-6 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-      <h2 class="text-[15px] font-medium mb-4" style="color: #1A1A1A;">API Keys</h2>
+    <div class="p-6 rounded-xl card">
+      <h2 class="text-[15px] font-medium mb-4 text-primary">API Keys</h2>
 
       <div class="space-y-4">
         <div>
-          <label class="block text-[13px] font-medium mb-1" style="color: #6B6760;">API Key</label>
+          <label class="block text-[13px] font-medium mb-1 text-secondary">API Key</label>
           <div class="flex">
-            <input type="text" readonly value="<%= @api_key %>" class="flex-1 px-3 py-2 text-[13px] font-mono rounded-l-lg" style="background: #F5F4F2; border: 1px solid #E8E5E0; border-right: none; color: #1A1A1A;">
-            <button onclick="navigator.clipboard.writeText('<%= @api_key %>')" class="px-3 py-2 text-[13px] font-medium rounded-r-lg" style="background: #F0EFED; border: 1px solid #E8E5E0; color: #6B6760;">Copy</button>
+            <input type="text" readonly value="<%= @api_key %>" class="flex-1 px-3 py-2 text-[13px] font-mono rounded-l-lg form-input" style="border-right: none;">
+            <button onclick="navigator.clipboard.writeText('<%= @api_key %>')" class="px-3 py-2 text-[13px] font-medium rounded-r-lg btn-secondary">Copy</button>
           </div>
-          <p class="mt-1 text-[12px]" style="color: #8B8780;">Used for API authentication</p>
+          <p class="mt-1 text-[12px] text-muted">Used for API authentication</p>
         </div>
 
         <div>
-          <label class="block text-[13px] font-medium mb-1" style="color: #6B6760;">Ingest Key</label>
+          <label class="block text-[13px] font-medium mb-1 text-secondary">Ingest Key</label>
           <div class="flex">
-            <input type="text" readonly value="<%= @ingest_key %>" class="flex-1 px-3 py-2 text-[13px] font-mono rounded-l-lg" style="background: #F5F4F2; border: 1px solid #E8E5E0; border-right: none; color: #1A1A1A;">
-            <button onclick="navigator.clipboard.writeText('<%= @ingest_key %>')" class="px-3 py-2 text-[13px] font-medium rounded-r-lg" style="background: #F0EFED; border: 1px solid #E8E5E0; color: #6B6760;">Copy</button>
+            <input type="text" readonly value="<%= @ingest_key %>" class="flex-1 px-3 py-2 text-[13px] font-mono rounded-l-lg form-input" style="border-right: none;">
+            <button onclick="navigator.clipboard.writeText('<%= @ingest_key %>')" class="px-3 py-2 text-[13px] font-medium rounded-r-lg btn-secondary">Copy</button>
           </div>
-          <p class="mt-1 text-[12px]" style="color: #8B8780;">Used for sending check data</p>
+          <p class="mt-1 text-[12px] text-muted">Used for sending check data</p>
         </div>
       </div>
     </div>
 
     <!-- Quick Start -->
-    <div class="p-6 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-      <h2 class="text-[15px] font-medium mb-4" style="color: #1A1A1A;">Quick Start</h2>
+    <div class="p-6 rounded-xl card">
+      <h2 class="text-[15px] font-medium mb-4 text-primary">Quick Start</h2>
 
       <div class="space-y-4">
         <div>
-          <h3 class="text-[13px] font-medium mb-2" style="color: #6B6760;">1. Create a monitor via API</h3>
-          <pre class="p-3 text-[12px] font-mono rounded-lg overflow-x-auto" style="background: #1A1A1A; color: #E8E5E0;">curl -X POST https://beacon.brainzlab.ai/api/v1/monitors \
+          <h3 class="text-[13px] font-medium mb-2 text-secondary">1. Create a monitor via API</h3>
+          <pre class="p-3 text-[12px] font-mono rounded-lg overflow-x-auto code-block">curl -X POST https://beacon.brainzlab.ai/api/v1/monitors \
   -H "Authorization: Bearer <%= @api_key %>" \
   -H "Content-Type: application/json" \
   -d '{"name": "My Website", "url": "https://example.com"}'</pre>
         </div>
 
         <div>
-          <h3 class="text-[13px] font-medium mb-2" style="color: #6B6760;">2. Or use the dashboard</h3>
-          <p class="text-[13px]" style="color: #8B8780;">
-            <%= link_to "Add your first monitor", dashboard_project_monitors_path(@project), class: "font-medium", style: "color: #10B981;" %>
+          <h3 class="text-[13px] font-medium mb-2 text-secondary">2. Or use the dashboard</h3>
+          <p class="text-[13px] text-muted">
+            <%= link_to "Add your first monitor", dashboard_project_monitors_path(@project), class: "font-medium action-link-success" %>
             to start monitoring your endpoints.
           </p>
         </div>
@@ -57,29 +57,29 @@
   </div>
 
   <!-- API Reference -->
-  <div class="p-6 rounded-xl" style="background: #FFFFFE; border: 1px solid #E8E5E0;">
-    <h2 class="text-[15px] font-medium mb-4" style="color: #1A1A1A;">API Endpoints</h2>
+  <div class="p-6 rounded-xl card">
+    <h2 class="text-[15px] font-medium mb-4 text-primary">API Endpoints</h2>
 
     <div class="space-y-3 text-[13px]">
-      <div class="flex items-center gap-3 p-2 rounded-lg" style="background: #F5F4F2;">
-        <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #10B981; color: white;">GET</span>
-        <code style="color: #1A1A1A;">/api/v1/monitors</code>
-        <span style="color: #8B8780;">List all monitors</span>
+      <div class="flex items-center gap-3 p-2 rounded-lg bg-muted">
+        <span class="px-2 py-0.5 text-[11px] font-medium rounded btn-success">GET</span>
+        <code class="text-primary">/api/v1/monitors</code>
+        <span class="text-muted">List all monitors</span>
       </div>
-      <div class="flex items-center gap-3 p-2 rounded-lg" style="background: #F5F4F2;">
-        <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #3B82F6; color: white;">POST</span>
-        <code style="color: #1A1A1A;">/api/v1/monitors</code>
-        <span style="color: #8B8780;">Create a monitor</span>
+      <div class="flex items-center gap-3 p-2 rounded-lg bg-muted">
+        <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: var(--status-info); color: white;">POST</span>
+        <code class="text-primary">/api/v1/monitors</code>
+        <span class="text-muted">Create a monitor</span>
       </div>
-      <div class="flex items-center gap-3 p-2 rounded-lg" style="background: #F5F4F2;">
-        <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #10B981; color: white;">GET</span>
-        <code style="color: #1A1A1A;">/api/v1/monitors/:id/checks</code>
-        <span style="color: #8B8780;">Get check history</span>
+      <div class="flex items-center gap-3 p-2 rounded-lg bg-muted">
+        <span class="px-2 py-0.5 text-[11px] font-medium rounded btn-success">GET</span>
+        <code class="text-primary">/api/v1/monitors/:id/checks</code>
+        <span class="text-muted">Get check history</span>
       </div>
-      <div class="flex items-center gap-3 p-2 rounded-lg" style="background: #F5F4F2;">
-        <span class="px-2 py-0.5 text-[11px] font-medium rounded" style="background: #10B981; color: white;">GET</span>
-        <code style="color: #1A1A1A;">/api/v1/incidents</code>
-        <span style="color: #8B8780;">List incidents</span>
+      <div class="flex items-center gap-3 p-2 rounded-lg bg-muted">
+        <span class="px-2 py-0.5 text-[11px] font-medium rounded btn-success">GET</span>
+        <code class="text-primary">/api/v1/incidents</code>
+        <span class="text-muted">List incidents</span>
       </div>
     </div>
   </div>

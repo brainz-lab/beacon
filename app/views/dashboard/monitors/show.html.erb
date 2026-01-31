@@ -5,17 +5,17 @@
   <div class="flex items-center justify-between">
     <div>
       <div class="flex items-center gap-3">
-        <span class="h-3 w-3 rounded-full" style="background: <%= @monitor.status == 'up' ? '#16A34A' : (@monitor.status == 'degraded' ? '#D97706' : (@monitor.status == 'paused' ? '#78716C' : '#DC2626')) %>;"></span>
-        <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1C1917;"><%= @monitor.name %></h1>
+        <span class="h-3 w-3 rounded-full status-indicator <%= @monitor.status == 'up' ? 'status-indicator-success' : (@monitor.status == 'degraded' ? 'status-indicator-warning' : (@monitor.status == 'paused' ? 'status-indicator-neutral' : 'status-indicator-error')) %>"></span>
+        <h1 class="text-[22px] font-semibold tracking-tight text-primary"><%= @monitor.name %></h1>
       </div>
-      <p class="mt-1 text-[13px]" style="color: #78716C;"><%= @monitor.url || "#{@monitor.host}:#{@monitor.port}" %></p>
+      <p class="mt-1 text-[13px] text-muted"><%= @monitor.url || "#{@monitor.host}:#{@monitor.port}" %></p>
     </div>
     <div class="flex items-center gap-2">
-      <%= button_to "Check Now", check_now_dashboard_project_monitor_path(@project, @monitor), method: :post, class: "px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all", style: "background: #FFFFFE; border: 1px solid #E5E2DC; color: #1C1917;" %>
+      <%= button_to "Check Now", check_now_dashboard_project_monitor_path(@project, @monitor), method: :post, class: "px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-secondary" %>
       <% if @monitor.paused? %>
-        <%= button_to "Resume", resume_dashboard_project_monitor_path(@project, @monitor), method: :post, class: "px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all", style: "background: #16A34A; color: #FFFFFE;" %>
+        <%= button_to "Resume", resume_dashboard_project_monitor_path(@project, @monitor), method: :post, class: "px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-success" %>
       <% else %>
-        <%= button_to "Pause", pause_dashboard_project_monitor_path(@project, @monitor), method: :post, class: "px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all", style: "background: #78716C; color: #FFFFFE;" %>
+        <%= button_to "Pause", pause_dashboard_project_monitor_path(@project, @monitor), method: :post, class: "px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all btn-neutral" %>
       <% end %>
       <%= link_to "Edit", edit_dashboard_project_monitor_path(@project, @monitor), class: "btn-primary px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white" %>
     </div>
@@ -23,25 +23,25 @@
 
   <!-- Stats -->
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Status</p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Status</p>
       <div class="mt-2">
-        <span class="px-2.5 py-1 text-[12px] font-medium rounded-full" style="<%= @monitor.status == 'up' ? 'background: rgba(22, 163, 74, 0.1); color: #166534;' : (@monitor.status == 'degraded' ? 'background: rgba(217, 119, 6, 0.1); color: #92400E;' : (@monitor.status == 'paused' ? 'background: #EFEDE8; color: #57534E;' : 'background: rgba(220, 38, 38, 0.1); color: #991B1B;')) %>">
+        <span class="badge <%= @monitor.status == 'up' ? 'badge-success' : (@monitor.status == 'degraded' ? 'badge-warning' : (@monitor.status == 'paused' ? 'badge-neutral' : 'badge-error')) %>">
           <%= @monitor.status.humanize %>
         </span>
       </div>
     </div>
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Uptime (24h)</p>
-      <p class="mt-1 text-[28px] font-semibold" style="color: #1C1917;"><%= @uptime_calculator.uptime_percentage(24.hours) %>%</p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Uptime (24h)</p>
+      <p class="mt-1 text-[28px] font-semibold text-primary"><%= @uptime_calculator.uptime_percentage(24.hours) %>%</p>
     </div>
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Uptime (30d)</p>
-      <p class="mt-1 text-[28px] font-semibold" style="color: #1C1917;"><%= @uptime_calculator.uptime_percentage(30.days) %>%</p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Uptime (30d)</p>
+      <p class="mt-1 text-[28px] font-semibold text-primary"><%= @uptime_calculator.uptime_percentage(30.days) %>%</p>
     </div>
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Avg Response</p>
-      <p class="mt-1 text-[28px] font-semibold" style="color: #1C1917;"><%= @uptime_calculator.average_response_time(24.hours) %>ms</p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Avg Response</p>
+      <p class="mt-1 text-[28px] font-semibold text-primary"><%= @uptime_calculator.average_response_time(24.hours) %>ms</p>
     </div>
   </div>
 
@@ -49,9 +49,9 @@
     <!-- Main Content -->
     <div class="lg:col-span-2 space-y-6">
       <!-- Response Time Chart -->
-      <div class="rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #E5E2DC;">
-          <h2 class="text-[15px] font-semibold" style="color: #1C1917;">Response Time</h2>
+      <div class="rounded-xl card card-hover transition-all">
+        <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <h2 class="text-[15px] font-semibold text-primary">Response Time</h2>
         </div>
         <div class="p-6" data-controller="response-chart" data-response-chart-monitor-value="<%= @monitor.id %>">
           <canvas id="response-chart" height="200"></canvas>
@@ -59,35 +59,35 @@
       </div>
 
       <!-- Recent Checks -->
-      <div class="rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #E5E2DC;">
-          <h2 class="text-[15px] font-semibold" style="color: #1C1917;">Recent Checks</h2>
+      <div class="rounded-xl card card-hover transition-all">
+        <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <h2 class="text-[15px] font-semibold text-primary">Recent Checks</h2>
         </div>
         <div class="overflow-x-auto">
           <table class="min-w-full">
-            <thead style="background: #EFEDE8;">
+            <thead class="table-header">
               <tr>
-                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase" style="color: #78716C;">Time</th>
-                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase" style="color: #78716C;">Status</th>
-                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase" style="color: #78716C;">Response</th>
-                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase" style="color: #78716C;">Region</th>
+                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase text-muted">Time</th>
+                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase text-muted">Status</th>
+                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase text-muted">Response</th>
+                <th class="px-5 py-3 text-left text-[11px] font-semibold uppercase text-muted">Region</th>
               </tr>
             </thead>
             <tbody id="checks-list">
               <% @recent_checks.each do |check| %>
-                <tr class="hover:bg-[#F5F5F0] transition-all" style="border-bottom: 1px solid #E5E2DC;">
-                  <td class="px-5 py-3 text-[13px]" style="color: #57534E;">
+                <tr class="table-row transition-all">
+                  <td class="px-5 py-3 text-[13px] text-secondary">
                     <%= check.checked_at.strftime("%H:%M:%S") %>
                   </td>
                   <td class="px-5 py-3">
-                    <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="<%= check.success? ? 'background: rgba(22, 163, 74, 0.1); color: #166534;' : 'background: rgba(220, 38, 38, 0.1); color: #991B1B;' %>">
+                    <span class="badge <%= check.success? ? 'badge-success' : 'badge-error' %>">
                       <%= check.success? ? 'OK' : 'FAIL' %>
                     </span>
                   </td>
-                  <td class="px-5 py-3 text-[13px]" style="color: #57534E;">
+                  <td class="px-5 py-3 text-[13px] text-secondary">
                     <%= check.response_time %>ms
                   </td>
-                  <td class="px-5 py-3 text-[13px]" style="color: #57534E;">
+                  <td class="px-5 py-3 text-[13px] text-secondary">
                     <%= check.region&.upcase %>
                   </td>
                 </tr>
@@ -101,49 +101,49 @@
     <!-- Sidebar -->
     <div class="space-y-6">
       <!-- Configuration -->
-      <div class="rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #E5E2DC;">
-          <h2 class="text-[15px] font-semibold" style="color: #1C1917;">Configuration</h2>
+      <div class="rounded-xl card card-hover transition-all">
+        <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <h2 class="text-[15px] font-semibold text-primary">Configuration</h2>
         </div>
-        <div class="divide-y" style="border-color: #E5E2DC;">
+        <div class="divide-y divider">
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-[13px]" style="color: #78716C;">Type</span>
-            <span class="text-[13px] font-medium" style="color: #1C1917;"><%= @monitor.check_type.upcase %></span>
+            <span class="text-[13px] text-muted">Type</span>
+            <span class="text-[13px] font-medium text-primary"><%= @monitor.check_type.upcase %></span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-[13px]" style="color: #78716C;">Interval</span>
-            <span class="text-[13px] font-medium" style="color: #1C1917;"><%= @monitor.interval %>s</span>
+            <span class="text-[13px] text-muted">Interval</span>
+            <span class="text-[13px] font-medium text-primary"><%= @monitor.interval %>s</span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-[13px]" style="color: #78716C;">Timeout</span>
-            <span class="text-[13px] font-medium" style="color: #1C1917;"><%= @monitor.timeout / 1000.0 %>s</span>
+            <span class="text-[13px] text-muted">Timeout</span>
+            <span class="text-[13px] font-medium text-primary"><%= @monitor.timeout / 1000.0 %>s</span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-[13px]" style="color: #78716C;">Regions</span>
-            <span class="text-[13px] font-medium" style="color: #1C1917;"><%= @monitor.regions.join(", ").upcase %></span>
+            <span class="text-[13px] text-muted">Regions</span>
+            <span class="text-[13px] font-medium text-primary"><%= @monitor.regions.join(", ").upcase %></span>
           </div>
         </div>
       </div>
 
       <!-- Recent Incidents -->
-      <div class="rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #E5E2DC;">
-          <h2 class="text-[15px] font-semibold" style="color: #1C1917;">Recent Incidents</h2>
+      <div class="rounded-xl card card-hover transition-all">
+        <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <h2 class="text-[15px] font-semibold text-primary">Recent Incidents</h2>
         </div>
         <div class="px-5 py-4">
           <% if @incidents.any? %>
             <div class="space-y-3">
               <% @incidents.each do |incident| %>
                 <a href="<%= dashboard_project_incident_path(@project, incident) %>" class="block hover:opacity-80 transition-opacity">
-                  <p class="text-[14px] font-medium" style="color: #1C1917;"><%= incident.title %></p>
-                  <p class="text-[12px]" style="color: #78716C;">
+                  <p class="text-[14px] font-medium text-primary"><%= incident.title %></p>
+                  <p class="text-[12px] text-muted">
                     <%= incident.started_at.strftime("%b %d, %H:%M") %> &middot; <%= incident.resolved? ? "Resolved" : "Active" %>
                   </p>
                 </a>
               <% end %>
             </div>
           <% else %>
-            <p class="text-[13px] text-center py-4" style="color: #78716C;">No recent incidents</p>
+            <p class="text-[13px] text-center py-4 text-muted">No recent incidents</p>
           <% end %>
         </div>
       </div>

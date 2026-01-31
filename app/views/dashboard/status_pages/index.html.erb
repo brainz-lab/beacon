@@ -4,8 +4,8 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1C1917;">Status Pages</h1>
-      <p class="mt-1 text-[13px]" style="color: #78716C;">Public status pages to share system health with users</p>
+      <h1 class="text-[22px] font-semibold tracking-tight text-primary">Status Pages</h1>
+      <p class="mt-1 text-[13px] text-muted">Public status pages to share system health with users</p>
     </div>
     <%= link_to new_dashboard_project_status_page_path(@project), class: "btn-primary inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white" do %>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -17,42 +17,42 @@
 
   <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
     <% @status_pages.each do |status_page| %>
-      <div class="p-5 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
+      <div class="p-5 rounded-xl card card-hover transition-all">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-[15px] font-semibold" style="color: #1C1917;"><%= status_page.name %></h3>
-          <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="<%= status_page.public? ? 'background: rgba(22, 163, 74, 0.1); color: #166534;' : 'background: #EFEDE8; color: #57534E;' %>">
+          <h3 class="text-[15px] font-semibold text-primary"><%= status_page.name %></h3>
+          <span class="badge <%= status_page.public? ? 'badge-success' : 'badge-neutral' %>">
             <%= status_page.public? ? "Public" : "Private" %>
           </span>
         </div>
 
         <div class="flex items-center gap-2 mb-4">
-          <span class="h-2.5 w-2.5 rounded-full" style="background: <%= status_page.current_status == 'operational' ? '#16A34A' : (status_page.current_status == 'degraded' ? '#D97706' : '#DC2626') %>;"></span>
-          <span class="text-[13px]" style="color: #57534E;"><%= status_page.current_status&.humanize || "Unknown" %></span>
+          <span class="status-indicator <%= status_page.current_status == 'operational' ? 'status-indicator-success' : (status_page.current_status == 'degraded' ? 'status-indicator-warning' : 'status-indicator-error') %>"></span>
+          <span class="text-[13px] text-secondary"><%= status_page.current_status&.humanize || "Unknown" %></span>
         </div>
 
-        <div class="text-[13px] space-y-1" style="color: #78716C;">
+        <div class="text-[13px] space-y-1 text-muted">
           <p><%= status_page.uptime_monitors.count %> monitors</p>
           <p><%= status_page.confirmed_subscriptions.count %> subscribers</p>
         </div>
 
-        <div class="mt-4 pt-4 flex items-center justify-between" style="border-top: 1px solid #E5E2DC;">
-          <%= link_to "Configure", dashboard_project_status_page_path(@project, status_page), class: "text-[13px] font-medium hover:opacity-70 transition-opacity", style: "color: #1C1917;" %>
+        <div class="mt-4 pt-4 flex items-center justify-between divider" style="border-top-width: 1px; border-top-style: solid;">
+          <%= link_to "Configure", dashboard_project_status_page_path(@project, status_page), class: "text-[13px] font-medium hover:opacity-70 transition-opacity text-primary" %>
           <% if status_page.public? %>
-            <%= link_to "View Public Page", public_status_path(status_page.slug), target: "_blank", class: "text-[13px] font-medium hover:opacity-70 transition-opacity", style: "color: #D97706;" %>
+            <%= link_to "View Public Page", public_status_path(status_page.slug), target: "_blank", class: "text-[13px] font-medium hover:opacity-70 transition-opacity action-link" %>
           <% end %>
         </div>
       </div>
     <% end %>
 
     <% if @status_pages.empty? %>
-      <div class="col-span-full text-center py-16 rounded-xl" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-        <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center" style="background: rgba(217, 119, 6, 0.1);">
-          <svg class="w-8 h-8" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="col-span-full text-center py-16 rounded-xl card">
+        <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center empty-state-icon">
+          <svg class="w-8 h-8" style="color: var(--accent-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
         </div>
-        <h3 class="mt-4 text-[15px] font-medium" style="color: #1C1917;">No status pages</h3>
-        <p class="mt-1 text-[13px]" style="color: #78716C;">Create a status page to share your system status with users.</p>
+        <h3 class="mt-4 text-[15px] font-medium text-primary">No status pages</h3>
+        <p class="mt-1 text-[13px] text-muted">Create a status page to share your system status with users.</p>
         <div class="mt-6">
           <%= link_to new_dashboard_project_status_page_path(@project), class: "btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white" do %>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

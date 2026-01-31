@@ -13,6 +13,7 @@
 
   <%# BrainzLab UI Design System %>
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "dark_mode", "data-turbo-track": "reload" %>
 
   <style>
     :root {
@@ -25,6 +26,20 @@
     }
   </style>
 
+  <%# Initialize theme before page renders to prevent flash %>
+  <script>
+    (function() {
+      const stored = localStorage.getItem('beacon-theme');
+      if (stored) {
+        document.documentElement.setAttribute('data-theme', stored);
+        if (stored === 'dark') document.documentElement.classList.add('dark');
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
   <%# Google Analytics - only in production %>
   <% if Rails.env.production? %>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CXHFR6PC8W"></script>
@@ -36,31 +51,51 @@
     </script>
   <% end %>
 </head>
-<body class="h-full antialiased" style="background: var(--color-cream-50);">
+<body class="h-full antialiased bg-primary" data-controller="dark-mode">
   <div class="flex h-full">
     <!-- Sidebar -->
-    <aside class="w-64 flex flex-col" style="background: #fff; border-right: 1px solid var(--color-cream-200);">
-      <div class="p-5" style="border-bottom: 1px solid var(--color-cream-200);">
-        <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--color-beacon);">
-            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="8"/>
-              <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+    <aside class="sidebar w-64 flex flex-col">
+      <div class="p-5 sidebar-section-border" style="border-bottom-width: 1px; border-bottom-style: solid;">
+        <div class="flex items-center justify-between">
+          <%= link_to dashboard_root_path, class: "flex items-center gap-2.5" do %>
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--accent-primary);">
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="8"/>
+                <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="font-semibold text-primary">Beacon</span>
+          <% end %>
+
+          <%# Dark Mode Toggle %>
+          <button
+            type="button"
+            class="dark-mode-toggle"
+            data-dark-mode-target="toggle"
+            data-action="click->dark-mode#toggle"
+            aria-label="Toggle dark mode"
+          >
+            <%# Sun icon (shown in dark mode) %>
+            <svg data-dark-mode-target="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
-          </div>
-          <span class="font-semibold" style="color: var(--color-ink-950);">Beacon</span>
-        <% end %>
+            <%# Moon icon (shown in light mode) %>
+            <svg data-dark-mode-target="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <% if @project&.persisted? %>
         <!-- Project Selector -->
-        <div class="px-4 py-3" style="border-bottom: 1px solid var(--color-cream-200);">
-          <%= link_to dashboard_projects_path, class: "flex items-center gap-2 px-2 py-1.5 rounded-lg transition", style: "color: var(--color-ink-700);" do %>
-            <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-semibold" style="background: rgba(217, 119, 6, 0.15); color: var(--color-beacon);">
+        <div class="px-4 py-3 sidebar-section-border" style="border-bottom-width: 1px; border-bottom-style: solid;">
+          <%= link_to dashboard_projects_path, class: "flex items-center gap-2 px-2 py-1.5 rounded-lg transition text-secondary hover:text-primary" do %>
+            <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-semibold" style="background: var(--accent-primary-bg); color: var(--accent-primary);">
               <%= @project.name.first.upcase %>
             </div>
             <span class="flex-1 text-sm font-medium truncate"><%= @project.name %></span>
-            <svg class="w-4 h-4" style="color: var(--color-ink-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
             </svg>
           <% end %>
@@ -100,20 +135,20 @@
         </nav>
       <% else %>
         <nav class="p-4 flex-1">
-          <p class="px-3 text-xs font-medium uppercase tracking-wider mb-3" style="color: var(--color-ink-400);">Select a project</p>
+          <p class="px-3 text-xs font-medium uppercase tracking-wider mb-3 text-muted">Select a project</p>
         </nav>
       <% end %>
 
       <!-- User Menu -->
       <% if defined?(current_user) && current_user %>
-        <div class="p-4" style="border-top: 1px solid var(--color-cream-200);">
+        <div class="p-4 sidebar-section-border" style="border-top-width: 1px; border-top-style: solid;">
           <div class="flex items-center gap-3">
             <div class="avatar avatar-md avatar-primary">
               <%= current_user.name&.first&.upcase || current_user.email.first.upcase %>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium truncate" style="color: var(--color-ink-900);"><%= current_user.name || current_user.email.split('@').first %></p>
-              <p class="text-xs truncate" style="color: var(--color-ink-500);"><%= current_user.email %></p>
+              <p class="text-sm font-medium truncate text-primary"><%= current_user.name || current_user.email.split('@').first %></p>
+              <p class="text-xs truncate text-muted"><%= current_user.email %></p>
             </div>
           </div>
         </div>
@@ -121,7 +156,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-auto">
+    <main class="flex-1 overflow-auto bg-primary">
       <% if notice %>
         <div class="m-8 mb-0 alert alert-success">
           <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">

@@ -1,7 +1,10 @@
 /*
  * Beacon - Uptime Monitoring
- * Anthropic Claude Design System
+ * BrainzLab UI Design System with Dark Mode Support
  */
+
+/* Import dark mode CSS variables */
+@import "dark_mode.css";
 
 /* Uptime bar visualization */
 .uptime-bar {

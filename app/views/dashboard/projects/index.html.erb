@@ -3,8 +3,8 @@
 <div class="space-y-8">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1C1917;">Projects</h1>
-      <p class="mt-1 text-[13px]" style="color: #78716C;">Manage your uptime monitoring projects</p>
+      <h1 class="text-[22px] font-semibold tracking-tight text-primary">Projects</h1>
+      <p class="mt-1 text-[13px] text-muted">Manage your uptime monitoring projects</p>
     </div>
     <a href="<%= new_dashboard_project_path %>" class="btn-primary inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -17,26 +17,26 @@
   <% if @projects.any? %>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <% @projects.each do |project| %>
-        <a href="<%= dashboard_project_overview_path(project) %>" class="block px-5 py-5 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
+        <a href="<%= dashboard_project_overview_path(project) %>" class="block px-5 py-5 rounded-xl card card-hover transition-all">
           <div class="flex items-start justify-between">
             <div class="space-y-1">
-              <h3 class="text-[15px] font-semibold" style="color: #1C1917;"><%= project.name || "Unnamed Project" %></h3>
-              <p class="text-[13px]" style="color: #78716C;">
+              <h3 class="text-[15px] font-semibold text-primary"><%= project.name || "Unnamed Project" %></h3>
+              <p class="text-[13px] text-muted">
                 <%= project.uptime_monitors.count %> monitors
               </p>
             </div>
             <% status = project.uptime_monitors.down.any? ? "down" : (project.uptime_monitors.degraded.any? ? "degraded" : "up") %>
-            <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="<%= status == 'up' ? 'background: rgba(22, 163, 74, 0.1); color: #166534;' : (status == 'degraded' ? 'background: rgba(217, 119, 6, 0.1); color: #92400E;' : 'background: rgba(220, 38, 38, 0.1); color: #991B1B;') %>">
+            <span class="badge <%= status == 'up' ? 'badge-success' : (status == 'degraded' ? 'badge-warning' : 'badge-error') %>">
               <%= status == 'up' ? 'All systems operational' : (status == 'degraded' ? 'Degraded' : 'Issues detected') %>
             </span>
           </div>
-          <div class="mt-4 flex items-center gap-4 text-[12px]" style="color: #78716C;">
+          <div class="mt-4 flex items-center gap-4 text-[12px] text-muted">
             <span class="flex items-center gap-1.5">
-              <span class="h-1.5 w-1.5 rounded-full" style="background: #16A34A;"></span>
+              <span class="h-1.5 w-1.5 rounded-full status-indicator-success"></span>
               <%= project.uptime_monitors.up.count %> healthy
             </span>
             <span class="flex items-center gap-1.5">
-              <span class="h-1.5 w-1.5 rounded-full" style="background: #DC2626;"></span>
+              <span class="h-1.5 w-1.5 rounded-full status-indicator-error"></span>
               <%= project.uptime_monitors.down.count %> down
             </span>
             <span>Created <%= time_ago_in_words(project.created_at) %> ago</span>
@@ -45,15 +45,15 @@
       <% end %>
     </div>
   <% else %>
-    <div class="text-center py-16 rounded-xl" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
+    <div class="text-center py-16 rounded-xl card">
       <div class="space-y-3">
-        <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center" style="background: rgba(217, 119, 6, 0.1);">
-          <svg class="w-8 h-8" style="color: #D97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center empty-state-icon">
+          <svg class="w-8 h-8" style="color: var(--accent-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
-        <p class="text-[15px] font-medium" style="color: #1C1917;">No projects yet</p>
-        <p class="text-[13px]" style="color: #78716C;">Create your first project to start monitoring uptime</p>
+        <p class="text-[15px] font-medium text-primary">No projects yet</p>
+        <p class="text-[13px] text-muted">Create your first project to start monitoring uptime</p>
         <a href="<%= new_dashboard_project_path %>" class="btn-primary inline-flex items-center gap-2 mt-4 px-5 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white">
           Create your first project
         </a>

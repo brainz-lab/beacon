@@ -4,8 +4,8 @@
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-[22px] font-semibold tracking-tight" style="color: #1C1917;">Overview</h1>
-      <p class="mt-1 text-[13px]" style="color: #78716C;">Monitor status and recent activity</p>
+      <h1 class="text-[22px] font-semibold tracking-tight text-primary">Overview</h1>
+      <p class="mt-1 text-[13px] text-muted">Monitor status and recent activity</p>
     </div>
     <a href="<%= new_dashboard_project_monitor_path(@project) %>" class="btn-primary inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-xl transition-all text-white">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -17,77 +17,77 @@
 
   <!-- Stats -->
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Total Monitors</p>
-      <p class="mt-1 text-[28px] font-semibold" style="color: #1C1917;"><%= @stats[:total_monitors] %></p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Total Monitors</p>
+      <p class="mt-1 text-[28px] font-semibold text-primary"><%= @stats[:total_monitors] %></p>
     </div>
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Healthy</p>
-      <p class="mt-1 text-[28px] font-semibold" style="color: #16A34A;"><%= @stats[:healthy] %></p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Healthy</p>
+      <p class="mt-1 text-[28px] font-semibold" style="color: var(--status-success);"><%= @stats[:healthy] %></p>
     </div>
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Active Incidents</p>
-      <p class="mt-1 text-[28px] font-semibold" style="color: <%= @stats[:active_incidents] > 0 ? '#DC2626' : '#1C1917' %>;"><%= @stats[:active_incidents] %></p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Active Incidents</p>
+      <p class="mt-1 text-[28px] font-semibold" style="color: <%= @stats[:active_incidents] > 0 ? 'var(--status-error)' : 'var(--text-primary)' %>;"><%= @stats[:active_incidents] %></p>
     </div>
-    <div class="px-5 py-4 rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <p class="text-[13px] font-medium" style="color: #78716C;">Uptime (30d)</p>
-      <p class="mt-1 text-[28px] font-semibold" style="color: #1C1917;"><%= @stats[:overall_uptime] %>%</p>
+    <div class="px-5 py-4 rounded-xl card card-hover transition-all">
+      <p class="text-[13px] font-medium text-muted">Uptime (30d)</p>
+      <p class="mt-1 text-[28px] font-semibold text-primary"><%= @stats[:overall_uptime] %>%</p>
     </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Active Incidents -->
-    <div class="rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <div class="px-5 py-4" style="border-bottom: 1px solid #E5E2DC;">
-        <h2 class="text-[15px] font-medium" style="color: #1C1917;">Active Incidents</h2>
+    <div class="rounded-xl card card-hover transition-all">
+      <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+        <h2 class="text-[15px] font-medium text-primary">Active Incidents</h2>
       </div>
       <div class="px-5 py-4">
         <% if @active_incidents.any? %>
           <div class="space-y-3">
             <% @active_incidents.each do |incident| %>
-              <a href="<%= dashboard_project_incident_path(@project, incident) %>" class="block p-3 rounded-xl transition-all hover:shadow-sm" style="background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.15);">
+              <a href="<%= dashboard_project_incident_path(@project, incident) %>" class="block p-3 rounded-xl transition-all hover:shadow-sm incident-card">
                 <div class="flex items-center justify-between">
                   <div>
-                    <p class="text-[14px] font-medium" style="color: #991B1B;"><%= incident.title %></p>
-                    <p class="text-[12px]" style="color: #B91C1C;"><%= incident.uptime_monitor.name %> &middot; <%= time_ago_in_words(incident.started_at) %> ago</p>
+                    <p class="text-[14px] font-medium" style="color: var(--status-error-dark);"><%= incident.title %></p>
+                    <p class="text-[12px]" style="color: var(--status-error);"><%= incident.uptime_monitor.name %> &middot; <%= time_ago_in_words(incident.started_at) %> ago</p>
                   </div>
-                  <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="background: rgba(220, 38, 38, 0.12); color: #991B1B;"><%= incident.status %></span>
+                  <span class="badge badge-error"><%= incident.status %></span>
                 </div>
               </a>
             <% end %>
           </div>
         <% else %>
           <div class="text-center py-8">
-            <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center" style="background: rgba(22, 163, 74, 0.1);">
-              <svg class="w-6 h-6" style="color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center empty-state-icon-success">
+              <svg class="w-6 h-6" style="color: var(--status-success);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
             </div>
-            <p class="mt-3 text-[13px] font-medium" style="color: #1C1917;">All systems operational</p>
-            <p class="mt-1 text-[12px]" style="color: #78716C;">No active incidents</p>
+            <p class="mt-3 text-[13px] font-medium text-primary">All systems operational</p>
+            <p class="mt-1 text-[12px] text-muted">No active incidents</p>
           </div>
         <% end %>
       </div>
     </div>
 
     <!-- Monitors -->
-    <div class="rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <div class="px-5 py-4 flex items-center justify-between" style="border-bottom: 1px solid #E5E2DC;">
-        <h2 class="text-[15px] font-medium" style="color: #1C1917;">Monitors</h2>
-        <a href="<%= dashboard_project_monitors_path(@project) %>" class="text-[13px] font-medium transition-colors hover:opacity-70" style="color: #D97706;">View all</a>
+    <div class="rounded-xl card card-hover transition-all">
+      <div class="px-5 py-4 flex items-center justify-between divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+        <h2 class="text-[15px] font-medium text-primary">Monitors</h2>
+        <a href="<%= dashboard_project_monitors_path(@project) %>" class="text-[13px] font-medium transition-colors hover:opacity-70 action-link">View all</a>
       </div>
-      <div class="divide-y" style="border-color: #E5E2DC;">
+      <div class="divide-y divider">
         <% @monitors.limit(8).each do |monitor| %>
-          <a href="<%= dashboard_project_monitor_path(@project, monitor) %>" class="flex items-center justify-between px-5 py-3 hover:bg-[#F5F5F0] transition-all">
+          <a href="<%= dashboard_project_monitor_path(@project, monitor) %>" class="flex items-center justify-between px-5 py-3 table-row transition-all">
             <div class="flex items-center gap-3 min-w-0">
-              <span class="h-2.5 w-2.5 rounded-full flex-shrink-0" style="background: <%= monitor.status == 'up' ? '#16A34A' : (monitor.status == 'degraded' ? '#D97706' : '#DC2626') %>;"></span>
-              <span class="text-[14px] truncate" style="color: #1C1917;"><%= monitor.name %></span>
+              <span class="status-indicator <%= monitor.status == 'up' ? 'status-indicator-success' : (monitor.status == 'degraded' ? 'status-indicator-warning' : 'status-indicator-error') %>"></span>
+              <span class="text-[14px] truncate text-primary"><%= monitor.name %></span>
             </div>
             <div class="flex items-center gap-3">
               <% if monitor.last_response_time %>
-                <span class="text-[13px]" style="color: #78716C;"><%= monitor.last_response_time %>ms</span>
+                <span class="text-[13px] text-muted"><%= monitor.last_response_time %>ms</span>
               <% end %>
-              <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="<%= monitor.status == 'up' ? 'background: rgba(22, 163, 74, 0.1); color: #166534;' : (monitor.status == 'degraded' ? 'background: rgba(217, 119, 6, 0.1); color: #92400E;' : 'background: rgba(220, 38, 38, 0.1); color: #991B1B;') %>">
+              <span class="badge <%= monitor.status == 'up' ? 'badge-success' : (monitor.status == 'degraded' ? 'badge-warning' : 'badge-error') %>">
                 <%= monitor.status %>
               </span>
             </div>
@@ -95,8 +95,8 @@
         <% end %>
         <% if @monitors.empty? %>
           <div class="text-center py-8">
-            <p class="text-[13px]" style="color: #78716C;">No monitors yet</p>
-            <a href="<%= new_dashboard_project_monitor_path(@project) %>" class="text-[13px] font-medium transition-colors hover:opacity-70" style="color: #D97706;">Add your first monitor</a>
+            <p class="text-[13px] text-muted">No monitors yet</p>
+            <a href="<%= new_dashboard_project_monitor_path(@project) %>" class="text-[13px] font-medium transition-colors hover:opacity-70 action-link">Add your first monitor</a>
           </div>
         <% end %>
       </div>
@@ -105,18 +105,18 @@
 
   <!-- Upcoming Maintenance -->
   <% if @maintenance_windows.any? %>
-    <div class="rounded-xl card-hover transition-all" style="background: #FAFAF8; border: 1px solid #E5E2DC; box-shadow: var(--card-shadow);">
-      <div class="px-5 py-4" style="border-bottom: 1px solid #E5E2DC;">
-        <h2 class="text-[15px] font-medium" style="color: #1C1917;">Upcoming Maintenance</h2>
+    <div class="rounded-xl card card-hover transition-all">
+      <div class="px-5 py-4 divider" style="border-bottom-width: 1px; border-bottom-style: solid;">
+        <h2 class="text-[15px] font-medium text-primary">Upcoming Maintenance</h2>
       </div>
-      <div class="divide-y" style="border-color: #E5E2DC;">
+      <div class="divide-y divider">
         <% @maintenance_windows.each do |window| %>
-          <a href="<%= dashboard_project_maintenance_window_path(@project, window) %>" class="flex items-center justify-between px-5 py-3 hover:bg-[#F5F5F0] transition-all">
+          <a href="<%= dashboard_project_maintenance_window_path(@project, window) %>" class="flex items-center justify-between px-5 py-3 table-row transition-all">
             <div>
-              <p class="text-[14px] font-medium" style="color: #1C1917;"><%= window.title %></p>
-              <p class="text-[12px]" style="color: #78716C;"><%= window.starts_at.strftime("%b %d, %Y %H:%M") %> - <%= window.ends_at.strftime("%H:%M %Z") %></p>
+              <p class="text-[14px] font-medium text-primary"><%= window.title %></p>
+              <p class="text-[12px] text-muted"><%= window.starts_at.strftime("%b %d, %Y %H:%M") %> - <%= window.ends_at.strftime("%H:%M %Z") %></p>
             </div>
-            <span class="px-2.5 py-1 text-[11px] font-medium rounded-full" style="background: rgba(217, 119, 6, 0.1); color: #92400E;">Scheduled</span>
+            <span class="badge badge-warning">Scheduled</span>
           </a>
         <% end %>
       </div>
