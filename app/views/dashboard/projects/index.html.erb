@@ -15,31 +15,35 @@
   </div>
 
   <% if @projects.any? %>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="space-y-2">
       <% @projects.each do |project| %>
-        <a href="<%= dashboard_project_overview_path(project) %>" class="block px-5 py-5 rounded-xl card card-hover transition-all">
-          <div class="flex items-start justify-between">
-            <div class="space-y-1">
-              <h3 class="text-[15px] font-semibold text-primary"><%= project.name || "Unnamed Project" %></h3>
-              <p class="text-[13px] text-muted">
-                <%= project.uptime_monitors.count %> monitors
-              </p>
+        <a href="<%= dashboard_project_overview_path(project) %>" class="block group">
+          <div class="px-5 py-4 rounded-xl transition-all dm-row">
+            <div class="flex items-center justify-between">
+              <div class="space-y-1">
+                <h3 class="text-[15px] font-medium group-hover:underline text-primary"><%= project.name || "Unnamed Project" %></h3>
+                <div class="flex items-center gap-4 text-[12px] text-muted">
+                  <span><%= project.uptime_monitors.count %> monitors</span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="h-1.5 w-1.5 rounded-full status-indicator-success"></span>
+                    <%= project.uptime_monitors.up.count %> healthy
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="h-1.5 w-1.5 rounded-full status-indicator-error"></span>
+                    <%= project.uptime_monitors.down.count %> down
+                  </span>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <% status = project.uptime_monitors.down.any? ? "down" : (project.uptime_monitors.degraded.any? ? "degraded" : "up") %>
+                <span class="badge <%= status == 'up' ? 'badge-success' : (status == 'degraded' ? 'badge-warning' : 'badge-error') %>">
+                  <%= status == 'up' ? 'All systems operational' : (status == 'degraded' ? 'Degraded' : 'Issues detected') %>
+                </span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="text-muted">
+                  <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
             </div>
-            <% status = project.uptime_monitors.down.any? ? "down" : (project.uptime_monitors.degraded.any? ? "degraded" : "up") %>
-            <span class="badge <%= status == 'up' ? 'badge-success' : (status == 'degraded' ? 'badge-warning' : 'badge-error') %>">
-              <%= status == 'up' ? 'All systems operational' : (status == 'degraded' ? 'Degraded' : 'Issues detected') %>
-            </span>
-          </div>
-          <div class="mt-4 flex items-center gap-4 text-[12px] text-muted">
-            <span class="flex items-center gap-1.5">
-              <span class="h-1.5 w-1.5 rounded-full status-indicator-success"></span>
-              <%= project.uptime_monitors.up.count %> healthy
-            </span>
-            <span class="flex items-center gap-1.5">
-              <span class="h-1.5 w-1.5 rounded-full status-indicator-error"></span>
-              <%= project.uptime_monitors.down.count %> down
-            </span>
-            <span>Created <%= time_ago_in_words(project.created_at) %> ago</span>
           </div>
         </a>
       <% end %>
