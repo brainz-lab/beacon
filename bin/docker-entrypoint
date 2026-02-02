@@ -2,12 +2,12 @@
 
 # Generate SECRET_KEY_BASE if not provided
 if [ -z "$SECRET_KEY_BASE" ]; then
-  export SECRET_KEY_BASE=$(ruby -rsecurerandom -e 'puts SecureRandom.hex(64)')
+  export SECRET_KEY_BASE=$(ruby -rsecurerandom -e "puts SecureRandom.hex(64)")
 fi
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
-fi
+# Skip db:prepare on startup - migrations should be run separately via kamal
+# if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+#   ./bin/rails db:prepare
+# fi
 
 exec "${@}"
