@@ -1,5 +1,5 @@
 module Dashboard
-  class McpSetupController < BaseController
+  class MCPSetupController < BaseController
     before_action :require_project!
 
     def index
