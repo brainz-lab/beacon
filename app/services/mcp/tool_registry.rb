@@ -1,4 +1,4 @@
-module Mcp
+module MCP
   class ToolRegistry
     TOOLS = [
       Tools::BeaconListMonitors,

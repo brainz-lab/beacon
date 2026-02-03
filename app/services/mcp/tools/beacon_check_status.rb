@@ -1,4 +1,4 @@
-module Mcp
+module MCP
   module Tools
     class BeaconCheckStatus < Base
       class << self

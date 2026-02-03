@@ -1,4 +1,4 @@
-module Mcp
+module MCP
   class ToolsController < ApplicationController
     skip_before_action :verify_authenticity_token
     before_action :authenticate_mcp_request
@@ -6,13 +6,13 @@ module Mcp
     # GET /mcp/tools
     def index
       render json: {
-        tools: Mcp::ToolRegistry.schema
+        tools: MCP::ToolRegistry.schema
       }
     end
 
     # POST /mcp/tools/:name
     def call
-      tool = Mcp::ToolRegistry.find(params[:name])
+      tool = MCP::ToolRegistry.find(params[:name])
 
       unless tool
         return render json: { error: "Unknown tool: #{params[:name]}" }, status: :not_found
@@ -33,13 +33,13 @@ module Mcp
         render json: {
           jsonrpc: "2.0",
           id: request_data["id"],
-          result: { tools: Mcp::ToolRegistry.schema }
+          result: { tools: MCP::ToolRegistry.schema }
         }
       when "tools/call"
         tool_name = request_data.dig("params", "name")
         arguments = request_data.dig("params", "arguments") || {}
 
-        tool = Mcp::ToolRegistry.find(tool_name)
+        tool = MCP::ToolRegistry.find(tool_name)
 
         unless tool
           return render json: {

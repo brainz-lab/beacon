@@ -1,4 +1,4 @@
-module Mcp
+module MCP
   module Tools
     class BeaconListIncidents < Base
       class << self
