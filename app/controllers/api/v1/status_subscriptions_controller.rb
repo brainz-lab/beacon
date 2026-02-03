@@ -1,6 +1,6 @@
 module Api
   module V1
-    class StatusSubscriptionsController < BaseController
+    class StatusSubscriptionsController < Api::V1::BaseController
       before_action :set_status_page
       before_action :set_subscription, only: [ :show, :destroy ]
 

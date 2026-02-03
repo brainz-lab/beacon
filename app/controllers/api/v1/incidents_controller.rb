@@ -1,6 +1,6 @@
 module Api
   module V1
-    class IncidentsController < BaseController
+    class IncidentsController < Api::V1::BaseController
       before_action :set_incident, only: [ :show, :update ]
 
       # GET /api/v1/incidents

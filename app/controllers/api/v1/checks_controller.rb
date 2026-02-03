@@ -1,6 +1,6 @@
 module Api
   module V1
-    class ChecksController < BaseController
+    class ChecksController < Api::V1::BaseController
       before_action :set_monitor
 
       # GET /api/v1/monitors/:monitor_id/checks

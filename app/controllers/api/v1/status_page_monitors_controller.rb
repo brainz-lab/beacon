@@ -1,6 +1,6 @@
 module Api
   module V1
-    class StatusPageMonitorsController < BaseController
+    class StatusPageMonitorsController < Api::V1::BaseController
       before_action :set_status_page
 
       # GET /api/v1/status_pages/:status_page_id/monitors
