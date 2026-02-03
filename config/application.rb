@@ -20,6 +20,17 @@ end
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Configure inflections for API namespace before autoloader setup
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.acronym "API"
+  inflect.acronym "SSL"
+  inflect.acronym "DNS"
+  inflect.acronym "TCP"
+  inflect.acronym "HTTP"
+  inflect.acronym "MCP"
+  inflect.acronym "UUID"
+end
+
 module Beacon
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
