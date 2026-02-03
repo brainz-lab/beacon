@@ -1,8 +1,8 @@
-class SslExpiryCheckJob < ApplicationJob
+class SSLExpiryCheckJob < ApplicationJob
   queue_as :default
 
   def perform
-    Rails.logger.info "[SslExpiryCheckJob] Checking SSL certificate expiry..."
+    Rails.logger.info "[SSLExpiryCheckJob] Checking SSL certificate expiry..."
 
     # Find monitors with SSL expiry dates
     monitors_with_ssl = UptimeMonitor
@@ -21,7 +21,7 @@ class SslExpiryCheckJob < ApplicationJob
       alerts_sent += 1
     end
 
-    Rails.logger.info "[SslExpiryCheckJob] Sent #{alerts_sent} SSL expiry alerts"
+    Rails.logger.info "[SSLExpiryCheckJob] Sent #{alerts_sent} SSL expiry alerts"
   end
 
   private
@@ -65,6 +65,6 @@ class SslExpiryCheckJob < ApplicationJob
       }
     )
   rescue => e
-    Rails.logger.error "[SslExpiryCheckJob] Failed to send alert for #{monitor.name}: #{e.message}"
+    Rails.logger.error "[SSLExpiryCheckJob] Failed to send alert for #{monitor.name}: #{e.message}"
   end
 end
