@@ -4,7 +4,8 @@ image: brainz/beacon
 
 servers:
   web:
-    - an-ssh.brainz.computer
+    hosts:
+      - an-ssh.brainz.computer
   job:
     hosts:
       - an-ssh.brainz.computer
