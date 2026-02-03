@@ -1,6 +1,6 @@
-module Api
+module API
   module V1
-    class StatusPagesController < Api::V1::BaseController
+    class StatusPagesController < API::V1::BaseController
       before_action :set_status_page, only: [ :show, :update, :destroy ]
 
       # GET /api/v1/status_pages

@@ -1,6 +1,6 @@
-module Api
+module API
   module V1
-    class AlertRulesController < Api::V1::BaseController
+    class AlertRulesController < API::V1::BaseController
       before_action :set_monitor
       before_action :set_alert_rule, only: [ :show, :update, :destroy ]
 

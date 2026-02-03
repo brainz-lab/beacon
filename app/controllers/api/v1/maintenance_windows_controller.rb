@@ -1,6 +1,6 @@
-module Api
+module API
   module V1
-    class MaintenanceWindowsController < Api::V1::BaseController
+    class MaintenanceWindowsController < API::V1::BaseController
       before_action :set_maintenance_window, only: [ :show, :update, :destroy ]
 
       # GET /api/v1/maintenance_windows

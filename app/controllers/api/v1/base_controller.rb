@@ -1,4 +1,4 @@
-module Api
+module API
   module V1
     class BaseController < ActionController::API
       before_action :authenticate!

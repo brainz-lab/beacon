@@ -1,6 +1,6 @@
-module Api
+module API
   module V1
-    class MonitorsController < Api::V1::BaseController
+    class MonitorsController < API::V1::BaseController
       before_action :set_monitor, only: [ :show, :update, :destroy, :pause, :resume, :check_now, :uptime, :response_times ]
 
       # GET /api/v1/monitors
