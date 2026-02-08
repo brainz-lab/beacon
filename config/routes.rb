@@ -9,6 +9,14 @@ Rails.application.routes.draw do
   # API endpoints
   namespace :api do
     namespace :v1 do
+      # Project provisioning (Platform integration)
+      resources :projects, only: [] do
+        collection do
+          post :provision
+          get :lookup
+        end
+      end
+
       resources :monitors do
         member do
           post :pause
