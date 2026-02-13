@@ -25,7 +25,7 @@ gem "jbuilder"
 gem "rack-cors"
 
 # HTTP client for checker services
-gem "faraday", "~> 2.0"
+gem "faraday", "~> 2.14"
 gem "faraday-follow_redirects"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
