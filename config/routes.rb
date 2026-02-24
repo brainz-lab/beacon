@@ -16,6 +16,9 @@ Rails.application.routes.draw do
           get :lookup
         end
       end
+      post "projects/:platform_project_id/archive", to: "projects#archive"
+      post "projects/:platform_project_id/unarchive", to: "projects#unarchive"
+      post "projects/:platform_project_id/purge", to: "projects#purge"
 
       resources :monitors do
         member do
