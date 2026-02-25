@@ -5,9 +5,9 @@ module API
 
       # GET /api/v1/incidents
       def index
-        incidents = Incident.joins(:monitor)
-                           .where(monitors: { project_id: current_project.id })
-                           .includes(:monitor, :updates)
+        incidents = Incident.joins(:uptime_monitor)
+                           .where(uptime_monitors: { project_id: current_project.id })
+                           .includes(:uptime_monitor, :updates)
 
         # Filter by status
         case params[:status]
@@ -30,8 +30,8 @@ module API
         render json: {
           incidents: incidents.map { |i| incident_json(i) },
           summary: {
-            active: Incident.joins(:monitor).where(monitors: { project_id: current_project.id }).active.count,
-            resolved_today: Incident.joins(:monitor).where(monitors: { project_id: current_project.id }).resolved.where("resolved_at >= ?", Time.current.beginning_of_day).count
+            active: Incident.joins(:uptime_monitor).where(uptime_monitors: { project_id: current_project.id }).active.count,
+            resolved_today: Incident.joins(:uptime_monitor).where(uptime_monitors: { project_id: current_project.id }).resolved.where("resolved_at >= ?", Time.current.beginning_of_day).count
           }
         }
       end
@@ -61,8 +61,8 @@ module API
       private
 
       def set_incident
-        @incident = Incident.joins(:monitor)
-                           .where(monitors: { project_id: current_project.id })
+        @incident = Incident.joins(:uptime_monitor)
+                           .where(uptime_monitors: { project_id: current_project.id })
                            .find(params[:id])
       end
 
@@ -83,7 +83,7 @@ module API
           duration: incident.duration_humanized,
           monitor: {
             id: incident.monitor_id,
-            name: incident.monitor.name
+            name: incident.uptime_monitor.name
           }
         }
 

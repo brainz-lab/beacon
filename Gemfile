@@ -78,6 +78,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "simplecov-json", require: false
 end
 
 group :development do
@@ -93,4 +97,7 @@ group :test do
   gem "selenium-webdriver"
   # Mock HTTP requests
   gem "webmock"
+  gem "shoulda-matchers"
+  gem "database_cleaner-active_record"
+  gem "timecop"
 end
