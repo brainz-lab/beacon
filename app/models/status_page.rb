@@ -4,6 +4,7 @@ class StatusPage < ApplicationRecord
   has_many :status_page_monitors, dependent: :destroy
   has_many :uptime_monitors, through: :status_page_monitors
   has_many :subscriptions, class_name: "StatusSubscription", dependent: :destroy
+  has_many :status_subscriptions, dependent: :destroy
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z0-9\-]+\z/ }
