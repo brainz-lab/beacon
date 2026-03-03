@@ -16,8 +16,8 @@
   </div>
 
   <div>
-    <%= f.label :check_type, "Monitor Type", class: "block text-[13px] font-medium mb-1.5 form-label" %>
-    <%= f.select :check_type, [["HTTP/HTTPS", "http"], ["SSL Certificate", "ssl"], ["DNS", "dns"], ["TCP Port", "tcp"], ["Ping (ICMP)", "ping"]],
+    <%= f.label :monitor_type, "Monitor Type", class: "block text-[13px] font-medium mb-1.5 form-label" %>
+    <%= f.select :monitor_type, [["HTTP/HTTPS", "http"], ["SSL Certificate", "ssl"], ["DNS", "dns"], ["TCP Port", "tcp"], ["Ping (ICMP)", "ping"]],
         {}, class: "block w-full px-4 py-2.5 text-[13px] rounded-xl focus:outline-none transition-all form-input",
         data: { action: "change->monitor-form#toggleFields" } %>
   </div>

@@ -74,7 +74,8 @@ module MCP
     private
 
     def authenticate_mcp_request
-      api_key = request.headers["X-API-Key"] || params[:api_key]
+      auth_header = request.headers["Authorization"]
+      api_key = request.headers["X-API-Key"] || params[:api_key] || (auth_header&.start_with?("Bearer ") && auth_header.split(" ").last)
 
       unless api_key.present?
         return render json: { error: "API key required" }, status: :unauthorized

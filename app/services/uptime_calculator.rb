@@ -30,19 +30,19 @@ class UptimeCalculator
   end
 
   def average_response_time(period = @period)
-    checks_in_period(period).average(:response_time)&.round(2) || 0
+    checks_in_period(period).average(:response_time_ms)&.round(2) || 0
   end
 
   def min_response_time(period = @period)
-    checks_in_period(period).minimum(:response_time) || 0
+    checks_in_period(period).minimum(:response_time_ms) || 0
   end
 
   def max_response_time(period = @period)
-    checks_in_period(period).maximum(:response_time) || 0
+    checks_in_period(period).maximum(:response_time_ms) || 0
   end
 
   def percentile_response_time(period, percentile)
-    times = checks_in_period(period).pluck(:response_time).compact.sort
+    times = checks_in_period(period).pluck(:response_time_ms).compact.sort
     return 0 if times.empty?
 
     index = (percentile.to_f / 100 * times.length).ceil - 1

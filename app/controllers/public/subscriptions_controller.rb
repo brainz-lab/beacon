@@ -25,7 +25,8 @@ module Public
       )
 
       if subscription.new_record?
-        subscription.preferences = subscription_preferences
+        subscription.notify_incidents = subscription_preferences[:notify_incidents]
+        subscription.notify_maintenance = subscription_preferences[:notify_maintenance]
         subscription.save!
 
         # Send confirmation based on channel

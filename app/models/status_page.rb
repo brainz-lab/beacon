@@ -7,7 +7,7 @@ class StatusPage < ApplicationRecord
   has_many :status_subscriptions, dependent: :destroy
 
   validates :name, presence: true
-  validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z0-9\-]+\z/ }
+  validates :slug, presence: true, uniqueness: { scope: :project_id }, format: { with: /\A[a-z0-9\-]+\z/ }
 
   before_validation :generate_slug, if: -> { slug.blank? }
 

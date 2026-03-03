@@ -9,7 +9,7 @@ export default class extends Controller {
   }
 
   toggleFields() {
-    const typeSelect = this.element.querySelector("select[name='monitor[check_type]']")
+    const typeSelect = this.element.querySelector("select[name='monitor[monitor_type]']")
     if (!typeSelect) return
 
     const type = typeSelect.value
