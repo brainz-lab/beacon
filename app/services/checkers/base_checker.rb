@@ -14,7 +14,7 @@ module Checkers
         result = perform_check
 
         CheckResult.create!(
-          monitor: monitor,
+          monitor_id: monitor.id,
           checked_at: Time.current,
           region: region,
           status: result[:success] ? "up" : "down",
@@ -37,7 +37,7 @@ module Checkers
         elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
 
         CheckResult.create!(
-          monitor: monitor,
+          monitor_id: monitor.id,
           checked_at: Time.current,
           region: region,
           status: "down",

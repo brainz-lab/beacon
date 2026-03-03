@@ -13,7 +13,7 @@ module Dashboard
       when "paused" then @monitors = @monitors.paused
       end
 
-      @monitors = @monitors.where(check_type: params[:type]) if params[:type].present?
+      @monitors = @monitors.where(monitor_type: params[:type]) if params[:type].present?
     end
 
     def show
@@ -32,9 +32,9 @@ module Dashboard
 
     def new
       @monitor = @project.uptime_monitors.build(
-        check_type: "http",
-        interval: 60,
-        timeout: 30000,
+        monitor_type: "http",
+        interval_seconds: 60,
+        timeout_seconds: 30000,
         regions: [ "nyc" ],
         enabled: true
       )
@@ -107,8 +107,8 @@ module Dashboard
 
     def monitor_params
       params.require(:monitor).permit(
-        :name, :url, :host, :port, :check_type,
-        :interval, :timeout, :enabled,
+        :name, :url, :host, :port, :monitor_type,
+        :interval_seconds, :timeout_seconds, :enabled,
         :http_method, :expected_status, :expected_body,
         :follow_redirects, :verify_ssl,
         :dns_record_type, :expected_dns_result,

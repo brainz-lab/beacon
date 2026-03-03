@@ -11,6 +11,7 @@ class UptimeMonitor < ApplicationRecord
   validates :name, presence: true
   validates :monitor_type, presence: true, inclusion: { in: %w[http tcp dns ssl ping] }
   validates :url, presence: true, if: -> { monitor_type == "http" || monitor_type == "ssl" }
+  validate :url_must_be_valid, if: -> { url.present? }
   validates :host, presence: true, if: -> { monitor_type.in?(%w[tcp dns ping]) }
   validates :port, presence: true, if: -> { monitor_type == "tcp" }
   validates :interval_seconds, numericality: { greater_than_or_equal_to: 30 }
@@ -82,6 +83,15 @@ class UptimeMonitor < ApplicationRecord
   end
 
   private
+
+  def url_must_be_valid
+    uri = URI.parse(url)
+    unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+      errors.add(:url, "must be a valid HTTP or HTTPS URL")
+    end
+  rescue URI::InvalidURIError
+    errors.add(:url, "is not a valid URL")
+  end
 
   def checker_class
     case monitor_type

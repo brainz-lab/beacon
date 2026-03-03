@@ -53,26 +53,6 @@ class UptimeCalculator
     (downtime_seconds_for(period) / 60.0).round
   end
 
-  private
-
-  def checks_in_period(period)
-    @monitor.check_results.where("checked_at > ?", period.ago)
-  end
-
-  def downtime_seconds_for(period)
-    total_period = period.to_i
-    uptime_pct = uptime_percentage(period)
-    ((100 - uptime_pct) / 100 * total_period).round
-  end
-
-  def daily_breakdown
-    @monitor.check_results
-            .where("checked_at > ?", @period.ago)
-            .group("DATE(checked_at)")
-            .group(:status)
-            .count
-  end
-
   # Returns array of daily uptime data for visualization
   def uptime_bars(days: 90)
     days_data = []
@@ -109,11 +89,6 @@ class UptimeCalculator
     days_data.reverse
   end
 
-  # Calculate downtime in seconds for a period
-  def downtime_seconds
-    downtime_seconds_for(@period)
-  end
-
   # Human-readable downtime
   def downtime_humanized
     seconds = downtime_seconds
@@ -134,6 +109,28 @@ class UptimeCalculator
   end
 
   private
+
+  def checks_in_period(period)
+    @monitor.check_results.where("checked_at > ?", period.ago)
+  end
+
+  def downtime_seconds_for(period)
+    total_period = period.to_i
+    uptime_pct = uptime_percentage(period)
+    ((100 - uptime_pct) / 100 * total_period).round
+  end
+
+  def downtime_seconds
+    downtime_seconds_for(@period)
+  end
+
+  def daily_breakdown
+    @monitor.check_results
+            .where("checked_at > ?", @period.ago)
+            .group("DATE(checked_at)")
+            .group(:status)
+            .count
+  end
 
   def uptime_status(uptime)
     case uptime

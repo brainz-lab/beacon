@@ -31,9 +31,12 @@ class StatusSubscription < ApplicationRecord
     end
   end
 
+  alias_method :endpoint, :target
+
   private
 
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64(32)
+    self.unsubscribe_token = SecureRandom.urlsafe_base64(32)
   end
 end

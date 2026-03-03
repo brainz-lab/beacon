@@ -33,13 +33,13 @@ module MCP
         monitors = project.uptime_monitors.includes(:check_results)
 
         case params[:status]
-        when "healthy" then monitors = monitors.healthy
+        when "healthy", "up" then monitors = monitors.up
         when "degraded" then monitors = monitors.degraded
         when "down" then monitors = monitors.down
         when "paused" then monitors = monitors.paused
         end
 
-        monitors = monitors.where(check_type: params[:check_type]) if params[:check_type].present?
+        monitors = monitors.where(monitor_type: params[:check_type]) if params[:check_type].present?
 
         monitors_data = monitors.map do |monitor|
           calculator = UptimeCalculator.new(monitor)
@@ -48,7 +48,7 @@ module MCP
             id: monitor.id,
             name: monitor.name,
             url: monitor.url || "#{monitor.host}:#{monitor.port}",
-            check_type: monitor.check_type,
+            check_type: monitor.monitor_type,
             status: monitor.status,
             last_check_at: monitor.last_check_at,
             response_time_ms: monitor.last_response_time,
@@ -60,7 +60,7 @@ module MCP
 
         summary = {
           total: monitors.count,
-          healthy: project.uptime_monitors.healthy.count,
+          healthy: project.uptime_monitors.up.count,
           degraded: project.uptime_monitors.degraded.count,
           down: project.uptime_monitors.down.count,
           paused: project.uptime_monitors.paused.count

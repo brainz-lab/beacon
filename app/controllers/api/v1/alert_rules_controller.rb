@@ -48,28 +48,41 @@ module API
       end
 
       def rule_params
-        params.require(:alert_rule).permit(
-          :name, :condition_type, :threshold, :comparison,
-          :duration_minutes, :enabled,
+        permitted = params.require(:alert_rule).permit(
+          :name, :condition_type, :enabled,
+          :threshold, :comparison, :duration_minutes,
           notify_channels: []
         )
+
+        # Map flat params into condition_config jsonb column
+        config = {}
+        config["threshold"] = permitted.delete(:threshold) if permitted.key?(:threshold)
+        config["comparison"] = permitted.delete(:comparison) if permitted.key?(:comparison)
+        config["duration_minutes"] = permitted.delete(:duration_minutes) if permitted.key?(:duration_minutes)
+        config["notify_channels"] = permitted.delete(:notify_channels) if permitted.key?(:notify_channels)
+
+        permitted[:condition_config] = config if config.present?
+        permitted.except(:threshold, :comparison, :duration_minutes, :notify_channels)
       end
 
       def rule_json(rule, detailed: false)
+        config = rule.condition_config || {}
+
         data = {
           id: rule.id,
           name: rule.name,
           condition_type: rule.condition_type,
-          threshold: rule.threshold,
-          comparison: rule.comparison,
-          duration_minutes: rule.duration_minutes,
+          threshold: config["threshold"],
+          comparison: config["comparison"],
+          duration_minutes: config["duration_minutes"],
           enabled: rule.enabled,
-          last_triggered_at: rule.last_triggered_at
+          last_triggered_at: config["last_triggered_at"]
         }
 
         if detailed
           data.merge!(
-            notify_channels: rule.notify_channels,
+            notify_channels: config["notify_channels"],
+            condition_config: config,
             created_at: rule.created_at,
             updated_at: rule.updated_at
           )

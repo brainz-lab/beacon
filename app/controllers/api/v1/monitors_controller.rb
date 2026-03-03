@@ -98,17 +98,25 @@ module API
       end
 
       def monitor_params
-        params.require(:monitor).permit(
+        permitted = params.require(:monitor).permit(
           :name, :monitor_type, :url, :host, :port,
           :interval_seconds, :timeout_seconds,
           :http_method, :expected_status, :expected_body, :body,
           :follow_redirects, :verify_ssl,
           :auth_type, :confirmation_threshold, :recovery_threshold,
           :ssl_expiry_warn_days, :enabled, :paused,
+          :interval, :timeout, :type,
           regions: [],
           headers: {},
           auth_config: {}
         )
+
+        # Map common aliases to canonical column names
+        permitted[:interval_seconds] ||= permitted.delete(:interval) if permitted.key?(:interval)
+        permitted[:timeout_seconds] ||= permitted.delete(:timeout) if permitted.key?(:timeout)
+        permitted[:monitor_type] ||= permitted.delete(:type) if permitted.key?(:type)
+
+        permitted.except(:interval, :timeout, :type)
       end
 
       def monitor_json(monitor, detailed: false)

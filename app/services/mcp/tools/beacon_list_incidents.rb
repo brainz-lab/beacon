@@ -38,9 +38,9 @@ module MCP
       end
 
       def execute(params)
-        incidents = Incident.joins(:monitor)
-                           .where(monitors: { project_id: project.id })
-                           .includes(:monitor, :updates)
+        incidents = Incident.joins(:uptime_monitor)
+                           .where(uptime_monitors: { project_id: project.id })
+                           .includes(:uptime_monitor, :updates)
 
         case params[:status]
         when "active"
@@ -64,7 +64,7 @@ module MCP
               severity: incident.severity,
               monitor: {
                 id: incident.monitor_id,
-                name: incident.monitor.name
+                name: incident.uptime_monitor.name
               },
               started_at: incident.started_at,
               resolved_at: incident.resolved_at,
@@ -81,9 +81,9 @@ module MCP
             }
           end,
           summary: {
-            active: Incident.joins(:monitor).where(monitors: { project_id: project.id }).active.count,
-            resolved_today: Incident.joins(:monitor)
-                                   .where(monitors: { project_id: project.id })
+            active: Incident.joins(:uptime_monitor).where(uptime_monitors: { project_id: project.id }).active.count,
+            resolved_today: Incident.joins(:uptime_monitor)
+                                   .where(uptime_monitors: { project_id: project.id })
                                    .resolved
                                    .where("resolved_at >= ?", Time.current.beginning_of_day)
                                    .count

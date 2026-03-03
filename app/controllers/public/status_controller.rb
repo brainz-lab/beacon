@@ -3,6 +3,10 @@ module Public
     skip_before_action :set_current_project
     skip_before_action :verify_authenticity_token
 
+    rescue_from ActiveRecord::RecordNotFound do
+      render json: { error: "Status page not found" }, status: :not_found
+    end
+
     # GET /status/:slug
     def show
       @status_page = StatusPage.find_by!(slug: params[:slug])

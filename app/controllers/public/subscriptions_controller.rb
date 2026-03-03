@@ -8,16 +8,24 @@ module Public
       @status_page = StatusPage.find_by!(slug: params[:slug])
 
       return render json: { error: "Subscriptions not allowed" }, status: :forbidden unless @status_page.allow_subscriptions
-      return render json: { error: "Channel not enabled" }, status: :unprocessable_entity unless channel_enabled?
+      unless channel_enabled?
+        return render json: {
+          error: "Channel '#{params[:channel]}' is not enabled for this status page",
+          enabled_channels: @status_page.subscription_channels,
+          hint: "Use one of the enabled channels: #{@status_page.subscription_channels.join(', ')}"
+        }, status: :unprocessable_entity
+      end
+
+      endpoint_field = endpoint_field_for(params[:channel])
+      return render json: { error: "Endpoint is required" }, status: :unprocessable_entity if params[:endpoint].blank?
 
       subscription = @status_page.status_subscriptions.find_or_initialize_by(
         channel: params[:channel],
-        endpoint: params[:endpoint]
+        endpoint_field => params[:endpoint]
       )
 
       if subscription.new_record?
-        subscription.confirmation_token = SecureRandom.urlsafe_base64(32)
-        subscription.preferences = params[:preferences] || {}
+        subscription.preferences = subscription_preferences
         subscription.save!
 
         # Send confirmation based on channel
@@ -95,6 +103,22 @@ module Public
       end
     end
 
+    def endpoint_field_for(channel)
+      case channel
+      when "email" then :email
+      when "sms" then :phone
+      when "webhook" then :webhook_url
+      else :email
+      end
+    end
+
+    def subscription_preferences
+      {
+        notify_incidents: params.fetch(:notify_incidents, true),
+        notify_maintenance: params.fetch(:notify_maintenance, true)
+      }
+    end
+
     def send_confirmation(subscription)
       case subscription.channel
       when "email"
@@ -102,7 +126,7 @@ module Public
       when "sms"
         # SMS confirmation via Signal
         SignalClient.new.send_sms(
-          subscription.endpoint,
+          subscription.phone,
           "Confirm your subscription: #{confirmation_url(subscription)}"
         )
       when "webhook"
@@ -117,7 +141,7 @@ module Public
     end
 
     def send_test_webhook(subscription)
-      Faraday.post(subscription.endpoint) do |req|
+      Faraday.post(subscription.webhook_url) do |req|
         req.headers["Content-Type"] = "application/json"
         req.body = {
           event: "subscription.confirmed",

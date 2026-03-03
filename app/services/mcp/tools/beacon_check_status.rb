@@ -40,10 +40,10 @@ module MCP
             id: monitor.id,
             name: monitor.name,
             url: monitor.url || "#{monitor.host}:#{monitor.port}",
-            check_type: monitor.check_type,
+            check_type: monitor.monitor_type,
             status: monitor.status,
             enabled: monitor.enabled,
-            interval: monitor.interval,
+            interval: monitor.interval_seconds,
             regions: monitor.regions
           },
           current_status: {
@@ -68,7 +68,7 @@ module MCP
             {
               checked_at: check.checked_at,
               status: check.status,
-              response_time: check.response_time,
+              response_time: check.response_time_ms,
               status_code: check.status_code,
               region: check.region,
               error: check.error_message
