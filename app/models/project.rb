@@ -26,11 +26,11 @@ class Project < ApplicationRecord
 
   def monitors_summary
     {
-      total: monitors.count,
-      up: monitors.up.count,
-      down: monitors.down.count,
-      degraded: monitors.degraded.count,
-      paused: monitors.where(paused: true).count
+      total: uptime_monitors.count,
+      up: uptime_monitors.up.count,
+      down: uptime_monitors.down.count,
+      degraded: uptime_monitors.degraded.count,
+      paused: uptime_monitors.where(paused: true).count
     }
   end
 
