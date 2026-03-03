@@ -6,6 +6,7 @@ module API
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
       rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity
       rescue_from ActionController::ParameterMissing, with: :bad_request
+      rescue_from ActionDispatch::Http::Parameters::ParseError, with: :handle_parse_error
 
       protected
 
@@ -39,7 +40,10 @@ module API
       end
 
       def not_found(exception)
-        render json: { error: exception.message }, status: :not_found
+        model = exception.model || "Record"
+        id = exception.id
+        message = id ? "#{model} not found with id=#{id}" : "#{model} not found"
+        render json: { error: message }, status: :not_found
       end
 
       def unprocessable_entity(exception)
@@ -50,7 +54,19 @@ module API
       end
 
       def bad_request(exception)
-        render json: { error: exception.message }, status: :bad_request
+        response = { error: exception.message }
+        if exception.param == "monitor"
+          response[:hint] = "Wrap params in a 'monitor' key, e.g. {\"monitor\": {\"name\": \"...\", \"monitor_type\": \"http\", \"url\": \"...\"}}"
+          response[:required_fields] = %w[name monitor_type url]
+        elsif exception.param == "status_page"
+          response[:hint] = "Wrap params in a 'status_page' key, e.g. {\"status_page\": {\"name\": \"...\", \"slug\": \"...\"}}"
+          response[:required_fields] = %w[name slug]
+        end
+        render json: response, status: :bad_request
+      end
+
+      def handle_parse_error(exception)
+        render json: { error: "Invalid JSON: #{exception.message}" }, status: :bad_request
       end
 
       def render_success(data, status: :ok)
