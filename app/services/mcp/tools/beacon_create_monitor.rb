@@ -64,9 +64,9 @@ module MCP
           url: params[:url],
           host: params[:host],
           port: params[:port] || 443,
-          check_type: params[:check_type] || "http",
-          interval: params[:interval] || 60,
-          timeout: 30000,
+          monitor_type: params[:check_type] || "http",
+          interval_seconds: params[:interval] || 60,
+          timeout_seconds: 30,
           expected_status: params[:expected_status] || 200,
           expected_body: params[:expected_body],
           regions: params[:regions] || [ "nyc" ],
@@ -83,8 +83,8 @@ module MCP
               id: monitor.id,
               name: monitor.name,
               url: monitor.url || "#{monitor.host}:#{monitor.port}",
-              check_type: monitor.check_type,
-              interval: monitor.interval,
+              check_type: monitor.monitor_type,
+              interval: monitor.interval_seconds,
               status: "pending"
             }
           )
