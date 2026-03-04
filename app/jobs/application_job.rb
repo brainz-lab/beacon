@@ -8,6 +8,13 @@ class ApplicationJob < ActiveJob::Base
   # Use Solid Queue as the backend
   queue_as :default
 
+  rescue_from(StandardError) do |exception|
+    BrainzLab::Reflex.capture(exception, context: { job: self.class.name, arguments: arguments })
+    BrainzLab::Recall.error("Job failed: #{self.class.name}", error: exception.message)
+    BrainzLab::Signal.trigger("job.failure", severity: :high, details: { job: self.class.name, error: exception.message })
+    raise exception
+  end
+
   # Log job execution
   around_perform do |job, block|
     Rails.logger.info "[#{job.class.name}] Starting with args: #{job.arguments.inspect}"
