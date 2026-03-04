@@ -1,3 +1,6 @@
+# Maintenance windows use "title" (not "name") because they represent temporal events,
+# not permanent entities. Same convention as Incident.
+# Permanent resources (UptimeMonitor, Project, AlertRule, StatusPage) use "name".
 class MaintenanceWindow < ApplicationRecord
   belongs_to :project
 

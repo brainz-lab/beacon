@@ -2,6 +2,7 @@ module MCP
   class ToolsController < ApplicationController
     skip_before_action :verify_authenticity_token
     before_action :authenticate_mcp_request
+    wrap_parameters false
 
     # GET /mcp/tools
     def index
