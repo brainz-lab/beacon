@@ -60,6 +60,7 @@ module API
       # POST /api/v1/monitors/:id/check_now
       def check_now
         result = @monitor.check!
+        track_usage!(1)
         render json: {
           success: result.success?,
           status: result.status,

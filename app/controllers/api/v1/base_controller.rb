@@ -69,6 +69,17 @@ module API
         render json: { error: "Invalid JSON: #{exception.message}" }, status: :bad_request
       end
 
+      def track_usage!(count = 1)
+        return unless @current_project&.platform_project_id
+
+        PlatformClient.track_usage(
+          project_id: @current_project.platform_project_id,
+          product: "beacon",
+          metric: "checks",
+          count: count
+        )
+      end
+
       def render_success(data, status: :ok)
         render json: data, status: status
       end

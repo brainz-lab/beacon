@@ -10,6 +10,16 @@ class ExecuteCheckJob < ApplicationJob
     region ||= Beacon.current_region
     monitor.check!(region: region)
 
+    # Track usage for billing
+    if monitor.project&.platform_project_id
+      PlatformClient.track_usage(
+        project_id: monitor.project.platform_project_id,
+        product: "beacon",
+        metric: "checks",
+        count: 1
+      )
+    end
+
     # Schedule next check
     schedule_next_check(monitor)
   rescue => e
