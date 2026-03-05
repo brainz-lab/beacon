@@ -16,3 +16,6 @@ application.register("flash", FlashController)
 application.register("monitor", MonitorController)
 application.register("monitor-form", MonitorFormController)
 application.register("response-chart", ResponseChartController)
+
+import AssistantChatController from "controllers/assistant_chat_controller"
+application.register("assistant-chat", AssistantChatController)
