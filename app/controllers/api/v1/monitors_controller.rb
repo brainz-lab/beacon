@@ -18,6 +18,14 @@ module API
       end
 
       # POST /api/v1/monitors
+      #
+      # Required fields depend on monitor_type:
+      #   - http, ssl  → require "url" (e.g. "https://api.example.com")
+      #   - tcp        → require "host" + "port" (e.g. "db.example.com", 5432)
+      #   - dns, ping  → require "host" (e.g. "example.com")
+      #
+      # Aliases supported: "type" → monitor_type, "interval" → interval_seconds,
+      # "timeout" → timeout_seconds.
       def create
         monitor = current_project.uptime_monitors.create!(monitor_params)
 

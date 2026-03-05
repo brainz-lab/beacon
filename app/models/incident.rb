@@ -1,3 +1,6 @@
+# Incidents use "title" (not "name") because they represent temporal events,
+# not permanent entities. Same convention as MaintenanceWindow.
+# Permanent resources (UptimeMonitor, Project, AlertRule, StatusPage) use "name".
 class Incident < ApplicationRecord
   belongs_to :uptime_monitor, foreign_key: :monitor_id
 

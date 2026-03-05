@@ -72,7 +72,7 @@ coverage/
 .secrets.md
 
 # Gem - use via Gemfile, not symlink
-brainzlab-ui
+fluyenta-ui
 
 # Brainzlab UI gem symlink (created by bin/dev)
 /app/assets/tailwind/brainzlab_ui

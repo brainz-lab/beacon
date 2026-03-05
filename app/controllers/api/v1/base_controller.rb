@@ -53,13 +53,18 @@ module API
         }, status: :unprocessable_entity
       end
 
+      # Handles ParameterMissing errors when required wrapper keys are absent.
+      # Note: Rails wrap_parameters automatically wraps flat JSON params under
+      # the resource key (e.g. {"name": "x"} becomes {monitor: {name: "x"}}),
+      # so both wrapped and flat params work. This error only triggers with
+      # truly empty bodies or bodies missing required fields entirely.
       def bad_request(exception)
         response = { error: exception.message }
         if exception.param == "monitor"
-          response[:hint] = "Wrap params in a 'monitor' key, e.g. {\"monitor\": {\"name\": \"...\", \"monitor_type\": \"http\", \"url\": \"...\"}}"
+          response[:hint] = "Send monitor params as JSON, e.g. {\"name\": \"...\", \"monitor_type\": \"http\", \"url\": \"...\"}. Wrapping under a 'monitor' key is optional."
           response[:required_fields] = %w[name monitor_type url]
         elsif exception.param == "status_page"
-          response[:hint] = "Wrap params in a 'status_page' key, e.g. {\"status_page\": {\"name\": \"...\", \"slug\": \"...\"}}"
+          response[:hint] = "Send status page params as JSON, e.g. {\"name\": \"...\", \"slug\": \"...\"}. Wrapping under a 'status_page' key is optional."
           response[:required_fields] = %w[name slug]
         end
         render json: response, status: :bad_request

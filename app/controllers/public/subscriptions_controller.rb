@@ -4,6 +4,16 @@ module Public
     skip_before_action :verify_authenticity_token
 
     # POST /status/:slug/subscribe
+    #
+    # Creates a subscription to a public status page.
+    # Uses a generic "endpoint" parameter for all channel types:
+    #   - channel: "email"   + endpoint: "user@example.com"
+    #   - channel: "sms"     + endpoint: "+1234567890"
+    #   - channel: "webhook" + endpoint: "https://hooks.example.com/notify"
+    #
+    # The "endpoint" param is mapped internally to the model's specific field
+    # (email, phone, webhook_url) via endpoint_field_for().
+    # Do NOT use channel-specific param names (email, phone, etc.) directly.
     def create
       @status_page = StatusPage.find_by!(slug: params[:slug])
 
@@ -25,7 +35,8 @@ module Public
       )
 
       if subscription.new_record?
-        subscription.preferences = subscription_preferences
+        subscription.notify_incidents = subscription_preferences[:notify_incidents]
+        subscription.notify_maintenance = subscription_preferences[:notify_maintenance]
         subscription.save!
 
         # Send confirmation based on channel
@@ -103,6 +114,9 @@ module Public
       end
     end
 
+    # Maps the generic "endpoint" API parameter to the model's specific column.
+    # The public API always accepts { channel: "...", endpoint: "..." } so callers
+    # don't need to know internal field names (email, phone, webhook_url).
     def endpoint_field_for(channel)
       case channel
       when "email" then :email

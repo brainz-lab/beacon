@@ -11,7 +11,7 @@ class UptimeMonitor < ApplicationRecord
   validates :name, presence: true
   validates :monitor_type, presence: true, inclusion: { in: %w[http tcp dns ssl ping] }
   validates :url, presence: true, if: -> { monitor_type == "http" || monitor_type == "ssl" }
-  validate :url_must_be_valid, if: -> { url.present? }
+  validate :url_must_be_valid, if: -> { url.present? && monitor_type.in?(%w[http ssl]) }
   validates :host, presence: true, if: -> { monitor_type.in?(%w[tcp dns ping]) }
   validates :port, presence: true, if: -> { monitor_type == "tcp" }
   validates :interval_seconds, numericality: { greater_than_or_equal_to: 30 }
