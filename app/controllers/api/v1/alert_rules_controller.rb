@@ -61,7 +61,11 @@ module API
         config["duration_minutes"] = permitted.delete(:duration_minutes) if permitted.key?(:duration_minutes)
         config["notify_channels"] = permitted.delete(:notify_channels) if permitted.key?(:notify_channels)
 
-        permitted[:condition_config] = config if config.present?
+        if config.present?
+          # Merge with existing config on update to avoid losing fields
+          existing = @alert_rule&.condition_config || {}
+          permitted[:condition_config] = existing.merge(config)
+        end
         permitted.except(:threshold, :comparison, :duration_minutes, :notify_channels)
       end
 

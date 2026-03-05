@@ -94,6 +94,12 @@ module MCP
     end
 
     def tool_params
+      # Parse body separately to avoid route param :name collision with tool arguments
+      body = request.raw_post
+      return {} if body.blank?
+
+      JSON.parse(body).symbolize_keys
+    rescue JSON::ParserError
       params.except(:controller, :action, :name, :api_key).permit!.to_h.symbolize_keys
     end
   end
