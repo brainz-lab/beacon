@@ -31,8 +31,8 @@ RUN bundle config set frozen false && \
 
 COPY . .
 
-# Create symlink for brainzlab-ui assets (used by Tailwind CSS imports)
-RUN ln -s "$(bundle show brainzlab-ui)" /brainzlab-ui
+# Create symlink for fluyenta-ui assets (used by Tailwind CSS imports)
+RUN ln -s "$(bundle show fluyenta-ui)" /fluyenta-ui
 
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
