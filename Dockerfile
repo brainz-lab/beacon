@@ -38,8 +38,13 @@ COPY . .
 # Restore resolved Gemfile.lock (COPY . . may overwrite)
 RUN cp /tmp/Gemfile.lock.resolved Gemfile.lock
 
-# Create symlink for fluyenta-ui assets (used by Tailwind CSS imports)
-RUN ln -s "$(bundle show fluyenta-ui)" /fluyenta-ui
+# Fix brainzlab_ui symlink: COPY copies a broken absolute symlink from dev,
+# replace it with one pointing to the installed fluyenta-ui gem stylesheets
+RUN ln -sf "$(bundle show fluyenta-ui)/app/assets/stylesheets/brainzlab_ui" app/assets/tailwind/brainzlab_ui
+
+# Create root symlink for fluyenta-ui assets
+# Note: path must NOT be /fluyenta-ui to avoid collision with Gemfile path check
+RUN ln -s "$(bundle show fluyenta-ui)" /fluyenta-ui-gem
 
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
