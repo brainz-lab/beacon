@@ -7,11 +7,16 @@ module API
 
       # POST /api/v1/projects/provision
       # Creates a new project or returns existing one, linked to Platform
+      UUID_REGEX = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
+
       def provision
         platform_project_id = params[:platform_project_id]
         name = params[:name].to_s.strip
 
         if platform_project_id.present?
+          unless platform_project_id.match?(UUID_REGEX)
+            return render json: { error: "platform_project_id must be a valid UUID" }, status: :unprocessable_entity
+          end
           project = Project.find_or_initialize_by(platform_project_id: platform_project_id)
           project.name = name if name.present?
           project.save!
