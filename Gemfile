@@ -70,6 +70,13 @@ gem "phlex-rails", "~> 2.0"
 # AI Assistant
 gem "anthropic", "~> 0.4"
 
+# BrainzLab Platform Client - Transaction reporting
+if File.exist?(File.expand_path("../brainzlab-platform-client", __dir__))
+  gem "brainzlab-platform-client", path: "../brainzlab-platform-client"
+else
+  gem "brainzlab-platform-client", "0.1.1", source: "https://rubygems.pkg.github.com/fluyenta"
+end
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
